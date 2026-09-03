@@ -1,0 +1,1352 @@
+{
+  "training_date": "2026-09-03 08:23:46",
+  "features": [
+    "bpi",
+    "bsi",
+    "bunker_vlsfo_singapore",
+    "bunker_ifo380_singapore",
+    "crude_brent",
+    "coking_coal_fob_aus",
+    "iron_ore_cfr_china",
+    "port_congestion_aus_days",
+    "port_congestion_indo_days",
+    "port_congestion_india_east_days",
+    "monsoon_index",
+    "freight_aus_haldia_panamax",
+    "freight_indo_vizag_supramax",
+    "freight_russia_vizag_panamax",
+    "freight_uae_paradip_supramax",
+    "month",
+    "day_of_year",
+    "sin_doy",
+    "cos_doy",
+    "bdi_sma7",
+    "bdi_sma30",
+    "bdi_ema14",
+    "bdi_vol14",
+    "bdi_mom7",
+    "bdi_lag1",
+    "bdi_lag7",
+    "bdi_lag14",
+    "bci_sma7",
+    "bci_sma30",
+    "bci_ema14",
+    "bci_vol14",
+    "bci_mom7",
+    "bci_lag1",
+    "bci_lag7",
+    "bci_lag14",
+    "bpi_sma7",
+    "bpi_sma30",
+    "bpi_ema14",
+    "bpi_vol14",
+    "bpi_mom7",
+    "bpi_lag1",
+    "bpi_lag7",
+    "bpi_lag14",
+    "bsi_sma7",
+    "bsi_sma30",
+    "bsi_ema14",
+    "bsi_vol14",
+    "bsi_mom7",
+    "bsi_lag1",
+    "bsi_lag7",
+    "bsi_lag14",
+    "bunker_vlsfo_singapore_sma7",
+    "bunker_vlsfo_singapore_sma30",
+    "bunker_vlsfo_singapore_ema14",
+    "bunker_vlsfo_singapore_vol14",
+    "bunker_vlsfo_singapore_mom7",
+    "bunker_vlsfo_singapore_lag1",
+    "bunker_vlsfo_singapore_lag7",
+    "bunker_vlsfo_singapore_lag14",
+    "crude_brent_sma7",
+    "crude_brent_sma30",
+    "crude_brent_ema14",
+    "crude_brent_vol14",
+    "crude_brent_mom7",
+    "crude_brent_lag1",
+    "crude_brent_lag7",
+    "crude_brent_lag14",
+    "coking_coal_fob_aus_sma7",
+    "coking_coal_fob_aus_sma30",
+    "coking_coal_fob_aus_ema14",
+    "coking_coal_fob_aus_vol14",
+    "coking_coal_fob_aus_mom7",
+    "coking_coal_fob_aus_lag1",
+    "coking_coal_fob_aus_lag7",
+    "coking_coal_fob_aus_lag14",
+    "spread_cape_panamax",
+    "spread_vlsfo_crude",
+    "port_congestion_total",
+    "freight_aus_paradip_cape_sma7",
+    "freight_aus_paradip_cape_sma30",
+    "freight_aus_paradip_cape_vol14",
+    "freight_aus_paradip_cape_lag1",
+    "freight_aus_paradip_cape_lag7",
+    "freight_aus_paradip_cape_lag14",
+    "freight_aus_paradip_cape_mom7",
+    "freight_aus_vizag_cape_sma7",
+    "freight_aus_vizag_cape_sma30",
+    "freight_aus_vizag_cape_vol14",
+    "freight_aus_vizag_cape_lag1",
+    "freight_aus_vizag_cape_lag7",
+    "freight_aus_vizag_cape_lag14",
+    "freight_aus_vizag_cape_mom7",
+    "freight_indo_paradip_panamax_sma7",
+    "freight_indo_paradip_panamax_sma30",
+    "freight_indo_paradip_panamax_vol14",
+    "freight_indo_paradip_panamax_lag1",
+    "freight_indo_paradip_panamax_lag7",
+    "freight_indo_paradip_panamax_lag14",
+    "freight_indo_paradip_panamax_mom7",
+    "freight_rsa_vizag_cape_sma7",
+    "freight_rsa_vizag_cape_sma30",
+    "freight_rsa_vizag_cape_vol14",
+    "freight_rsa_vizag_cape_lag1",
+    "freight_rsa_vizag_cape_lag7",
+    "freight_rsa_vizag_cape_lag14",
+    "freight_rsa_vizag_cape_mom7",
+    "freight_usa_paradip_cape_sma7",
+    "freight_usa_paradip_cape_sma30",
+    "freight_usa_paradip_cape_vol14",
+    "freight_usa_paradip_cape_lag1",
+    "freight_usa_paradip_cape_lag7",
+    "freight_usa_paradip_cape_lag14",
+    "freight_usa_paradip_cape_mom7"
+  ],
+  "horizons": [
+    7,
+    15,
+    30,
+    60,
+    90
+  ],
+  "models": {
+    "freight_aus_paradip_cape": {
+      "name": "Australia (Hay Point) -> Paradip (Capesize)",
+      "horizons": {
+        "7": {
+          "file": "xgb_freight_aus_paradip_cape_h7.joblib",
+          "r2": 0.6053,
+          "rmse": 0.9104,
+          "mae": 0.7379,
+          "mape": 5.41,
+          "residual_std": 0.8797,
+          "top_features": [
+            {
+              "feature": "bdi_lag1",
+              "importance": 0.407
+            },
+            {
+              "feature": "bdi_sma7",
+              "importance": 0.3308
+            },
+            {
+              "feature": "bci_sma7",
+              "importance": 0.078
+            },
+            {
+              "feature": "freight_aus_vizag_cape_sma7",
+              "importance": 0.03
+            },
+            {
+              "feature": "freight_rsa_vizag_cape_lag1",
+              "importance": 0.0239
+            },
+            {
+              "feature": "freight_rsa_vizag_cape_sma7",
+              "importance": 0.0228
+            }
+          ]
+        },
+        "15": {
+          "file": "xgb_freight_aus_paradip_cape_h15.joblib",
+          "r2": 0.5347,
+          "rmse": 0.9893,
+          "mae": 0.8119,
+          "mape": 5.92,
+          "residual_std": 0.972,
+          "top_features": [
+            {
+              "feature": "bdi_lag1",
+              "importance": 0.4442
+            },
+            {
+              "feature": "bsi_ema14",
+              "importance": 0.2423
+            },
+            {
+              "feature": "bdi_sma7",
+              "importance": 0.1228
+            },
+            {
+              "feature": "bci_sma7",
+              "importance": 0.0294
+            },
+            {
+              "feature": "freight_aus_haldia_panamax",
+              "importance": 0.0226
+            },
+            {
+              "feature": "bpi_lag1",
+              "importance": 0.0178
+            }
+          ]
+        },
+        "30": {
+          "file": "xgb_freight_aus_paradip_cape_h30.joblib",
+          "r2": 0.5268,
+          "rmse": 1.0025,
+          "mae": 0.8185,
+          "mape": 6.03,
+          "residual_std": 0.9795,
+          "top_features": [
+            {
+              "feature": "bsi_sma7",
+              "importance": 0.4322
+            },
+            {
+              "feature": "bci_sma7",
+              "importance": 0.3203
+            },
+            {
+              "feature": "bsi_ema14",
+              "importance": 0.0785
+            },
+            {
+              "feature": "bpi_sma30",
+              "importance": 0.0264
+            },
+            {
+              "feature": "bdi_lag1",
+              "importance": 0.0166
+            },
+            {
+              "feature": "bci_lag1",
+              "importance": 0.0155
+            }
+          ]
+        },
+        "60": {
+          "file": "xgb_freight_aus_paradip_cape_h60.joblib",
+          "r2": -0.0273,
+          "rmse": 1.441,
+          "mae": 1.1978,
+          "mape": 8.95,
+          "residual_std": 1.3686,
+          "top_features": [
+            {
+              "feature": "bci_sma7",
+              "importance": 0.5425
+            },
+            {
+              "feature": "bci_lag1",
+              "importance": 0.1571
+            },
+            {
+              "feature": "bsi_sma7",
+              "importance": 0.0593
+            },
+            {
+              "feature": "bsi_ema14",
+              "importance": 0.0364
+            },
+            {
+              "feature": "bsi",
+              "importance": 0.0353
+            },
+            {
+              "feature": "iron_ore_cfr_china",
+              "importance": 0.0167
+            }
+          ]
+        },
+        "90": {
+          "file": "xgb_freight_aus_paradip_cape_h90.joblib",
+          "r2": -1.7901,
+          "rmse": 2.2215,
+          "mae": 1.8355,
+          "mape": 14.03,
+          "residual_std": 1.8627,
+          "top_features": [
+            {
+              "feature": "bci_sma7",
+              "importance": 0.5389
+            },
+            {
+              "feature": "bci_lag1",
+              "importance": 0.2653
+            },
+            {
+              "feature": "coking_coal_fob_aus_mom7",
+              "importance": 0.0287
+            },
+            {
+              "feature": "iron_ore_cfr_china",
+              "importance": 0.0182
+            },
+            {
+              "feature": "crude_brent_sma30",
+              "importance": 0.0154
+            },
+            {
+              "feature": "month",
+              "importance": 0.0101
+            }
+          ]
+        }
+      }
+    },
+    "freight_aus_vizag_cape": {
+      "name": "Australia (Hay Point) -> Vizag (Capesize)",
+      "horizons": {
+        "7": {
+          "file": "xgb_freight_aus_vizag_cape_h7.joblib",
+          "r2": 0.6006,
+          "rmse": 0.8904,
+          "mae": 0.7201,
+          "mape": 5.46,
+          "residual_std": 0.8642,
+          "top_features": [
+            {
+              "feature": "bdi_lag1",
+              "importance": 0.3909
+            },
+            {
+              "feature": "bdi_sma7",
+              "importance": 0.3331
+            },
+            {
+              "feature": "bci_sma7",
+              "importance": 0.0596
+            },
+            {
+              "feature": "freight_aus_vizag_cape_sma7",
+              "importance": 0.0476
+            },
+            {
+              "feature": "freight_rsa_vizag_cape_lag1",
+              "importance": 0.028
+            },
+            {
+              "feature": "freight_rsa_vizag_cape_sma7",
+              "importance": 0.0258
+            }
+          ]
+        },
+        "15": {
+          "file": "xgb_freight_aus_vizag_cape_h15.joblib",
+          "r2": 0.5245,
+          "rmse": 0.9712,
+          "mae": 0.7922,
+          "mape": 5.98,
+          "residual_std": 0.9484,
+          "top_features": [
+            {
+              "feature": "bsi_ema14",
+              "importance": 0.3307
+            },
+            {
+              "feature": "bdi_lag1",
+              "importance": 0.3147
+            },
+            {
+              "feature": "bdi_sma7",
+              "importance": 0.1512
+            },
+            {
+              "feature": "bci_sma7",
+              "importance": 0.0422
+            },
+            {
+              "feature": "freight_aus_haldia_panamax",
+              "importance": 0.0265
+            },
+            {
+              "feature": "bpi_lag1",
+              "importance": 0.0104
+            }
+          ]
+        },
+        "30": {
+          "file": "xgb_freight_aus_vizag_cape_h30.joblib",
+          "r2": 0.5438,
+          "rmse": 0.9563,
+          "mae": 0.7851,
+          "mape": 5.97,
+          "residual_std": 0.9218,
+          "top_features": [
+            {
+              "feature": "bsi_sma7",
+              "importance": 0.4464
+            },
+            {
+              "feature": "bci_sma7",
+              "importance": 0.2967
+            },
+            {
+              "feature": "bsi_ema14",
+              "importance": 0.0721
+            },
+            {
+              "feature": "bpi_sma30",
+              "importance": 0.0286
+            },
+            {
+              "feature": "bci_lag1",
+              "importance": 0.0165
+            },
+            {
+              "feature": "bdi_lag1",
+              "importance": 0.0162
+            }
+          ]
+        },
+        "60": {
+          "file": "xgb_freight_aus_vizag_cape_h60.joblib",
+          "r2": 0.042,
+          "rmse": 1.3517,
+          "mae": 1.121,
+          "mape": 8.63,
+          "residual_std": 1.2922,
+          "top_features": [
+            {
+              "feature": "bci_sma7",
+              "importance": 0.4873
+            },
+            {
+              "feature": "bci_lag1",
+              "importance": 0.2138
+            },
+            {
+              "feature": "bsi_sma7",
+              "importance": 0.0598
+            },
+            {
+              "feature": "bsi",
+              "importance": 0.0332
+            },
+            {
+              "feature": "bsi_ema14",
+              "importance": 0.03
+            },
+            {
+              "feature": "iron_ore_cfr_china",
+              "importance": 0.0155
+            }
+          ]
+        },
+        "90": {
+          "file": "xgb_freight_aus_vizag_cape_h90.joblib",
+          "r2": -1.6379,
+          "rmse": 2.0992,
+          "mae": 1.7357,
+          "mape": 13.65,
+          "residual_std": 1.7669,
+          "top_features": [
+            {
+              "feature": "bci_sma7",
+              "importance": 0.5273
+            },
+            {
+              "feature": "bci_lag1",
+              "importance": 0.2802
+            },
+            {
+              "feature": "coking_coal_fob_aus_mom7",
+              "importance": 0.0252
+            },
+            {
+              "feature": "crude_brent_sma30",
+              "importance": 0.0175
+            },
+            {
+              "feature": "iron_ore_cfr_china",
+              "importance": 0.0164
+            },
+            {
+              "feature": "month",
+              "importance": 0.0116
+            }
+          ]
+        }
+      }
+    },
+    "freight_indo_paradip_panamax": {
+      "name": "Indonesia (Taboneo) -> Paradip (Panamax)",
+      "horizons": {
+        "7": {
+          "file": "xgb_freight_indo_paradip_panamax_h7.joblib",
+          "r2": 0.4603,
+          "rmse": 0.489,
+          "mae": 0.3994,
+          "mape": 4.95,
+          "residual_std": 0.4689,
+          "top_features": [
+            {
+              "feature": "bpi_ema14",
+              "importance": 0.4198
+            },
+            {
+              "feature": "bdi_ema14",
+              "importance": 0.2277
+            },
+            {
+              "feature": "bdi_lag7",
+              "importance": 0.1142
+            },
+            {
+              "feature": "bsi_sma30",
+              "importance": 0.074
+            },
+            {
+              "feature": "bpi_lag7",
+              "importance": 0.024
+            },
+            {
+              "feature": "freight_indo_paradip_panamax_sma7",
+              "importance": 0.0218
+            }
+          ]
+        },
+        "15": {
+          "file": "xgb_freight_indo_paradip_panamax_h15.joblib",
+          "r2": 0.1892,
+          "rmse": 0.5992,
+          "mae": 0.4845,
+          "mape": 5.98,
+          "residual_std": 0.5743,
+          "top_features": [
+            {
+              "feature": "bsi_ema14",
+              "importance": 0.3992
+            },
+            {
+              "feature": "bdi_ema14",
+              "importance": 0.2018
+            },
+            {
+              "feature": "bpi",
+              "importance": 0.1025
+            },
+            {
+              "feature": "bsi_sma30",
+              "importance": 0.055
+            },
+            {
+              "feature": "freight_indo_paradip_panamax_sma7",
+              "importance": 0.0456
+            },
+            {
+              "feature": "bpi_sma7",
+              "importance": 0.0255
+            }
+          ]
+        },
+        "30": {
+          "file": "xgb_freight_indo_paradip_panamax_h30.joblib",
+          "r2": 0.0238,
+          "rmse": 0.6567,
+          "mae": 0.5268,
+          "mape": 6.55,
+          "residual_std": 0.651,
+          "top_features": [
+            {
+              "feature": "bsi_ema14",
+              "importance": 0.2993
+            },
+            {
+              "feature": "bsi_sma7",
+              "importance": 0.2337
+            },
+            {
+              "feature": "bsi_lag1",
+              "importance": 0.121
+            },
+            {
+              "feature": "bdi_lag1",
+              "importance": 0.0615
+            },
+            {
+              "feature": "bsi_sma30",
+              "importance": 0.0409
+            },
+            {
+              "feature": "freight_indo_paradip_panamax_sma7",
+              "importance": 0.0336
+            }
+          ]
+        },
+        "60": {
+          "file": "xgb_freight_indo_paradip_panamax_h60.joblib",
+          "r2": -0.5559,
+          "rmse": 0.7911,
+          "mae": 0.6767,
+          "mape": 8.66,
+          "residual_std": 0.7799,
+          "top_features": [
+            {
+              "feature": "bsi_ema14",
+              "importance": 0.3369
+            },
+            {
+              "feature": "bsi_sma7",
+              "importance": 0.2183
+            },
+            {
+              "feature": "bsi_lag1",
+              "importance": 0.1714
+            },
+            {
+              "feature": "bsi",
+              "importance": 0.0545
+            },
+            {
+              "feature": "bci_sma7",
+              "importance": 0.0167
+            },
+            {
+              "feature": "iron_ore_cfr_china",
+              "importance": 0.0111
+            }
+          ]
+        },
+        "90": {
+          "file": "xgb_freight_indo_paradip_panamax_h90.joblib",
+          "r2": -0.7753,
+          "rmse": 0.8695,
+          "mae": 0.7587,
+          "mape": 9.75,
+          "residual_std": 0.8564,
+          "top_features": [
+            {
+              "feature": "bsi_ema14",
+              "importance": 0.2874
+            },
+            {
+              "feature": "bci_sma7",
+              "importance": 0.2155
+            },
+            {
+              "feature": "bsi",
+              "importance": 0.1318
+            },
+            {
+              "feature": "bci_lag1",
+              "importance": 0.0746
+            },
+            {
+              "feature": "bsi_lag1",
+              "importance": 0.0393
+            },
+            {
+              "feature": "coking_coal_fob_aus_mom7",
+              "importance": 0.0264
+            }
+          ]
+        }
+      }
+    },
+    "freight_rsa_vizag_cape": {
+      "name": "South Africa (RBCT) -> Vizag (Capesize)",
+      "horizons": {
+        "7": {
+          "file": "xgb_freight_rsa_vizag_cape_h7.joblib",
+          "r2": 0.5821,
+          "rmse": 1.0972,
+          "mae": 0.8854,
+          "mape": 6.44,
+          "residual_std": 1.0649,
+          "top_features": [
+            {
+              "feature": "bdi_lag1",
+              "importance": 0.4599
+            },
+            {
+              "feature": "bdi_sma7",
+              "importance": 0.2965
+            },
+            {
+              "feature": "freight_aus_vizag_cape_sma7",
+              "importance": 0.0326
+            },
+            {
+              "feature": "bci_lag1",
+              "importance": 0.0306
+            },
+            {
+              "feature": "bdi_ema14",
+              "importance": 0.0206
+            },
+            {
+              "feature": "freight_rsa_vizag_cape_sma7",
+              "importance": 0.0206
+            }
+          ]
+        },
+        "15": {
+          "file": "xgb_freight_rsa_vizag_cape_h15.joblib",
+          "r2": 0.5023,
+          "rmse": 1.1966,
+          "mae": 0.9634,
+          "mape": 6.99,
+          "residual_std": 1.1659,
+          "top_features": [
+            {
+              "feature": "bdi_lag1",
+              "importance": 0.3586
+            },
+            {
+              "feature": "bdi_sma7",
+              "importance": 0.2462
+            },
+            {
+              "feature": "bsi_ema14",
+              "importance": 0.2169
+            },
+            {
+              "feature": "bci_sma7",
+              "importance": 0.0225
+            },
+            {
+              "feature": "freight_aus_haldia_panamax",
+              "importance": 0.0159
+            },
+            {
+              "feature": "bpi_lag1",
+              "importance": 0.0154
+            }
+          ]
+        },
+        "30": {
+          "file": "xgb_freight_rsa_vizag_cape_h30.joblib",
+          "r2": 0.5781,
+          "rmse": 1.1059,
+          "mae": 0.8984,
+          "mape": 6.62,
+          "residual_std": 1.0695,
+          "top_features": [
+            {
+              "feature": "bci_sma7",
+              "importance": 0.3411
+            },
+            {
+              "feature": "bsi_sma7",
+              "importance": 0.322
+            },
+            {
+              "feature": "bci_lag1",
+              "importance": 0.1099
+            },
+            {
+              "feature": "bci_ema14",
+              "importance": 0.0649
+            },
+            {
+              "feature": "bdi_lag1",
+              "importance": 0.0244
+            },
+            {
+              "feature": "bpi_sma30",
+              "importance": 0.0196
+            }
+          ]
+        },
+        "60": {
+          "file": "xgb_freight_rsa_vizag_cape_h60.joblib",
+          "r2": -0.1172,
+          "rmse": 1.7531,
+          "mae": 1.4339,
+          "mape": 10.65,
+          "residual_std": 1.6773,
+          "top_features": [
+            {
+              "feature": "bci_sma7",
+              "importance": 0.5412
+            },
+            {
+              "feature": "bci_lag1",
+              "importance": 0.1483
+            },
+            {
+              "feature": "bsi_sma7",
+              "importance": 0.0646
+            },
+            {
+              "feature": "bsi",
+              "importance": 0.0361
+            },
+            {
+              "feature": "bsi_ema14",
+              "importance": 0.0267
+            },
+            {
+              "feature": "iron_ore_cfr_china",
+              "importance": 0.0177
+            }
+          ]
+        },
+        "90": {
+          "file": "xgb_freight_rsa_vizag_cape_h90.joblib",
+          "r2": -1.7563,
+          "rmse": 2.5781,
+          "mae": 2.0922,
+          "mape": 15.97,
+          "residual_std": 2.2017,
+          "top_features": [
+            {
+              "feature": "bci_sma7",
+              "importance": 0.5518
+            },
+            {
+              "feature": "bci_lag1",
+              "importance": 0.2549
+            },
+            {
+              "feature": "coking_coal_fob_aus_mom7",
+              "importance": 0.0332
+            },
+            {
+              "feature": "iron_ore_cfr_china",
+              "importance": 0.0176
+            },
+            {
+              "feature": "month",
+              "importance": 0.0097
+            },
+            {
+              "feature": "crude_brent_sma30",
+              "importance": 0.0083
+            }
+          ]
+        }
+      }
+    },
+    "freight_usa_paradip_cape": {
+      "name": "USA (Hampton Roads) -> Paradip (Capesize)",
+      "horizons": {
+        "7": {
+          "file": "xgb_freight_usa_paradip_cape_h7.joblib",
+          "r2": 0.6027,
+          "rmse": 1.5659,
+          "mae": 1.2925,
+          "mape": 3.94,
+          "residual_std": 1.5363,
+          "top_features": [
+            {
+              "feature": "bdi_lag1",
+              "importance": 0.4858
+            },
+            {
+              "feature": "bdi_sma7",
+              "importance": 0.1141
+            },
+            {
+              "feature": "bci_lag1",
+              "importance": 0.0878
+            },
+            {
+              "feature": "bci_sma7",
+              "importance": 0.0702
+            },
+            {
+              "feature": "bdi_ema14",
+              "importance": 0.0327
+            },
+            {
+              "feature": "freight_aus_vizag_cape_sma7",
+              "importance": 0.0319
+            }
+          ]
+        },
+        "15": {
+          "file": "xgb_freight_usa_paradip_cape_h15.joblib",
+          "r2": 0.491,
+          "rmse": 1.763,
+          "mae": 1.4452,
+          "mape": 4.41,
+          "residual_std": 1.7009,
+          "top_features": [
+            {
+              "feature": "bsi_ema14",
+              "importance": 0.5616
+            },
+            {
+              "feature": "bdi_sma7",
+              "importance": 0.1467
+            },
+            {
+              "feature": "bdi_lag1",
+              "importance": 0.0744
+            },
+            {
+              "feature": "freight_aus_vizag_cape_sma7",
+              "importance": 0.0246
+            },
+            {
+              "feature": "freight_aus_haldia_panamax",
+              "importance": 0.0228
+            },
+            {
+              "feature": "bci_sma7",
+              "importance": 0.0191
+            }
+          ]
+        },
+        "30": {
+          "file": "xgb_freight_usa_paradip_cape_h30.joblib",
+          "r2": 0.4827,
+          "rmse": 1.7885,
+          "mae": 1.4553,
+          "mape": 4.47,
+          "residual_std": 1.6987,
+          "top_features": [
+            {
+              "feature": "bsi_sma7",
+              "importance": 0.3881
+            },
+            {
+              "feature": "bsi_ema14",
+              "importance": 0.3462
+            },
+            {
+              "feature": "bci_sma7",
+              "importance": 0.0876
+            },
+            {
+              "feature": "bpi_sma30",
+              "importance": 0.0287
+            },
+            {
+              "feature": "bci_lag1",
+              "importance": 0.0203
+            },
+            {
+              "feature": "bdi_lag1",
+              "importance": 0.0149
+            }
+          ]
+        },
+        "60": {
+          "file": "xgb_freight_usa_paradip_cape_h60.joblib",
+          "r2": -0.0085,
+          "rmse": 2.4244,
+          "mae": 2.0177,
+          "mape": 6.24,
+          "residual_std": 2.3199,
+          "top_features": [
+            {
+              "feature": "bci_sma7",
+              "importance": 0.4982
+            },
+            {
+              "feature": "bci_lag1",
+              "importance": 0.1544
+            },
+            {
+              "feature": "bsi_sma7",
+              "importance": 0.0844
+            },
+            {
+              "feature": "bsi_ema14",
+              "importance": 0.0509
+            },
+            {
+              "feature": "bsi",
+              "importance": 0.0418
+            },
+            {
+              "feature": "crude_brent_lag7",
+              "importance": 0.0161
+            }
+          ]
+        },
+        "90": {
+          "file": "xgb_freight_usa_paradip_cape_h90.joblib",
+          "r2": -1.6777,
+          "rmse": 3.6832,
+          "mae": 3.0337,
+          "mape": 9.58,
+          "residual_std": 3.1229,
+          "top_features": [
+            {
+              "feature": "bci_sma7",
+              "importance": 0.4927
+            },
+            {
+              "feature": "bci_lag1",
+              "importance": 0.2598
+            },
+            {
+              "feature": "coking_coal_fob_aus_mom7",
+              "importance": 0.0317
+            },
+            {
+              "feature": "crude_brent_sma30",
+              "importance": 0.0273
+            },
+            {
+              "feature": "iron_ore_cfr_china",
+              "importance": 0.0171
+            },
+            {
+              "feature": "month",
+              "importance": 0.0171
+            }
+          ]
+        }
+      }
+    },
+    "bdi": {
+      "name": "Baltic Dry Index (BDI)",
+      "horizons": {
+        "7": {
+          "file": "xgb_bdi_h7.joblib",
+          "r2": 0.7954,
+          "rmse": 138.2828,
+          "mae": 111.4342,
+          "mape": 7.39,
+          "residual_std": 136.5825,
+          "top_features": [
+            {
+              "feature": "bdi_lag1",
+              "importance": 0.4039
+            },
+            {
+              "feature": "bci_lag1",
+              "importance": 0.3241
+            },
+            {
+              "feature": "bdi_sma7",
+              "importance": 0.1967
+            },
+            {
+              "feature": "bci_sma7",
+              "importance": 0.0139
+            },
+            {
+              "feature": "freight_aus_haldia_panamax",
+              "importance": 0.008
+            },
+            {
+              "feature": "freight_aus_vizag_cape_sma7",
+              "importance": 0.0054
+            }
+          ]
+        },
+        "15": {
+          "file": "xgb_bdi_h15.joblib",
+          "r2": 0.7603,
+          "rmse": 148.2929,
+          "mae": 121.5044,
+          "mape": 7.95,
+          "residual_std": 145.9451,
+          "top_features": [
+            {
+              "feature": "bsi_ema14",
+              "importance": 0.5225
+            },
+            {
+              "feature": "bdi_lag1",
+              "importance": 0.3018
+            },
+            {
+              "feature": "bdi_sma7",
+              "importance": 0.0585
+            },
+            {
+              "feature": "bci_ema14",
+              "importance": 0.0177
+            },
+            {
+              "feature": "bci_sma7",
+              "importance": 0.0168
+            },
+            {
+              "feature": "bci_lag1",
+              "importance": 0.0132
+            }
+          ]
+        },
+        "30": {
+          "file": "xgb_bdi_h30.joblib",
+          "r2": 0.5524,
+          "rmse": 201.0789,
+          "mae": 162.5286,
+          "mape": 10.87,
+          "residual_std": 194.633,
+          "top_features": [
+            {
+              "feature": "bci_sma7",
+              "importance": 0.4283
+            },
+            {
+              "feature": "bsi_sma7",
+              "importance": 0.3449
+            },
+            {
+              "feature": "bci_lag1",
+              "importance": 0.1004
+            },
+            {
+              "feature": "bsi_ema14",
+              "importance": 0.0276
+            },
+            {
+              "feature": "bpi_sma30",
+              "importance": 0.0164
+            },
+            {
+              "feature": "bdi_lag1",
+              "importance": 0.0104
+            }
+          ]
+        },
+        "60": {
+          "file": "xgb_bdi_h60.joblib",
+          "r2": -0.068,
+          "rmse": 294.4074,
+          "mae": 249.4179,
+          "mape": 17.22,
+          "residual_std": 289.3295,
+          "top_features": [
+            {
+              "feature": "bci_sma7",
+              "importance": 0.5603
+            },
+            {
+              "feature": "bci_lag1",
+              "importance": 0.2854
+            },
+            {
+              "feature": "coking_coal_fob_aus_mom7",
+              "importance": 0.0243
+            },
+            {
+              "feature": "iron_ore_cfr_china",
+              "importance": 0.0193
+            },
+            {
+              "feature": "bsi_ema14",
+              "importance": 0.0133
+            },
+            {
+              "feature": "coking_coal_fob_aus_lag14",
+              "importance": 0.0074
+            }
+          ]
+        },
+        "90": {
+          "file": "xgb_bdi_h90.joblib",
+          "r2": -1.1869,
+          "rmse": 415.6382,
+          "mae": 353.2006,
+          "mape": 24.75,
+          "residual_std": 389.6985,
+          "top_features": [
+            {
+              "feature": "bci_sma7",
+              "importance": 0.5026
+            },
+            {
+              "feature": "bci_lag1",
+              "importance": 0.2728
+            },
+            {
+              "feature": "coking_coal_fob_aus_mom7",
+              "importance": 0.0503
+            },
+            {
+              "feature": "iron_ore_cfr_china",
+              "importance": 0.0258
+            },
+            {
+              "feature": "month",
+              "importance": 0.0135
+            },
+            {
+              "feature": "bunker_vlsfo_singapore",
+              "importance": 0.0126
+            }
+          ]
+        }
+      }
+    },
+    "bci": {
+      "name": "Baltic Capesize Index (BCI)",
+      "horizons": {
+        "7": {
+          "file": "xgb_bci_h7.joblib",
+          "r2": 0.544,
+          "rmse": 334.8276,
+          "mae": 272.924,
+          "mape": 16.2,
+          "residual_std": 309.9136,
+          "top_features": [
+            {
+              "feature": "bdi_lag1",
+              "importance": 0.6436
+            },
+            {
+              "feature": "bdi_sma7",
+              "importance": 0.1904
+            },
+            {
+              "feature": "bci_sma7",
+              "importance": 0.0396
+            },
+            {
+              "feature": "bci_lag1",
+              "importance": 0.0383
+            },
+            {
+              "feature": "bdi_ema14",
+              "importance": 0.0066
+            },
+            {
+              "feature": "freight_aus_haldia_panamax",
+              "importance": 0.0058
+            }
+          ]
+        },
+        "15": {
+          "file": "xgb_bci_h15.joblib",
+          "r2": 0.4474,
+          "rmse": 367.2997,
+          "mae": 304.3302,
+          "mape": 17.8,
+          "residual_std": 351.9953,
+          "top_features": [
+            {
+              "feature": "bci_sma7",
+              "importance": 0.4495
+            },
+            {
+              "feature": "bdi_lag1",
+              "importance": 0.2339
+            },
+            {
+              "feature": "bci_lag1",
+              "importance": 0.2092
+            },
+            {
+              "feature": "bdi_sma7",
+              "importance": 0.0254
+            },
+            {
+              "feature": "bci_ema14",
+              "importance": 0.0139
+            },
+            {
+              "feature": "bpi_sma30",
+              "importance": 0.0039
+            }
+          ]
+        },
+        "30": {
+          "file": "xgb_bci_h30.joblib",
+          "r2": 0.5023,
+          "rmse": 350.9004,
+          "mae": 290.7044,
+          "mape": 17.02,
+          "residual_std": 347.5819,
+          "top_features": [
+            {
+              "feature": "bci_sma7",
+              "importance": 0.6189
+            },
+            {
+              "feature": "bci_lag1",
+              "importance": 0.2035
+            },
+            {
+              "feature": "bsi_ema14",
+              "importance": 0.0463
+            },
+            {
+              "feature": "bpi_sma30",
+              "importance": 0.0134
+            },
+            {
+              "feature": "bdi_lag1",
+              "importance": 0.0102
+            },
+            {
+              "feature": "crude_brent_lag7",
+              "importance": 0.0074
+            }
+          ]
+        },
+        "60": {
+          "file": "xgb_bci_h60.joblib",
+          "r2": -0.0447,
+          "rmse": 491.7904,
+          "mae": 414.5858,
+          "mape": 25.27,
+          "residual_std": 466.2598,
+          "top_features": [
+            {
+              "feature": "bci_sma7",
+              "importance": 0.5037
+            },
+            {
+              "feature": "bci_lag1",
+              "importance": 0.2938
+            },
+            {
+              "feature": "coking_coal_fob_aus_mom7",
+              "importance": 0.0264
+            },
+            {
+              "feature": "iron_ore_cfr_china",
+              "importance": 0.0247
+            },
+            {
+              "feature": "bsi_ema14",
+              "importance": 0.0132
+            },
+            {
+              "feature": "crude_brent_lag1",
+              "importance": 0.0126
+            }
+          ]
+        },
+        "90": {
+          "file": "xgb_bci_h90.joblib",
+          "r2": -1.516,
+          "rmse": 709.3581,
+          "mae": 575.0128,
+          "mape": 36.42,
+          "residual_std": 613.8049,
+          "top_features": [
+            {
+              "feature": "bci_sma7",
+              "importance": 0.5022
+            },
+            {
+              "feature": "bci_lag1",
+              "importance": 0.2804
+            },
+            {
+              "feature": "coking_coal_fob_aus_mom7",
+              "importance": 0.0374
+            },
+            {
+              "feature": "iron_ore_cfr_china",
+              "importance": 0.0285
+            },
+            {
+              "feature": "month",
+              "importance": 0.0149
+            },
+            {
+              "feature": "freight_rsa_vizag_cape_sma30",
+              "importance": 0.0104
+            }
+          ]
+        }
+      }
+    }
+  }
+}

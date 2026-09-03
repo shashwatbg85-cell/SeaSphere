@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NAVI-STEEL | Intelligent Freight Forecasting & Vessel Chartering Optimizer</title>
+  <meta name="description" content="AI-driven maritime freight rate forecasting, optimal vessel chartering, and bulk cargo landed cost optimization for East Coast of India imports.">
+
+  <!-- Google Fonts: Inter & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Leaflet.js CSS for Maritime Maps -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+  <!-- Chart.js for High-Performance Probabilistic Visuals -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <nav class="navbar" id="main-nav">
+    <div class="brand-container">
+      <div class="brand-logo" id="brand-logo-icon">⚓</div>
+      <div class="brand-text">
+        <h1>NAVI-STEEL <span class="brand-tag">SIH 2026</span></h1>
+        <div class="brand-sub">Ministry of Steel • Bulk Cargo Maritime Intelligence</div>
+      </div>
+    </div>
+
+    <div class="nav-links">
+      <a href="#section-kpi" class="nav-link active" id="nav-overview">Overview</a>
+      <a href="#section-map" class="nav-link" id="nav-routes">Trade Corridors</a>
+      <a href="#section-forecaster" class="nav-link" id="nav-forecast">Freight AI</a>
+      <a href="#section-optimizer" class="nav-link" id="nav-charter">Charter Optimizer</a>
+      <a href="#section-landed-cost" class="nav-link" id="nav-landed">Landed Cost</a>
+      <a href="#section-simulator" class="nav-link" id="nav-crisis">Crisis Simulator</a>
+    </div>
+
+    <div class="nav-actions">
+      <div class="status-badge" id="live-feed-badge">
+        <span class="pulse-dot"></span>
+        <span>LIVE MARITIME FEED</span>
+      </div>
+      <button class="btn btn-primary" id="btn-export-report">
+        <span>📄 Export Tender Brief</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Main Container -->
+  <main class="app-container">
+
+    <!-- 1. KPI Overview Command Center -->
+    <section id="section-kpi">
+      <div class="kpi-grid">
+        <div class="kpi-card" id="card-kpi-bdi">
+          <div class="kpi-label">Baltic Dry Index (BDI)</div>
+          <div class="kpi-value" id="kpi-bdi">--</div>
+          <div class="kpi-sub" id="kpi-bdi-sub">Loading...</div>
+        </div>
+
+        <div class="kpi-card emerald" id="card-kpi-bci">
+          <div class="kpi-label">Baltic Capesize (BCI)</div>
+          <div class="kpi-value" id="kpi-bci">--</div>
+          <div class="kpi-sub" id="kpi-bci-sub">Loading...</div>
+        </div>
+
+        <div class="kpi-card amber" id="card-kpi-vlsfo">
+          <div class="kpi-label">Singapore VLSFO Bunker</div>
+          <div class="kpi-value" id="kpi-vlsfo">--</div>
+          <div class="kpi-sub" id="kpi-vlsfo-sub">Loading...</div>
+        </div>
+
+        <div class="kpi-card indigo" id="card-kpi-coal">
+          <div class="kpi-label">Coking Coal FOB (Aus)</div>
+          <div class="kpi-value" id="kpi-coal">--</div>
+          <div class="kpi-sub" id="kpi-coal-sub">Loading...</div>
+        </div>
+
+        <div class="kpi-card coral" id="card-kpi-queue">
+          <div class="kpi-label">East Coast Port Queue</div>
+          <div class="kpi-value" id="kpi-queue">--</div>
+          <div class="kpi-sub" id="kpi-queue-sub" style="color: var(--text-secondary);">Avg Berth Waiting Time</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Interactive Global Shipping Map & Corridor Visualizer -->
+    <section id="section-map" class="glass-card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">
+            <i>🌐</i> Global Maritime Trade Corridors to East Coast of India
+          </div>
+          <div class="card-subtitle">
+            Live geodesic routes from Australia, Indonesia, South Africa, USA, and Russia to Paradip, Vizag, Haldia, and Dhamra.
+          </div>
+        </div>
+        <div style="display: flex; gap: 0.5rem;">
+          <button class="btn btn-outline" style="padding: 0.35rem 0.75rem; font-size: 0.78rem;" onclick="window.highlightTradeLane('aus_paradip')">Australia ➔ Paradip</button>
+          <button class="btn btn-outline" style="padding: 0.35rem 0.75rem; font-size: 0.78rem;" onclick="window.highlightTradeLane('indo_paradip')">Indonesia ➔ Paradip</button>
+          <button class="btn btn-outline" style="padding: 0.35rem 0.75rem; font-size: 0.78rem;" onclick="window.highlightTradeLane('rsa_vizag')">S.Africa ➔ Vizag</button>
+          <button class="btn btn-outline" style="padding: 0.35rem 0.75rem; font-size: 0.78rem;" onclick="window.highlightTradeLane('usa_paradip')">USA ➔ Paradip</button>
+        </div>
+      </div>
+
+      <div class="map-container">
+        <div id="leaflet-map"></div>
+      </div>
+    </section>
+
+    <!-- 3. Intelligent Freight Forecaster & Explainable AI -->
+    <section id="section-forecaster" class="glass-card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">
+            <i>📈</i> Multi-Horizon Freight Forecasting Engine (AI / XGBoost)
+          </div>
+          <div class="card-subtitle">
+            Probabilistic forward spot projections with P10/P50/P90 confidence envelopes and explainable driver attribution.
+          </div>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <div style="min-width: 260px;">
+            <select class="form-select" id="forecaster-route-select">
+              <option value="freight_aus_paradip_cape">Australia (Hay Point) ➔ Paradip (Capesize)</option>
+              <option value="freight_aus_vizag_cape">Australia (Hay Point) ➔ Vizag (Capesize)</option>
+              <option value="freight_indo_paradip_panamax">Indonesia (Taboneo) ➔ Paradip (Panamax)</option>
+              <option value="freight_rsa_vizag_cape">South Africa (RBCT) ➔ Vizag (Capesize)</option>
+              <option value="freight_usa_paradip_cape">USA (Hampton Roads) ➔ Paradip (Capesize)</option>
+            </select>
+          </div>
+
+          <div class="horizon-tabs">
+            <button class="tab-btn active" data-horizon="all">All (90d)</button>
+            <button class="tab-btn" data-horizon="7">7d</button>
+            <button class="tab-btn" data-horizon="15">15d</button>
+            <button class="tab-btn" data-horizon="30">30d</button>
+            <button class="tab-btn" data-horizon="60">60d</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2col">
+        <!-- Chart Section -->
+        <div>
+          <div style="display: flex; gap: 1.5rem; margin-bottom: 1rem; align-items: center;">
+            <div style="background: rgba(7, 13, 30, 0.6); padding: 0.6rem 1rem; border-radius: 8px; border: 1px solid var(--border-subtle);">
+              <div style="font-size: 0.72rem; color: var(--text-secondary); text-transform: uppercase;">Current Spot Rate</div>
+              <div style="font-family: var(--font-heading); font-size: 1.5rem; font-weight: 700; color: #ffffff;" id="fc-spot-rate">--</div>
+            </div>
+
+            <div style="background: rgba(7, 13, 30, 0.6); padding: 0.6rem 1rem; border-radius: 8px; border: 1px solid var(--border-subtle); flex: 1;">
+              <div style="font-size: 0.72rem; color: var(--text-secondary); text-transform: uppercase;">Market Regime</div>
+              <div style="font-weight: 600; color: var(--accent-cyan); font-size: 0.95rem;" id="fc-regime">--</div>
+              <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.15rem;" id="fc-advice">--</div>
+            </div>
+          </div>
+
+          <div class="chart-wrapper">
+            <canvas id="forecastChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Explainable AI (XAI) Attribution Waterfall -->
+        <div>
+          <div style="font-size: 0.88rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.4rem; display: flex; align-items: center; gap: 0.4rem;">
+            <span>🧠 Explainable AI: Forward Rate Drivers</span>
+          </div>
+          <div style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
+            Quantified contribution of energy, market momentum, and port queue factors towards the forward trajectory:
+          </div>
+
+          <div class="xai-list" id="xai-factors-container">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Vessel Selection & Optimal Laycan Matrix -->
+    <section id="section-optimizer" class="glass-card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">
+            <i>⚓</i> Vessel Chartering Strategy & Optimal Laycan Optimizer
+          </div>
+          <div class="card-subtitle">
+            Evaluates draft limits, lightering economics, market entry urgency, and 5-day tender loading windows.
+          </div>
+        </div>
+        <button class="btn btn-primary" id="btn-run-tender-opt">
+          <span>⚡ Optimize Tender Strategy</span>
+        </button>
+      </div>
+
+      <div class="grid-2col">
+        <!-- Tender Specification Form -->
+        <div style="background: rgba(7, 13, 30, 0.5); padding: 1.2rem; border-radius: 10px; border: 1px solid var(--border-subtle);">
+          <div style="font-weight: 600; font-size: 0.95rem; margin-bottom: 1rem; color: #ffffff;">1. Steel Tender Parameters</div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label class="form-label" for="tender-commodity">Bulk Commodity</label>
+              <select class="form-select" id="tender-commodity">
+                <option value="coking_coal">Premium Hard Coking Coal</option>
+                <option value="thermal_coal">Thermal Coal (GAR 5000)</option>
+                <option value="pci_coal">PCI Coal (Pulverized Injection)</option>
+                <option value="limestone">Limestone / Dolomite Flux</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="tender-tonnage">Cargo Parcel Tonnage (MT)</label>
+              <input type="number" class="form-input" id="tender-tonnage" value="150000" step="10000" min="20000" max="250000">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="tender-port">Intended East Coast Port</label>
+              <select class="form-select" id="tender-port">
+                <option value="paradip">Paradip Port (17.1m Draft)</option>
+                <option value="visakhapatnam">Visakhapatnam Port (18.1m Draft)</option>
+                <option value="dhamra">Dhamra Port (18.0m Draft)</option>
+                <option value="haldia">Haldia Dock (8.5m Draft - Lightering)</option>
+                <option value="krishnapatnam">Krishnapatnam (18.5m Draft)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="tender-vessel">Target Vessel Category</label>
+              <select class="form-select" id="tender-vessel">
+                <option value="Capesize">Capesize (175,000 DWT)</option>
+                <option value="Kamsarmax">Kamsarmax (82,000 DWT)</option>
+                <option value="Panamax">Panamax (75,000 DWT)</option>
+                <option value="Supramax">Supramax (58,000 DWT)</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="margin-top: 1rem;">
+            <div style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.35rem; font-weight: 500;">
+              Vessel Feasibility & Draft Margins at Selected Port:
+            </div>
+            <div class="vessel-cards-grid" id="vessel-cards-container">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Strategy Recommender & Laycan Output -->
+        <div>
+          <div class="rec-banner">
+            <div class="rec-icon">🎯</div>
+            <div>
+              <span class="rec-badge" id="rec-action-badge">Analyzing...</span>
+              <div class="rec-title" id="rec-urgency-text">Evaluating Market Entry Window...</div>
+              <div class="rec-desc" id="rec-advice-text">Forecaster is scanning Baltic forward curves and port berth queues.</div>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
+            <div style="background: rgba(7, 13, 30, 0.6); padding: 0.9rem; border-radius: 8px; border: 1px solid var(--border-subtle);">
+              <div style="font-size: 0.72rem; color: var(--text-secondary); text-transform: uppercase;">Optimal 5-Day Laycan Window</div>
+              <div style="font-family: var(--font-heading); font-size: 1.15rem; font-weight: 700; color: var(--accent-emerald);" id="rec-laycan-window">--</div>
+              <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.2rem;">Lowest projected freight window</div>
+            </div>
+
+            <div style="background: rgba(7, 13, 30, 0.6); padding: 0.9rem; border-radius: 8px; border: 1px solid var(--border-subtle);">
+              <div style="font-size: 0.72rem; color: var(--text-secondary); text-transform: uppercase;">Projected Timing Savings</div>
+              <div style="font-family: var(--font-heading); font-size: 1.15rem; font-weight: 700; color: var(--accent-cyan);" id="rec-savings-val">--</div>
+              <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.2rem;">Versus current spot market fixture</div>
+            </div>
+          </div>
+
+          <div style="margin-top: 1rem;">
+            <div style="font-size: 0.82rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.4rem;">
+              Contract Structure Evaluation (Spot vs Time Charter vs COA):
+            </div>
+            <div id="contract-structures-list">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Total Landed Procurement Cost Analyzer -->
+    <section id="section-landed-cost" class="glass-card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">
+            <i>🏭</i> Total Landed Procurement Cost (TLC) to Steel Plants
+          </div>
+          <div class="card-subtitle">
+            End-to-end supply chain landed cost: FOB Cargo + Ocean Freight + BAF + Port Charges + Demurrage + Rail Freight to Blast Furnace.
+          </div>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <label style="font-size: 0.8rem; color: var(--text-secondary);" for="tender-plant">Destination Plant:</label>
+          <select class="form-select" id="tender-plant" style="width: auto; min-width: 240px;">
+            <option value="sail_rourkela">SAIL Rourkela Steel Plant (Odisha)</option>
+            <option value="sail_bokaro">SAIL Bokaro Steel Plant (Jharkhand)</option>
+            <option value="sail_durgapur">SAIL Durgapur Steel Plant (West Bengal)</option>
+            <option value="sail_iisco">SAIL IISCO Burnpur (West Bengal)</option>
+            <option value="sail_bhilai">SAIL Bhilai Steel Plant (Chhattisgarh)</option>
+            <option value="rinl_vizag">RINL Visakhapatnam (Andhra Pradesh)</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="font-size: 0.85rem; color: var(--accent-emerald); font-weight: 600; margin-bottom: 0.5rem;" id="landed-best-summary">
+        Loading gateway optimization...
+      </div>
+
+      <div style="overflow-x: auto;">
+        <table class="data-table" id="landed-cost-table">
+          <thead>
+            <tr>
+              <th>Discharge Port / Rail Link</th>
+              <th>FOB Cargo ($/T)</th>
+              <th>Ocean Freight ($/T)</th>
+              <th>Port & Lightering ($/T)</th>
+              <th>Demurrage Risk ($/T)</th>
+              <th>Inland Rail Freight ($/T)</th>
+              <th>Total Landed Cost ($/T)</th>
+              <th>Total Procurement</th>
+            </tr>
+          </thead>
+          <tbody id="landed-cost-tbody">
+            <!-- Dynamically populated -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 6. Crisis & What-If Stress-Testing Simulator -->
+    <section id="section-simulator" class="glass-card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">
+            <i>⚡</i> Crisis & What-If Logistics Stress-Testing Simulator
+          </div>
+          <div class="card-subtitle">
+            Simulate fuel price spikes, monsoon cyclone waiting queues, Baltic market tight squeezes, and canal disruptions.
+          </div>
+        </div>
+        <div class="badge-tag badge-amber">REAL-TIME SENSITIVITY ENGINE</div>
+      </div>
+
+      <div class="grid-2col">
+        <!-- Interactive Controls -->
+        <div style="background: rgba(7, 13, 30, 0.5); padding: 1.2rem; border-radius: 10px; border: 1px solid var(--border-subtle);">
+          <div class="slider-container">
+            <div class="slider-header">
+              <span class="slider-title">Marine Bunker Fuel Shock (Singapore VLSFO)</span>
+              <span class="slider-val" id="sim-fuel-val">0%</span>
+            </div>
+            <input type="range" class="custom-range" id="sim-fuel-shock" min="-30" max="60" value="0" step="5">
+          </div>
+
+          <div class="slider-container">
+            <div class="slider-header">
+              <span class="slider-title">Monsoon Swell & Port Berthing Queue Delay</span>
+              <span class="slider-val" id="sim-delay-val">+0 Days</span>
+            </div>
+            <input type="range" class="custom-range" id="sim-port-delay" min="0" max="10" value="0" step="1">
+          </div>
+
+          <div class="slider-container">
+            <div class="slider-header">
+              <span class="slider-title">Global Baltic Market Momentum Shock</span>
+              <span class="slider-val" id="sim-bdi-val">0%</span>
+            </div>
+            <input type="range" class="custom-range" id="sim-bdi-shock" min="-30" max="60" value="0" step="5">
+          </div>
+
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 1rem; padding-top: 0.75rem; border-top: 1px solid var(--border-subtle);">
+            <div>
+              <div style="font-size: 0.85rem; font-weight: 600; color: #ffffff;">Geopolitical Canal Rerouting</div>
+              <div style="font-size: 0.72rem; color: var(--text-secondary);">Force circumnavigation via Cape of Good Hope (+12 days sailing)</div>
+            </div>
+            <label style="position: relative; display: inline-block; width: 44px; height: 22px;">
+              <input type="checkbox" id="sim-canal-toggle" style="opacity: 0; width: 0; height: 0;">
+              <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #334155; transition: .3s; border-radius: 22px;"></span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Stressed Impact Comparison -->
+        <div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div style="background: rgba(7, 13, 30, 0.6); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-subtle);">
+              <div style="font-size: 0.72rem; color: var(--text-secondary); text-transform: uppercase;">Stressed Ocean Freight</div>
+              <div style="font-family: var(--font-heading); font-size: 1.5rem; font-weight: 700; color: #ffffff;" id="sim-res-freight">--</div>
+              <div style="font-size: 0.75rem; color: var(--accent-coral);" id="sim-res-freight-delta">--</div>
+            </div>
+
+            <div style="background: rgba(7, 13, 30, 0.6); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-subtle);">
+              <div style="font-size: 0.72rem; color: var(--text-secondary); text-transform: uppercase;">Stressed Landed Cost (TLC)</div>
+              <div style="font-family: var(--font-heading); font-size: 1.5rem; font-weight: 700; color: var(--accent-amber);" id="sim-res-landed">--</div>
+              <div style="font-size: 0.75rem; color: var(--accent-coral);" id="sim-res-landed-delta">--</div>
+            </div>
+          </div>
+
+          <div style="background: rgba(255, 77, 109, 0.1); border: 1px solid rgba(255, 77, 109, 0.25); border-radius: 8px; padding: 0.85rem; margin-top: 1rem; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <div style="font-size: 0.75rem; color: var(--text-secondary);">Extra Demurrage Exposure:</div>
+              <div style="font-size: 1.15rem; font-weight: 700; color: var(--accent-coral);" id="sim-res-demurrage">+$0</div>
+            </div>
+            <div style="font-size: 0.75rem; color: var(--text-muted); text-align: right;">Based on simulated port queues</div>
+          </div>
+
+          <div style="margin-top: 1rem;">
+            <div style="font-size: 0.82rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">
+              Tactical Risk Mitigation Strategies:
+            </div>
+            <div id="sim-mitigations-list">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Tender Procurement Brief Modal -->
+  <div class="modal-backdrop" id="report-modal">
+    <div class="modal-content">
+      <button class="modal-close" id="modal-close-btn">&times;</button>
+      <div id="report-modal-body">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Leaflet.js -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  
+  <!-- Map and Main Application Scripts -->
+  <script src="/static/js/map.js"></script>
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
