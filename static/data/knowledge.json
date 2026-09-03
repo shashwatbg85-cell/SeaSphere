@@ -1,0 +1,574 @@
+{
+  "ports": {
+    "paradip": {
+      "id": "paradip",
+      "name": "Paradip Port",
+      "state": "Odisha",
+      "coordinates": [
+        20.2644,
+        86.6715
+      ],
+      "max_draft_meters": 17.1,
+      "max_dwt": 180000,
+      "max_beam_meters": 45.0,
+      "suitable_vessels": [
+        "Capesize",
+        "Kamsarmax",
+        "Panamax",
+        "Supramax"
+      ],
+      "berth_type": "Deepwater Bulk Berths (Mechanized Coal Handling Plant)",
+      "avg_waiting_days": 2.8,
+      "demurrage_usd_day": 22000,
+      "port_dues_usd_ton": 3.85,
+      "handling_charges_usd_ton": 2.1,
+      "lightering_required": false,
+      "lightering_cost_usd_ton": 0.0,
+      "description": "Major deep-draft hub for coking coal and thermal coal. Capesize fully laden capable."
+    },
+    "visakhapatnam": {
+      "id": "visakhapatnam",
+      "name": "Visakhapatnam Port (Vizag)",
+      "state": "Andhra Pradesh",
+      "coordinates": [
+        17.6868,
+        83.2185
+      ],
+      "max_draft_meters": 18.1,
+      "max_dwt": 200000,
+      "max_beam_meters": 48.0,
+      "suitable_vessels": [
+        "Capesize",
+        "Kamsarmax",
+        "Panamax",
+        "Supramax"
+      ],
+      "berth_type": "Outer Harbour Mechanized Iron Ore & Coal Berths",
+      "avg_waiting_days": 2.2,
+      "demurrage_usd_day": 24000,
+      "port_dues_usd_ton": 4.1,
+      "handling_charges_usd_ton": 2.3,
+      "lightering_required": false,
+      "lightering_cost_usd_ton": 0.0,
+      "description": "Premier deep-draft port adjacent to RINL (Vizag Steel Plant). Outer harbor takes Capesize."
+    },
+    "haldia": {
+      "id": "haldia",
+      "name": "Haldia Dock Complex (SMP Kolkata)",
+      "state": "West Bengal",
+      "coordinates": [
+        22.0232,
+        88.0645
+      ],
+      "max_draft_meters": 8.5,
+      "max_dwt": 55000,
+      "max_beam_meters": 32.2,
+      "suitable_vessels": [
+        "Supramax",
+        "Handymax",
+        "Handysize"
+      ],
+      "berth_type": "Riverine Lock-gate Impounded Dock",
+      "avg_waiting_days": 4.5,
+      "demurrage_usd_day": 18000,
+      "port_dues_usd_ton": 5.2,
+      "handling_charges_usd_ton": 3.4,
+      "lightering_required": true,
+      "lightering_cost_usd_ton": 6.8,
+      "description": "Critical riverine port closest to Durgapur and IISCO. Strict draft restrictions (~8m); Capesize/Panamax require offshore lightering at Sandheads/Dhamra."
+    },
+    "dhamra": {
+      "id": "dhamra",
+      "name": "Dhamra Port",
+      "state": "Odisha",
+      "coordinates": [
+        20.8333,
+        86.9667
+      ],
+      "max_draft_meters": 18.0,
+      "max_dwt": 185000,
+      "max_beam_meters": 46.0,
+      "suitable_vessels": [
+        "Capesize",
+        "Kamsarmax",
+        "Panamax",
+        "Supramax"
+      ],
+      "berth_type": "All-Weather Deep Draft Bulk Terminal",
+      "avg_waiting_days": 1.9,
+      "demurrage_usd_day": 23000,
+      "port_dues_usd_ton": 4.25,
+      "handling_charges_usd_ton": 2.05,
+      "lightering_required": false,
+      "lightering_cost_usd_ton": 0.0,
+      "description": "High-efficiency deep-draft private terminal with rapid rail rake loading capabilities."
+    },
+    "krishnapatnam": {
+      "id": "krishnapatnam",
+      "name": "Krishnapatnam Port",
+      "state": "Andhra Pradesh",
+      "coordinates": [
+        14.253,
+        80.1256
+      ],
+      "max_draft_meters": 18.5,
+      "max_dwt": 200000,
+      "max_beam_meters": 47.0,
+      "suitable_vessels": [
+        "Capesize",
+        "Kamsarmax",
+        "Panamax",
+        "Supramax"
+      ],
+      "berth_type": "Deepwater Automated Bulk Terminal",
+      "avg_waiting_days": 1.7,
+      "demurrage_usd_day": 22500,
+      "port_dues_usd_ton": 3.9,
+      "handling_charges_usd_ton": 1.95,
+      "lightering_required": false,
+      "lightering_cost_usd_ton": 0.0,
+      "description": "Deepwater automated bulk hub with direct rail links to South/Central India steel mills."
+    },
+    "gangavaram": {
+      "id": "gangavaram",
+      "name": "Gangavaram Port",
+      "state": "Andhra Pradesh",
+      "coordinates": [
+        17.62,
+        83.235
+      ],
+      "max_draft_meters": 21.0,
+      "max_dwt": 200000,
+      "max_beam_meters": 50.0,
+      "suitable_vessels": [
+        "Capesize",
+        "Kamsarmax",
+        "Panamax",
+        "Supramax"
+      ],
+      "berth_type": "Super-deep Bulk Berths",
+      "avg_waiting_days": 2.0,
+      "demurrage_usd_day": 23500,
+      "port_dues_usd_ton": 4.0,
+      "handling_charges_usd_ton": 2.15,
+      "lightering_required": false,
+      "lightering_cost_usd_ton": 0.0,
+      "description": "One of India's deepest ports (21m draft) catering to heavy Capesize and Baby-Cape dry bulkers."
+    }
+  },
+  "origins": {
+    "hay_point": {
+      "id": "hay_point",
+      "name": "Hay Point / Dalrymple Bay",
+      "country": "Australia",
+      "region": "Queensland",
+      "coordinates": [
+        -21.2833,
+        149.3
+      ],
+      "commodities": [
+        "coking_coal"
+      ],
+      "distance_nm_to_vizag": 4900,
+      "distance_nm_to_paradip": 5050,
+      "distance_nm_to_haldia": 5150,
+      "avg_sailing_days_cape": 16.5,
+      "avg_sailing_days_panamax": 17.5,
+      "description": "World's largest metallurgical coking coal export terminal."
+    },
+    "gladstone": {
+      "id": "gladstone",
+      "name": "Port of Gladstone",
+      "country": "Australia",
+      "region": "Queensland",
+      "coordinates": [
+        -23.8427,
+        151.2567
+      ],
+      "commodities": [
+        "coking_coal",
+        "thermal_coal"
+      ],
+      "distance_nm_to_vizag": 5050,
+      "distance_nm_to_paradip": 5200,
+      "distance_nm_to_haldia": 5300,
+      "avg_sailing_days_cape": 17.0,
+      "avg_sailing_days_panamax": 18.0,
+      "description": "Major Queensland bulk coal exporting hub."
+    },
+    "taboneo": {
+      "id": "taboneo",
+      "name": "Taboneo Anchorage (Kalimantan)",
+      "country": "Indonesia",
+      "region": "South Kalimantan",
+      "coordinates": [
+        -3.75,
+        114.45
+      ],
+      "commodities": [
+        "thermal_coal",
+        "pci_coal"
+      ],
+      "distance_nm_to_vizag": 2100,
+      "distance_nm_to_paradip": 2250,
+      "distance_nm_to_haldia": 2350,
+      "avg_sailing_days_cape": 7.5,
+      "avg_sailing_days_panamax": 8.0,
+      "description": "Key anchorage for Indonesian thermal and Pulverized Coal Injection (PCI) coals."
+    },
+    "richards_bay": {
+      "id": "richards_bay",
+      "name": "Richards Bay Coal Terminal (RBCT)",
+      "country": "South Africa",
+      "region": "KwaZulu-Natal",
+      "coordinates": [
+        -28.8,
+        32.0833
+      ],
+      "commodities": [
+        "coking_coal",
+        "thermal_coal"
+      ],
+      "distance_nm_to_vizag": 4500,
+      "distance_nm_to_paradip": 4650,
+      "distance_nm_to_haldia": 4750,
+      "avg_sailing_days_cape": 15.0,
+      "avg_sailing_days_panamax": 16.0,
+      "description": "Single largest coal export facility in Africa."
+    },
+    "hampton_roads": {
+      "id": "hampton_roads",
+      "name": "Hampton Roads / Norfolk",
+      "country": "USA",
+      "region": "Virginia / US East Coast",
+      "coordinates": [
+        36.95,
+        -76.3333
+      ],
+      "commodities": [
+        "coking_coal"
+      ],
+      "distance_nm_to_vizag": 11500,
+      "distance_nm_to_paradip": 11650,
+      "distance_nm_to_haldia": 11750,
+      "avg_sailing_days_cape": 38.0,
+      "avg_sailing_days_panamax": 40.0,
+      "description": "High-volatile Appalachian coking coal. Routed via Cape of Good Hope."
+    },
+    "taman": {
+      "id": "taman",
+      "name": "Port of Taman (Black Sea)",
+      "country": "Russia",
+      "region": "Black Sea / Azov",
+      "coordinates": [
+        45.13,
+        36.68
+      ],
+      "commodities": [
+        "coking_coal",
+        "pci_coal",
+        "anthracite"
+      ],
+      "distance_nm_to_vizag": 5600,
+      "distance_nm_to_paradip": 5750,
+      "distance_nm_to_haldia": 5850,
+      "avg_sailing_days_cape": 19.0,
+      "avg_sailing_days_panamax": 20.0,
+      "description": "Russian coal export terminal on Black Sea via Suez Canal / Bab el-Mandeb."
+    },
+    "fujairah": {
+      "id": "fujairah",
+      "name": "Port of Fujairah / Mina Saqr",
+      "country": "UAE / Oman",
+      "region": "Middle East",
+      "coordinates": [
+        25.18,
+        56.36
+      ],
+      "commodities": [
+        "limestone",
+        "dolomite"
+      ],
+      "distance_nm_to_vizag": 1950,
+      "distance_nm_to_paradip": 2100,
+      "distance_nm_to_haldia": 2200,
+      "avg_sailing_days_cape": 6.8,
+      "avg_sailing_days_panamax": 7.2,
+      "description": "Primary overseas source of high-purity limestone and dolomite flux for steel blast furnaces."
+    }
+  },
+  "vessels": {
+    "Capesize": {
+      "dwt_range": [
+        130000,
+        200000
+      ],
+      "typical_dwt": 175000,
+      "design_draft_meters": 17.8,
+      "ballast_draft_meters": 9.5,
+      "beam_meters": 45.0,
+      "loa_meters": 290,
+      "speed_knots_laden": 12.5,
+      "speed_knots_ballast": 13.5,
+      "daily_fuel_consumption_ton": 44.0,
+      "typical_daily_tc_rate_usd": 24500,
+      "freight_cost_factor": 1.0,
+      "description": "Economies of scale leader for long-haul routes (Australia/S.Africa/USA). Deep-draft only."
+    },
+    "Kamsarmax": {
+      "dwt_range": [
+        80000,
+        85000
+      ],
+      "typical_dwt": 82000,
+      "design_draft_meters": 14.4,
+      "ballast_draft_meters": 7.5,
+      "beam_meters": 32.26,
+      "loa_meters": 229,
+      "speed_knots_laden": 13.0,
+      "speed_knots_ballast": 14.0,
+      "daily_fuel_consumption_ton": 28.0,
+      "typical_daily_tc_rate_usd": 16800,
+      "freight_cost_factor": 1.22,
+      "description": "Maximized Panamax vessel suitable for all deep ports and moderately draft-restricted berths."
+    },
+    "Panamax": {
+      "dwt_range": [
+        70000,
+        79000
+      ],
+      "typical_dwt": 75000,
+      "design_draft_meters": 14.0,
+      "ballast_draft_meters": 7.2,
+      "beam_meters": 32.2,
+      "loa_meters": 225,
+      "speed_knots_laden": 13.0,
+      "speed_knots_ballast": 14.0,
+      "daily_fuel_consumption_ton": 26.0,
+      "typical_daily_tc_rate_usd": 15200,
+      "freight_cost_factor": 1.28,
+      "description": "Standard workhorse for global dry bulk trade."
+    },
+    "Supramax": {
+      "dwt_range": [
+        52000,
+        64000
+      ],
+      "typical_dwt": 58000,
+      "design_draft_meters": 12.8,
+      "ballast_draft_meters": 6.8,
+      "beam_meters": 32.2,
+      "loa_meters": 190,
+      "speed_knots_laden": 13.5,
+      "speed_knots_ballast": 14.5,
+      "daily_fuel_consumption_ton": 23.0,
+      "typical_daily_tc_rate_usd": 13500,
+      "freight_cost_factor": 1.45,
+      "description": "Geared with own cranes. Can access shallow riverine ports like Haldia directly without lightering."
+    }
+  },
+  "plants": {
+    "sail_rourkela": {
+      "id": "sail_rourkela",
+      "name": "SAIL Rourkela Steel Plant (RSP)",
+      "state": "Odisha",
+      "annual_coking_coal_demand_mt": 3.8,
+      "preferred_ports": {
+        "paradip": {
+          "distance_km": 395,
+          "rail_freight_usd_ton": 14.5,
+          "transit_days": 1.5
+        },
+        "dhamra": {
+          "distance_km": 420,
+          "rail_freight_usd_ton": 15.2,
+          "transit_days": 1.8
+        },
+        "visakhapatnam": {
+          "distance_km": 720,
+          "rail_freight_usd_ton": 22.8,
+          "transit_days": 2.8
+        },
+        "haldia": {
+          "distance_km": 490,
+          "rail_freight_usd_ton": 17.6,
+          "transit_days": 2.0
+        }
+      }
+    },
+    "sail_bokaro": {
+      "id": "sail_bokaro",
+      "name": "SAIL Bokaro Steel Plant (BSL)",
+      "state": "Jharkhand",
+      "annual_coking_coal_demand_mt": 4.5,
+      "preferred_ports": {
+        "haldia": {
+          "distance_km": 380,
+          "rail_freight_usd_ton": 13.9,
+          "transit_days": 1.4
+        },
+        "paradip": {
+          "distance_km": 540,
+          "rail_freight_usd_ton": 18.2,
+          "transit_days": 2.1
+        },
+        "dhamra": {
+          "distance_km": 520,
+          "rail_freight_usd_ton": 17.8,
+          "transit_days": 2.0
+        },
+        "visakhapatnam": {
+          "distance_km": 870,
+          "rail_freight_usd_ton": 26.5,
+          "transit_days": 3.2
+        }
+      }
+    },
+    "sail_durgapur": {
+      "id": "sail_durgapur",
+      "name": "SAIL Durgapur Steel Plant (DSP)",
+      "state": "West Bengal",
+      "annual_coking_coal_demand_mt": 2.4,
+      "preferred_ports": {
+        "haldia": {
+          "distance_km": 240,
+          "rail_freight_usd_ton": 9.8,
+          "transit_days": 1.0
+        },
+        "dhamra": {
+          "distance_km": 460,
+          "rail_freight_usd_ton": 16.4,
+          "transit_days": 1.8
+        },
+        "paradip": {
+          "distance_km": 510,
+          "rail_freight_usd_ton": 17.5,
+          "transit_days": 2.0
+        },
+        "visakhapatnam": {
+          "distance_km": 910,
+          "rail_freight_usd_ton": 27.2,
+          "transit_days": 3.4
+        }
+      }
+    },
+    "sail_iisco": {
+      "id": "sail_iisco",
+      "name": "SAIL IISCO Steel Plant (Burnpur)",
+      "state": "West Bengal",
+      "annual_coking_coal_demand_mt": 2.2,
+      "preferred_ports": {
+        "haldia": {
+          "distance_km": 280,
+          "rail_freight_usd_ton": 11.2,
+          "transit_days": 1.1
+        },
+        "dhamra": {
+          "distance_km": 490,
+          "rail_freight_usd_ton": 17.1,
+          "transit_days": 1.9
+        },
+        "paradip": {
+          "distance_km": 540,
+          "rail_freight_usd_ton": 18.4,
+          "transit_days": 2.2
+        },
+        "visakhapatnam": {
+          "distance_km": 940,
+          "rail_freight_usd_ton": 28.0,
+          "transit_days": 3.5
+        }
+      }
+    },
+    "sail_bhilai": {
+      "id": "sail_bhilai",
+      "name": "SAIL Bhilai Steel Plant (BSP)",
+      "state": "Chhattisgarh",
+      "annual_coking_coal_demand_mt": 4.8,
+      "preferred_ports": {
+        "visakhapatnam": {
+          "distance_km": 560,
+          "rail_freight_usd_ton": 18.6,
+          "transit_days": 2.2
+        },
+        "gangavaram": {
+          "distance_km": 565,
+          "rail_freight_usd_ton": 18.7,
+          "transit_days": 2.2
+        },
+        "paradip": {
+          "distance_km": 680,
+          "rail_freight_usd_ton": 21.9,
+          "transit_days": 2.6
+        },
+        "dhamra": {
+          "distance_km": 710,
+          "rail_freight_usd_ton": 22.8,
+          "transit_days": 2.8
+        }
+      }
+    },
+    "rinl_vizag": {
+      "id": "rinl_vizag",
+      "name": "RINL Visakhapatnam Steel Plant (VSP)",
+      "state": "Andhra Pradesh",
+      "annual_coking_coal_demand_mt": 3.6,
+      "preferred_ports": {
+        "visakhapatnam": {
+          "distance_km": 18,
+          "rail_freight_usd_ton": 1.8,
+          "transit_days": 0.2
+        },
+        "gangavaram": {
+          "distance_km": 12,
+          "rail_freight_usd_ton": 1.4,
+          "transit_days": 0.2
+        },
+        "paradip": {
+          "distance_km": 620,
+          "rail_freight_usd_ton": 20.5,
+          "transit_days": 2.4
+        },
+        "krishnapatnam": {
+          "distance_km": 490,
+          "rail_freight_usd_ton": 16.8,
+          "transit_days": 2.0
+        }
+      }
+    }
+  },
+  "commodities": {
+    "coking_coal": {
+      "name": "Premium Hard Coking Coal (PHCC)",
+      "category": "Raw Material - Blast Furnace",
+      "benchmark_price_usd_ton": 245.0,
+      "density_t_m3": 0.85,
+      "default_origin": "hay_point",
+      "default_vessel": "Capesize"
+    },
+    "thermal_coal": {
+      "name": "Thermal / Non-Coking Coal (GAR 5000)",
+      "category": "Energy / Captive Power",
+      "benchmark_price_usd_ton": 95.0,
+      "density_t_m3": 0.82,
+      "default_origin": "taboneo",
+      "default_vessel": "Panamax"
+    },
+    "pci_coal": {
+      "name": "Pulverized Coal Injection (PCI)",
+      "category": "Fuel / Injection",
+      "benchmark_price_usd_ton": 165.0,
+      "density_t_m3": 0.84,
+      "default_origin": "taman",
+      "default_vessel": "Panamax"
+    },
+    "limestone": {
+      "name": "Blast Furnace Grade Limestone / Dolomite",
+      "category": "Flux Material",
+      "benchmark_price_usd_ton": 28.0,
+      "density_t_m3": 1.35,
+      "default_origin": "fujairah",
+      "default_vessel": "Supramax"
+    }
+  }
+}

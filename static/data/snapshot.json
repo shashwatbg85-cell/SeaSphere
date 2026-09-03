@@ -1,0 +1,32 @@
+{
+  "status": "success",
+  "data": {
+    "date": "2026-08-31",
+    "bdi": {
+      "current": 1915.2,
+      "change_7d": -74.5,
+      "change_7d_pct": -3.74
+    },
+    "bci": {
+      "current": 2200.3,
+      "change_7d": -35.4
+    },
+    "bpi": {
+      "current": 1868.8,
+      "change_7d": -99.0
+    },
+    "bsi": {
+      "current": 1523.9,
+      "change_7d": -103.0
+    },
+    "bunker_vlsfo": {
+      "current": 937.17,
+      "change_7d": 2.48
+    },
+    "coking_coal_fob": {
+      "current": 228.94,
+      "change_7d": -1.07
+    },
+    "port_congestion_east_coast_days": 4.7
+  }
+}

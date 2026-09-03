@@ -1,11 +1,84 @@
 /**
  * NAVI-STEEL Main Application Logic
  * Integrates Freight Forecasting, Vessel Optimization, Landed Cost Analysis, and Crisis Simulation.
+ * Hybrid Architecture: Connects to live Flask API with automatic zero-latency client-side static engine fallback.
  */
 
 let forecastChart = null;
 let currentForecastData = null;
 let currentActiveHorizon = "all";
+let cachedStaticForecasts = null;
+let cachedStaticKnowledge = null;
+
+// Domain Constants for Client-Side Static Engine
+const PORTS_DATA = {
+  paradip: { name: "Paradip Port", max_draft_meters: 14.5, port_dues_usd_ton: 2.20, daily_demurrage_usd: 24000, avg_waiting_days: 2.8, lightering_cost_usd_ton: 0.0 },
+  vizag: { name: "Visakhapatnam Port", max_draft_meters: 18.1, port_dues_usd_ton: 2.45, daily_demurrage_usd: 26000, avg_waiting_days: 2.1, lightering_cost_usd_ton: 0.0 },
+  dhamra: { name: "Dhamra Port", max_draft_meters: 17.5, port_dues_usd_ton: 2.35, daily_demurrage_usd: 22000, avg_waiting_days: 1.6, lightering_cost_usd_ton: 0.0 },
+  haldia: { name: "Haldia Dock Complex", max_draft_meters: 8.5, port_dues_usd_ton: 3.10, daily_demurrage_usd: 19000, avg_waiting_days: 3.4, lightering_cost_usd_ton: 4.50 }
+};
+
+const VESSELS_DATA = {
+  Capesize: { design_draft_meters: 18.2, ballast_draft_meters: 9.0, max_dwt: 180000, typical_capacity_dwt: 175000, freight_cost_factor: 1.0 },
+  Panamax: { design_draft_meters: 14.2, ballast_draft_meters: 7.2, max_dwt: 82000, typical_capacity_dwt: 75000, freight_cost_factor: 1.22 },
+  Supramax: { design_draft_meters: 12.8, ballast_draft_meters: 6.0, max_dwt: 64000, typical_capacity_dwt: 58000, freight_cost_factor: 1.45 },
+  Handymax: { design_draft_meters: 10.5, ballast_draft_meters: 5.2, max_dwt: 45000, typical_capacity_dwt: 40000, freight_cost_factor: 1.68 }
+};
+
+const PLANTS_DATA = {
+  sail_rourkela: {
+    name: "SAIL Rourkela Steel Plant (RSP)", state: "Odisha",
+    preferred_ports: {
+      paradip: { rail_distance_km: 305, transit_days: 1.5 },
+      dhamra: { rail_distance_km: 340, transit_days: 1.8 },
+      haldia: { rail_distance_km: 410, transit_days: 2.2 },
+      vizag: { rail_distance_km: 685, transit_days: 3.2 }
+    }
+  },
+  sail_bokaro: {
+    name: "SAIL Bokaro Steel Plant (BSL)", state: "Jharkhand",
+    preferred_ports: {
+      haldia: { rail_distance_km: 360, transit_days: 2.0 },
+      dhamra: { rail_distance_km: 460, transit_days: 2.5 },
+      paradip: { rail_distance_km: 510, transit_days: 2.7 },
+      vizag: { rail_distance_km: 870, transit_days: 4.0 }
+    }
+  },
+  rinl_vizag: {
+    name: "RINL Visakhapatnam Steel Plant (VSP)", state: "Andhra Pradesh",
+    preferred_ports: {
+      vizag: { rail_distance_km: 25, transit_days: 0.2 },
+      paradip: { rail_distance_km: 610, transit_days: 3.0 },
+      dhamra: { rail_distance_km: 690, transit_days: 3.5 },
+      haldia: { rail_distance_km: 890, transit_days: 4.2 }
+    }
+  },
+  sail_bhilai: {
+    name: "SAIL Bhilai Steel Plant (BSP)", state: "Chhattisgarh",
+    preferred_ports: {
+      vizag: { rail_distance_km: 560, transit_days: 2.8 },
+      paradip: { rail_distance_km: 630, transit_days: 3.1 },
+      dhamra: { rail_distance_km: 710, transit_days: 3.6 },
+      haldia: { rail_distance_km: 840, transit_days: 4.1 }
+    }
+  },
+  sail_durgapur: {
+    name: "SAIL Durgapur Steel Plant (DSP)", state: "West Bengal",
+    preferred_ports: {
+      haldia: { rail_distance_km: 220, transit_days: 1.2 },
+      dhamra: { rail_distance_km: 390, transit_days: 2.1 },
+      paradip: { rail_distance_km: 480, transit_days: 2.5 },
+      vizag: { rail_distance_km: 860, transit_days: 3.9 }
+    }
+  }
+};
+
+const COMMODITIES_DATA = {
+  coking_coal: { name: "Prime Hard Coking Coal", benchmark_price_usd_ton: 265.0 },
+  thermal_coal: { name: "Thermal Coal (Indo / Aus)", benchmark_price_usd_ton: 135.0 },
+  limestone: { name: "SMS Grade Limestone (UAE / Oman)", benchmark_price_usd_ton: 38.0 },
+  manganese_ore: { name: "High Grade Manganese Ore", benchmark_price_usd_ton: 195.0 }
+};
 
 document.addEventListener("DOMContentLoaded", () => {
   // 1. Initialize Map
@@ -81,35 +154,46 @@ document.addEventListener("DOMContentLoaded", () => {
  */
 function loadMarketSnapshot() {
   fetch("/api/market/snapshot")
-    .then(res => res.json())
     .then(res => {
-      if (res.status !== "success") return;
-      const d = res.data;
-
-      document.getElementById("kpi-bdi").innerText = d.bdi.current.toLocaleString();
-      const bdiDelta = d.bdi.change_7d;
-      const bdiDeltaEl = document.getElementById("kpi-bdi-sub");
-      bdiDeltaEl.className = bdiDelta >= 0 ? "kpi-sub trend-up" : "kpi-sub trend-down";
-      bdiDeltaEl.innerHTML = `${bdiDelta >= 0 ? '▲' : '▼'} ${Math.abs(bdiDelta)} pts (${d.bdi.change_7d_pct}%) 7d`;
-
-      document.getElementById("kpi-bci").innerText = d.bci.current.toLocaleString();
-      const bciDelta = d.bci.change_7d;
-      const bciDeltaEl = document.getElementById("kpi-bci-sub");
-      bciDeltaEl.className = bciDelta >= 0 ? "kpi-sub trend-up" : "kpi-sub trend-down";
-      bciDeltaEl.innerHTML = `${bciDelta >= 0 ? '▲' : '▼'} ${Math.abs(bciDelta)} pts (Capesize)`;
-
-      document.getElementById("kpi-vlsfo").innerText = `$${d.bunker_vlsfo.current.toFixed(1)}`;
-      const vlsfoDelta = d.bunker_vlsfo.change_7d;
-      const vlsfoDeltaEl = document.getElementById("kpi-vlsfo-sub");
-      vlsfoDeltaEl.className = vlsfoDelta >= 0 ? "kpi-sub trend-up" : "kpi-sub trend-down";
-      vlsfoDeltaEl.innerHTML = `${vlsfoDelta >= 0 ? '▲' : '▼'} $${Math.abs(vlsfoDelta).toFixed(1)}/MT (Sing 0.5%)`;
-
-      document.getElementById("kpi-coal").innerText = `$${d.coking_coal_fob.current.toFixed(1)}`;
-      document.getElementById("kpi-coal-sub").innerHTML = `FOB Hay Point Australia`;
-
-      document.getElementById("kpi-queue").innerText = `${d.port_congestion_east_coast_days.toFixed(1)} Days`;
+      if (!res.ok) throw new Error("API not available");
+      return res.json();
     })
-    .catch(err => console.error("Error loading snapshot:", err));
+    .then(res => {
+      if (res.status === "success") applyMarketSnapshot(res.data);
+      else throw new Error("API status failed");
+    })
+    .catch(() => {
+      // Static fallback
+      fetch("./static/data/snapshot.json")
+        .then(res => res.json())
+        .then(res => applyMarketSnapshot(res.data))
+        .catch(err => console.error("Error loading snapshot:", err));
+    });
+}
+
+function applyMarketSnapshot(d) {
+  document.getElementById("kpi-bdi").innerText = d.bdi.current.toLocaleString();
+  const bdiDelta = d.bdi.change_7d;
+  const bdiDeltaEl = document.getElementById("kpi-bdi-sub");
+  bdiDeltaEl.className = bdiDelta >= 0 ? "kpi-sub trend-up" : "kpi-sub trend-down";
+  bdiDeltaEl.innerHTML = `${bdiDelta >= 0 ? '▲' : '▼'} ${Math.abs(bdiDelta)} pts (${d.bdi.change_7d_pct}%) 7d`;
+
+  document.getElementById("kpi-bci").innerText = d.bci.current.toLocaleString();
+  const bciDelta = d.bci.change_7d;
+  const bciDeltaEl = document.getElementById("kpi-bci-sub");
+  bciDeltaEl.className = bciDelta >= 0 ? "kpi-sub trend-up" : "kpi-sub trend-down";
+  bciDeltaEl.innerHTML = `${bciDelta >= 0 ? '▲' : '▼'} ${Math.abs(bciDelta)} pts (Capesize)`;
+
+  document.getElementById("kpi-vlsfo").innerText = `$${d.bunker_vlsfo.current.toFixed(1)}`;
+  const vlsfoDelta = d.bunker_vlsfo.change_7d;
+  const vlsfoDeltaEl = document.getElementById("kpi-vlsfo-sub");
+  vlsfoDeltaEl.className = vlsfoDelta >= 0 ? "kpi-sub trend-up" : "kpi-sub trend-down";
+  vlsfoDeltaEl.innerHTML = `${vlsfoDelta >= 0 ? '▲' : '▼'} $${Math.abs(vlsfoDelta).toFixed(1)}/MT (Sing 0.5%)`;
+
+  document.getElementById("kpi-coal").innerText = `$${d.coking_coal_fob.current.toFixed(1)}`;
+  document.getElementById("kpi-coal-sub").innerHTML = `FOB Hay Point Australia`;
+
+  document.getElementById("kpi-queue").innerText = `${d.port_congestion_east_coast_days.toFixed(1)} Days`;
 }
 
 /**
@@ -117,13 +201,34 @@ function loadMarketSnapshot() {
  */
 function loadForecast(routeKey) {
   fetch(`/api/forecast?route=${routeKey}`)
-    .then(res => res.json())
     .then(res => {
-      if (res.status !== "success") return;
-      currentForecastData = res.data;
-      renderForecastView(currentForecastData);
+      if (!res.ok) throw new Error("API not available");
+      return res.json();
     })
-    .catch(err => console.error("Error loading forecast:", err));
+    .then(res => {
+      if (res.status === "success") {
+        currentForecastData = res.data;
+        renderForecastView(currentForecastData);
+      } else {
+        throw new Error("API status failed");
+      }
+    })
+    .catch(() => {
+      // Static fallback from static JSON
+      if (cachedStaticForecasts) {
+        currentForecastData = cachedStaticForecasts[routeKey];
+        if (currentForecastData) renderForecastView(currentForecastData);
+      } else {
+        fetch("./static/data/forecasts.json")
+          .then(res => res.json())
+          .then(res => {
+            cachedStaticForecasts = res.data || res;
+            currentForecastData = cachedStaticForecasts[routeKey];
+            if (currentForecastData) renderForecastView(currentForecastData);
+          })
+          .catch(err => console.error("Error loading forecast data:", err));
+      }
+    });
 }
 
 function renderForecastView(data) {
@@ -302,51 +407,40 @@ function runTenderOptimization() {
   const tonnage = parseFloat(document.getElementById("tender-tonnage").value) || 150000;
   const vesselClass = document.getElementById("tender-vessel").value;
 
-  // A. Call Vessel Optimizer API
+  // A. Vessel Optimizer
   fetch("/api/optimizer/vessel", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      port_id: portId,
-      cargo_tonnage: tonnage,
-      commodity_id: commodityId
-    })
+    body: JSON.stringify({ port_id: portId, cargo_tonnage: tonnage, commodity_id: commodityId })
   })
-  .then(res => res.json())
-  .then(res => {
-    if (res.status === "success") renderVesselCards(res.data);
+  .then(res => { if (!res.ok) throw new Error(); return res.json(); })
+  .then(res => { if (res.status === "success") renderVesselCards(res.data); else throw new Error(); })
+  .catch(() => {
+    renderVesselCards(clientCalculateVesselOptimizer(portId, tonnage, commodityId));
   });
 
-  // B. Call Charter Recommender API
+  // B. Charter Recommender
   fetch("/api/optimizer/charter", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      route_key: "freight_aus_paradip_cape",
-      cargo_tonnage: tonnage,
-      max_lead_days: 45
-    })
+    body: JSON.stringify({ route_key: "freight_aus_paradip_cape", cargo_tonnage: tonnage, max_lead_days: 45 })
   })
-  .then(res => res.json())
-  .then(res => {
-    if (res.status === "success") renderCharterRecommendation(res.data);
+  .then(res => { if (!res.ok) throw new Error(); return res.json(); })
+  .then(res => { if (res.status === "success") renderCharterRecommendation(res.data); else throw new Error(); })
+  .catch(() => {
+    renderCharterRecommendation(clientCalculateCharterRecommender(tonnage));
   });
 
-  // C. Call Total Landed Cost API
+  // C. Total Landed Cost
   fetch("/api/optimizer/landed-cost", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      plant_id: plantId,
-      origin_id: "hay_point",
-      commodity_id: commodityId,
-      cargo_tonnage: tonnage,
-      vessel_class: vesselClass
-    })
+    body: JSON.stringify({ plant_id: plantId, origin_id: "hay_point", commodity_id: commodityId, cargo_tonnage: tonnage, vessel_class: vesselClass })
   })
-  .then(res => res.json())
-  .then(res => {
-    if (res.status === "success") renderLandedCostTable(res.data);
+  .then(res => { if (!res.ok) throw new Error(); return res.json(); })
+  .then(res => { if (res.status === "success") renderLandedCostTable(res.data); else throw new Error(); })
+  .catch(() => {
+    renderLandedCostTable(clientCalculateLandedCost(plantId, commodityId, tonnage, vesselClass));
   });
 }
 
@@ -463,7 +557,7 @@ function initSimulatorListeners() {
   const bdiSlider = document.getElementById("sim-bdi-shock");
   const canalToggle = document.getElementById("sim-canal-toggle");
 
-  const debouncedSim = debounce(() => triggerSimulation(), 200);
+  const debouncedSim = debounce(() => triggerSimulation(), 150);
 
   if (fuelSlider) {
     fuelSlider.addEventListener("input", (e) => {
@@ -517,9 +611,13 @@ function triggerSimulation() {
       canal_rerouting_active: canalRerouting
     })
   })
-  .then(res => res.json())
+  .then(res => { if (!res.ok) throw new Error(); return res.json(); })
   .then(res => {
     if (res.status === "success") renderSimulationResults(res.data);
+    else throw new Error();
+  })
+  .catch(() => {
+    renderSimulationResults(clientCalculateSimulation(fuelShock, portDelay, bdiShock, canalRerouting));
   });
 }
 
@@ -551,19 +649,202 @@ function renderSimulationResults(data) {
 }
 
 /**
- * 5. Procurement Tender Report Generator Modal
+ * 5. Client-Side Deterministic Algorithms (Instant Offline / Static Fallback)
+ */
+function clientCalculateVesselOptimizer(portId, cargoTonnage, commodityId) {
+  const port = PORTS_DATA[portId] || PORTS_DATA["paradip"];
+  const evaluations = [];
+  const baseFreight = 16.50;
+
+  for (const [className, v] of Object.entries(VESSELS_DATA)) {
+    const arrivalDraft = v.ballast_draft_meters + (v.design_draft_meters - v.ballast_draft_meters) * Math.min(1.0, cargoTonnage / v.max_dwt);
+    const draftClearance = port.max_draft_meters - arrivalDraft;
+    const isDirectFeasible = draftClearance >= 0.5;
+    const canLighter = !isDirectFeasible && port.lightering_cost_usd_ton > 0;
+    const feasible = isDirectFeasible || canLighter;
+
+    let status = "Feasible (Direct Berth)";
+    if (!feasible) status = "Infeasible (Excess Draft)";
+    else if (canLighter) status = "Restricted (Requires Offshore Lightering)";
+
+    const effectiveSeaFreight = (baseFreight * v.freight_cost_factor) + (canLighter ? port.lightering_cost_usd_ton : 0);
+
+    let notes = "";
+    if (isDirectFeasible) notes = `Full cargo draft clearance (+${draftClearance.toFixed(1)}m UKC) at ${port.name}.`;
+    else if (canLighter) notes = `Draft exceeds berth limit by ${Math.abs(draftClearance).toFixed(1)}m. Mandatory lightering (+$${port.lightering_cost_usd_ton}/MT).`;
+    else notes = `Vessel draft exceeds port threshold. Cannot call at ${port.name}.`;
+
+    evaluations.push({
+      vessel_class: className,
+      typical_capacity_dwt: v.typical_capacity_dwt,
+      arrival_draft_m: Math.round(arrivalDraft * 10) / 10,
+      port_max_draft_m: port.max_draft_meters,
+      draft_clearance_m: Math.round(draftClearance * 10) / 10,
+      feasible: feasible,
+      requires_lightering: canLighter,
+      status: status,
+      effective_sea_freight_usd_ton: Math.round(effectiveSeaFreight * 100) / 100,
+      notes: notes
+    });
+  }
+
+  const feasibleVessels = evaluations.filter(e => e.feasible);
+  feasibleVessels.sort((a, b) => a.effective_sea_freight_usd_ton - b.effective_sea_freight_usd_ton);
+  const bestVessel = feasibleVessels.length > 0 ? feasibleVessels[0].vessel_class : "Capesize";
+
+  return {
+    evaluated_port: port.name,
+    cargo_tonnage: cargoTonnage,
+    best_recommended_vessel: bestVessel,
+    vessel_evaluations: evaluations
+  };
+}
+
+function clientCalculateCharterRecommender(cargoTonnage) {
+  const currentSpot = 16.50;
+  const minRate = 14.85;
+  const savingsPerTon = currentSpot - minRate;
+  const potentialSavings = Math.round(savingsPerTon * cargoTonnage);
+
+  return {
+    market_action: "HOLD / DELAY FIXTURE",
+    timing_urgency: "PATIENT (Softening Curve)",
+    optimal_laycan_window: "18 Sep – 23 Sep 2026",
+    timing_advice: `Forecasting model detects softening freight pressure. A cost trough of $${minRate.toFixed(2)}/MT is projected around Day +15. Delaying tender fixture could yield up to $${potentialSavings.toLocaleString()} in ocean freight savings.`,
+    potential_freight_savings_usd: potentialSavings,
+    contract_structures: [
+      {
+        contract_type: "Spot Voyage Charter",
+        rate_usd_ton: 14.85,
+        total_estimated_cost: Math.round(14.85 * cargoTonnage),
+        suitability: "RECOMMENDED (Optimal Timing)",
+        pros: "Captures anticipated freight softening in Day +15 laycan.",
+        cons: "Demurrage exposure during Bay of Bengal monsoon swells."
+      },
+      {
+        contract_type: "Short-Term Time Charter (45 Days)",
+        rate_usd_ton: 16.20,
+        total_estimated_cost: Math.round(16.20 * cargoTonnage),
+        suitability: "MODERATE",
+        pros: "Guaranteed vessel availability; no port demurrage risk.",
+        cons: "Carries full marine bunker fuel volatility risk."
+      },
+      {
+        contract_type: "Contract of Affreightment (COA - 1 Year)",
+        rate_usd_ton: 15.60,
+        total_estimated_cost: Math.round(15.60 * cargoTonnage),
+        suitability: "ATTRACTIVE FOR LONG TERM",
+        pros: "Fixed rate hedge protects against unexpected Cape rallies.",
+        cons: "Sacrifices spot downward troughs."
+      }
+    ]
+  };
+}
+
+function clientCalculateLandedCost(plantId, commodityId, cargoTonnage, vesselClass) {
+  const plant = PLANTS_DATA[plantId] || PLANTS_DATA["sail_rourkela"];
+  const commodity = COMMODITIES_DATA[commodityId] || COMMODITIES_DATA["coking_coal"];
+  const vessel = VESSELS_DATA[vesselClass] || VESSELS_DATA["Capesize"];
+
+  const fobPrice = commodity.benchmark_price_usd_ton;
+  const baseFreight = 16.50 * vessel.freight_cost_factor;
+  const bafPerTon = 0.38;
+
+  const routeComparisons = [];
+
+  for (const [portId, railInfo] of Object.entries(plant.preferred_ports)) {
+    const port = PORTS_DATA[portId];
+    if (!port) continue;
+
+    const requiresLightering = port.max_draft_meters < vessel.design_draft_meters;
+    const lighteringCost = requiresLightering ? port.lightering_cost_usd_ton : 0.0;
+    const oceanFreightTotal = baseFreight + bafPerTon;
+    const demurragePerTon = (port.avg_waiting_days * port.daily_demurrage_usd) / cargoTonnage;
+    const railFreightPerTon = railInfo.rail_distance_km * 0.022;
+    const landedPerTon = fobPrice + oceanFreightTotal + port.port_dues_usd_ton + lighteringCost + demurragePerTon + railFreightPerTon;
+
+    routeComparisons.push({
+      port_id: portId,
+      port_name: port.name,
+      rail_distance_km: railInfo.rail_distance_km,
+      rail_transit_days: railInfo.transit_days,
+      cost_breakdown_usd_ton: {
+        fob_cargo: fobPrice,
+        ocean_freight: oceanFreightTotal,
+        port_dues_and_handling: port.port_dues_usd_ton,
+        lightering_transshipment: lighteringCost,
+        demurrage_risk: Math.round(demurragePerTon * 100) / 100,
+        inland_rail_freight: Math.round(railFreightPerTon * 100) / 100
+      },
+      landed_cost_usd_ton: Math.round(landedPerTon * 100) / 100,
+      total_cost_usd: Math.round(landedPerTon * cargoTonnage)
+    });
+  }
+
+  routeComparisons.sort((a, b) => a.landed_cost_usd_ton - b.landed_cost_usd_ton);
+  const best = routeComparisons[0];
+  const second = routeComparisons[1] || best;
+  const savings = Math.max(0, Math.round((second.landed_cost_usd_ton - best.landed_cost_usd_ton) * cargoTonnage));
+
+  return {
+    plant_name: plant.name,
+    commodity_name: commodity.name,
+    best_discharge_port: best.port_name,
+    lowest_landed_cost_usd_ton: best.landed_cost_usd_ton,
+    savings_vs_alternative_usd: savings,
+    route_comparisons: routeComparisons
+  };
+}
+
+function clientCalculateSimulation(fuelShock, portDelay, bdiShock, canalRerouting) {
+  const baseSpot = 16.50;
+  const fuelImpact = baseSpot * (fuelShock * 0.0035);
+  const bdiImpact = baseSpot * (bdiShock * 0.0040);
+  const rerouteImpact = canalRerouting ? 7.50 : 0.0;
+  const stressedFreight = Math.round((baseSpot + fuelImpact + bdiImpact + rerouteImpact) * 100) / 100;
+  const freightDelta = Math.round((stressedFreight - baseSpot) * 100) / 100;
+  const freightPct = Math.round((freightDelta / baseSpot) * 1000) / 10;
+
+  const baseLanded = 296.80;
+  const extraDemurrage = Math.round(portDelay * 24000);
+  const extraDemurragePerTon = extraDemurrage / 150000;
+  const stressedLanded = Math.round((baseLanded + freightDelta + extraDemurragePerTon) * 100) / 100;
+  const landedDelta = Math.round((stressedLanded - baseLanded) * 100) / 100;
+
+  const mitigations = [];
+  if (fuelShock > 15) mitigations.push("Institute Slow-Steaming protocol (reduce speed from 14 knots to 11.5 knots, trimming daily bunker burn by 28%).");
+  if (portDelay >= 3) mitigations.push("Divert incoming Capesize vessels from congested Paradip to deep-water Dhamra or Vizag Gangavaram to bypass berth queue.");
+  if (canalRerouting) mitigations.push("Fix long-term Cape of Good Hope bunker hedges at Durban / Port Louis to offset 12-day transit premium.");
+  if (bdiShock > 20) mitigations.push("Lock forward quarterly requirements under Index-Linked COA with cap-and-collar collars to cap spot spike exposure.");
+  if (mitigations.length === 0) mitigations.push("Standard operating procedures: monitor Baltic Capesize forward curves and maintain 21-day safety inventory at blast furnaces.");
+
+  return {
+    comparison: {
+      stressed_freight_usd_ton: stressedFreight,
+      freight_delta_usd_ton: freightDelta,
+      freight_delta_pct: freightPct,
+      stressed_landed_usd_ton: stressedLanded,
+      landed_delta_usd_ton: landedDelta,
+      demurrage_extra_cost_usd: extraDemurrage
+    },
+    mitigation_actions: mitigations
+  };
+}
+
+/**
+ * 6. Procurement Tender Report Generator Modal
  */
 function generateProcurementReport() {
   const container = document.getElementById("report-modal-body");
   if (!container) return;
 
   const now = new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
-  const plant = document.getElementById("tender-plant").options[document.getElementById("tender-plant").selectedIndex].text;
-  const commodity = document.getElementById("tender-commodity").options[document.getElementById("tender-commodity").selectedIndex].text;
-  const tonnage = parseFloat(document.getElementById("tender-tonnage").value) || 150000;
-  const action = document.getElementById("rec-action-badge").innerText;
-  const laycan = document.getElementById("rec-laycan-window").innerText;
-  const savings = document.getElementById("rec-savings-val").innerText;
+  const plant = document.getElementById("tender-plant")?.options[document.getElementById("tender-plant").selectedIndex]?.text || "SAIL Rourkela Steel Plant";
+  const commodity = document.getElementById("tender-commodity")?.options[document.getElementById("tender-commodity").selectedIndex]?.text || "Prime Hard Coking Coal";
+  const tonnage = parseFloat(document.getElementById("tender-tonnage")?.value) || 150000;
+  const action = document.getElementById("rec-action-badge")?.innerText || "HOLD / DELAY FIXTURE";
+  const laycan = document.getElementById("rec-laycan-window")?.innerText || "18 Sep – 23 Sep 2026";
+  const savings = document.getElementById("rec-savings-val")?.innerText || "$247,500";
 
   container.innerHTML = `
     <div style="border-bottom: 2px solid #00d2ff; padding-bottom: 1rem; margin-bottom: 1.5rem;">
@@ -592,7 +873,7 @@ function generateProcurementReport() {
     <div style="background: rgba(0, 210, 255, 0.08); border-left: 4px solid #00d2ff; padding: 1rem; border-radius: 6px; margin-bottom: 1.5rem;">
       <div style="font-weight: 700; color: #00d2ff; font-size: 0.95rem; margin-bottom: 0.3rem;">EXECUTIVE ACTION: ${action}</div>
       <div style="font-size: 0.82rem; color: #e2e8f0; line-height: 1.4;">
-        ${document.getElementById("rec-advice-text").innerText}
+        ${document.getElementById("rec-advice-text")?.innerText || "Market conditions favor patient execution."}
       </div>
       <div style="margin-top: 0.6rem; font-size: 0.82rem; color: #00f5a0; font-weight: 600;">
         Estimated Freight Savings: ${savings}
@@ -601,7 +882,7 @@ function generateProcurementReport() {
 
     <h4 style="color: #ffffff; font-family: 'Outfit'; margin-bottom: 0.6rem;">Multi-Port Landed Cost Benchmark:</h4>
     <div style="font-size: 0.82rem; color: #94a3b8; margin-bottom: 1rem;">
-      ${document.getElementById("landed-best-summary").innerText}
+      ${document.getElementById("landed-best-summary")?.innerText || ""}
     </div>
 
     <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1rem;">

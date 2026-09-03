@@ -5,6 +5,12 @@
 > **Theme:** Transportation & Logistics / Smart Automation  
 > **Target Organizations:** Steel Authority of India Ltd (SAIL), Rashtriya Ispat Nigam Ltd (RINL - Vizag Steel), NMDC, Ministry of Steel
 
+[![Live Website](https://img.shields.io/badge/🌐_LIVE_WEBSITE-CLICK_HERE_TO_OPEN-00d2ff?style=for-the-badge&logo=googlechrome&logoColor=white)](https://trickyfinisher000-sudo.github.io/SIH-PROTO/)
+[![GitHub Pages](https://img.shields.io/badge/Hosted_On-GitHub_Pages-00f5a0?style=for-the-badge&logo=github)](https://trickyfinisher000-sudo.github.io/SIH-PROTO/)
+
+### 🔗 **Direct Live Application URL:**  
+### 👉 [https://trickyfinisher000-sudo.github.io/SIH-PROTO/](https://trickyfinisher000-sudo.github.io/SIH-PROTO/)
+
 ---
 
 ## 📌 Executive Summary
