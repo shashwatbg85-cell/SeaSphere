@@ -1,0 +1,132 @@
+[
+  {
+    "id": "deendayal",
+    "port": "Deendayal",
+    "aliases": ["Kandla", "Deendayal Port Authority", "DPA"],
+    "state": "Gujarat",
+    "coast": "West Coast",
+    "coordinates": [23.0033, 70.2186],
+    "type": "Major Port",
+    "major_cargoes": ["Crude Oil", "Petroleum Products", "Dry Bulk", "Fertilizer", "Timber"]
+  },
+  {
+    "id": "mumbai",
+    "port": "Mumbai",
+    "aliases": ["Mumbai Port Trust", "MbPT"],
+    "state": "Maharashtra",
+    "coast": "West Coast",
+    "coordinates": [18.9438, 72.8466],
+    "type": "Major Port",
+    "major_cargoes": ["POL Products", "General Cargo", "Vehicles", "Cruise"]
+  },
+  {
+    "id": "jl_nehru",
+    "port": "J.L. Nehru",
+    "aliases": ["JNPT", "Jawaharlal Nehru Port", "Nhava Sheva"],
+    "state": "Maharashtra",
+    "coast": "West Coast",
+    "coordinates": [18.9499, 72.9515],
+    "type": "Major Port",
+    "major_cargoes": ["Containerized Cargo", "Liquid Bulk", "Automobiles"]
+  },
+  {
+    "id": "mormugao",
+    "port": "Mormugao",
+    "aliases": ["Goa Port", "Mormugao Port Authority"],
+    "state": "Goa",
+    "coast": "West Coast",
+    "coordinates": [15.4137, 73.8016],
+    "type": "Major Port",
+    "major_cargoes": ["Iron Ore", "Coal", "Coke", "Cruise Vessels"]
+  },
+  {
+    "id": "new_mangalore",
+    "port": "New Mangalore",
+    "aliases": ["NMPA", "Panambur"],
+    "state": "Karnataka",
+    "coast": "West Coast",
+    "coordinates": [12.9287, 74.8214],
+    "type": "Major Port",
+    "major_cargoes": ["POL Crude", "LPG", "Fertilizers", "Iron Ore Pellets", "Coal"]
+  },
+  {
+    "id": "cochin",
+    "port": "Cochin",
+    "aliases": ["Kochi", "Cochin Port Authority", "Vallarpadam"],
+    "state": "Kerala",
+    "coast": "West Coast",
+    "coordinates": [9.9656, 76.2690],
+    "type": "Major Port",
+    "major_cargoes": ["POL", "Containers (ICTT)", "LNG", "Dry Bulk"]
+  },
+  {
+    "id": "vo_chidambaranar",
+    "port": "V.O. Chidambaranar",
+    "aliases": ["Tuticorin", "VOC Port", "Thoothukudi"],
+    "state": "Tamil Nadu",
+    "coast": "East Coast",
+    "coordinates": [8.7538, 78.1884],
+    "type": "Major Port",
+    "major_cargoes": ["Thermal Coal", "Industrial Containers", "Fertilizers", "General Bulk"]
+  },
+  {
+    "id": "chennai",
+    "port": "Chennai",
+    "aliases": ["Madras Port", "Chennai Port Authority"],
+    "state": "Tamil Nadu",
+    "coast": "East Coast",
+    "coordinates": [13.0844, 80.2974],
+    "type": "Major Port",
+    "major_cargoes": ["Automobiles", "Containers", "POL Products", "Clean Cargo"]
+  },
+  {
+    "id": "kamarajar",
+    "port": "Kamarajar",
+    "aliases": ["Ennore", "Kamarajar Port Limited", "KPL"],
+    "state": "Tamil Nadu",
+    "coast": "East Coast",
+    "coordinates": [13.2625, 80.3347],
+    "type": "Major Port",
+    "major_cargoes": ["Thermal Coal", "Automobiles (Ro-Ro)", "POL / LPG", "Containers"]
+  },
+  {
+    "id": "visakhapatnam",
+    "port": "Visakhapatnam",
+    "aliases": ["Vizag", "Visakhapatnam Port Authority", "VPA"],
+    "state": "Andhra Pradesh",
+    "coast": "East Coast",
+    "coordinates": [17.6868, 83.2185],
+    "type": "Major Port",
+    "major_cargoes": ["Coking Coal", "Iron Ore", "POL Products", "Thermal Coal", "Alumina"]
+  },
+  {
+    "id": "paradip",
+    "port": "Paradip",
+    "aliases": ["Paradip Port Authority", "PPA"],
+    "state": "Odisha",
+    "coast": "East Coast",
+    "coordinates": [20.2644, 86.6715],
+    "type": "Major Port",
+    "major_cargoes": ["Coking Coal", "Thermal Coal", "Iron Ore Pellets", "Crude Oil", "Fertilizers"]
+  },
+  {
+    "id": "smp_haldia",
+    "port": "SMP (Haldia Dock Complex)",
+    "aliases": ["Syama Prasad Mookerjee Port - Haldia", "Haldia", "HDC"],
+    "state": "West Bengal",
+    "coast": "East Coast",
+    "coordinates": [22.0232, 88.0645],
+    "type": "Dock Complex",
+    "major_cargoes": ["Coking Coal", "POL Products", "LPG", "Petrochemicals", "Thermal Coal"]
+  },
+  {
+    "id": "smp_kolkata",
+    "port": "SMP (Kolkata Dock System)",
+    "aliases": ["Syama Prasad Mookerjee Port - Kolkata", "Kolkata", "KDS", "Calcutta Port"],
+    "state": "West Bengal",
+    "coast": "East Coast",
+    "coordinates": [22.5448, 88.3184],
+    "type": "Dock System",
+    "major_cargoes": ["Containers", "Break Bulk", "Nepal Transit Cargo", "Timber"]
+  }
+]

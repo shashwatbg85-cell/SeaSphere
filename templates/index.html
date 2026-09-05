@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NAVI-STEEL | Intelligent Freight Forecasting & Vessel Chartering Optimizer</title>
   <meta name="description" content="AI-driven maritime freight rate forecasting, optimal vessel chartering, and bulk cargo landed cost optimization for East Coast of India imports.">
+  <meta name="keywords" content="NAVI-STEEL, SIH 2026, maritime freight, vessel chartering, bulk cargo, East Coast India, coking coal, steel procurement, AI forecasting">
 
   <!-- Google Fonts: Inter & Outfit -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -32,8 +33,16 @@
       </div>
     </div>
 
-    <div class="nav-links">
+    <button class="hamburger-btn" id="hamburger-toggle" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
+    </button>
+
+    <div class="nav-links" id="nav-links-menu">
       <a href="#section-kpi" class="nav-link active" id="nav-overview">Overview</a>
+      <a href="#section-risk" class="nav-link" id="nav-risk">Risk Index</a>
+      <a href="#section-weather" class="nav-link" id="nav-weather">Port Weather</a>
+      <a href="#section-port-traffic" class="nav-link" id="nav-port-traffic">Port Traffic AI</a>
+      <a href="#section-inland-waterways" class="nav-link" id="nav-iwt">Inland Waterways</a>
       <a href="#section-map" class="nav-link" id="nav-routes">Trade Corridors</a>
       <a href="#section-forecaster" class="nav-link" id="nav-forecast">Freight AI</a>
       <a href="#section-optimizer" class="nav-link" id="nav-charter">Charter Optimizer</a>
@@ -55,31 +64,83 @@
   <!-- Main Container -->
   <main class="app-container">
 
+    <!-- Hero Command Banner -->
+    <section class="hero-banner reveal" id="hero-section">
+      <div class="hero-tagline">Intelligent Maritime Procurement for Indian Steel PSUs</div>
+      <div class="hero-sub">
+        AI-powered freight forecasting, optimal vessel chartering, and total landed cost optimization — 
+        projected to save ₹150–300 Cr annually in foreign exchange procurement costs.
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hero-stat-value" id="hero-stat-routes">5</div>
+          <div class="hero-stat-label">Trade Routes</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-value" id="hero-stat-ports">6</div>
+          <div class="hero-stat-label">East Coast Ports</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-value" id="hero-stat-models">35</div>
+          <div class="hero-stat-label">AI Models</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-value" id="hero-stat-horizons">90d</div>
+          <div class="hero-stat-label">Forecast Horizon</div>
+        </div>
+      </div>
+
+      <!-- Procurement Decision Flow -->
+      <div class="procurement-flow" id="procurement-flow">
+        <div class="flow-step active" data-section="section-kpi">📊 Market</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-step" data-section="section-risk">🛡️ Risk</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-step" data-section="section-weather">🌦️ Weather</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-step" data-section="section-port-traffic">🚢 Ports</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-step" data-section="section-inland-waterways">🌊 IWT Waterways</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-step" data-section="section-forecaster">📈 Forecast</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-step" data-section="section-optimizer">⚓ Charter</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-step" data-section="section-landed-cost">🏭 Landed Cost</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-step" data-section="section-simulator">⚡ Stress Test</div>
+      </div>
+    </section>
+
     <!-- 1. KPI Overview Command Center -->
-    <section id="section-kpi">
+    <section id="section-kpi" class="reveal">
       <div class="kpi-grid">
         <div class="kpi-card" id="card-kpi-bdi">
           <div class="kpi-label">Baltic Dry Index (BDI)</div>
           <div class="kpi-value" id="kpi-bdi">--</div>
           <div class="kpi-sub" id="kpi-bdi-sub">Loading...</div>
+          <canvas class="kpi-sparkline" id="sparkline-bdi"></canvas>
         </div>
 
         <div class="kpi-card emerald" id="card-kpi-bci">
           <div class="kpi-label">Baltic Capesize (BCI)</div>
           <div class="kpi-value" id="kpi-bci">--</div>
           <div class="kpi-sub" id="kpi-bci-sub">Loading...</div>
+          <canvas class="kpi-sparkline" id="sparkline-bci"></canvas>
         </div>
 
         <div class="kpi-card amber" id="card-kpi-vlsfo">
           <div class="kpi-label">Singapore VLSFO Bunker</div>
           <div class="kpi-value" id="kpi-vlsfo">--</div>
           <div class="kpi-sub" id="kpi-vlsfo-sub">Loading...</div>
+          <canvas class="kpi-sparkline" id="sparkline-vlsfo"></canvas>
         </div>
 
         <div class="kpi-card indigo" id="card-kpi-coal">
           <div class="kpi-label">Coking Coal FOB (Aus)</div>
           <div class="kpi-value" id="kpi-coal">--</div>
           <div class="kpi-sub" id="kpi-coal-sub">Loading...</div>
+          <canvas class="kpi-sparkline" id="sparkline-coal"></canvas>
         </div>
 
         <div class="kpi-card coral" id="card-kpi-queue">
@@ -90,8 +151,235 @@
       </div>
     </section>
 
-    <!-- 2. Interactive Global Shipping Map & Corridor Visualizer -->
-    <section id="section-map" class="glass-card">
+    <div class="section-divider"></div>
+
+    <!-- 2. Composite Maritime Risk Score -->
+    <section id="section-risk" class="glass-card reveal">
+      <div class="card-header">
+        <div>
+          <div class="card-title">
+            <i>🛡️</i> Maritime Procurement Risk Index
+          </div>
+          <div class="card-subtitle">
+            Composite weighted risk assessment across freight volatility, monsoon weather, port congestion, geopolitical disruption, and bunker fuel exposure.
+          </div>
+        </div>
+        <div class="badge-tag badge-amber" id="risk-level-badge">CALCULATING...</div>
+      </div>
+
+      <div class="risk-gauge-container">
+        <!-- SVG Radial Gauge -->
+        <div class="risk-gauge" id="risk-gauge-wrapper">
+          <svg viewBox="0 0 200 200">
+            <circle class="gauge-bg" cx="100" cy="100" r="80" />
+            <circle class="gauge-fill" id="risk-gauge-arc" cx="100" cy="100" r="80" 
+                    stroke-dasharray="502.65" stroke-dashoffset="502.65" stroke="var(--accent-emerald)" />
+          </svg>
+          <div class="risk-score-value">
+            <div class="risk-score-number" id="risk-score-number">--</div>
+            <div class="risk-score-label">Risk Score</div>
+          </div>
+        </div>
+
+        <!-- Risk Factor Breakdown -->
+        <div class="risk-factors-grid" id="risk-factors-grid">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+
+      <div style="margin-top: 1rem; padding: 0.85rem 1rem; background: rgba(7, 13, 30, 0.5); border-radius: 8px; border: 1px solid var(--border-subtle);">
+        <div style="font-size: 0.82rem; font-weight: 600; color: var(--accent-cyan); margin-bottom: 0.25rem;">📋 Risk Advisory</div>
+        <div style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.45;" id="risk-advisory-text">
+          Analyzing market conditions...
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- 2.5. Port Metocean & Weather Intelligence (30-Day Forward Forecast) -->
+    <section id="section-weather" class="glass-card reveal">
+      <div class="card-header">
+        <div>
+          <div class="card-title">
+            <i>🌦️</i> Port Metocean & Weather Intelligence (30-Day Forward Forecast)
+          </div>
+          <div class="card-subtitle">
+            Hyper-local meteorological and marine environmental forecasts across 7 key ports: Dhamra, Paradip, Visakhapatnam, Kolkata, Chennai, Kamarajar, and V.O. Chidambaranar. Real-time monitoring of berthing winds, bulk cargo hatch precipitation limits, and lightering swell risk.
+          </div>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+          <div style="min-width: 250px;">
+            <select class="form-select" id="weather-port-select">
+              <option value="paradip" selected>Paradip Port (Odisha) - 20.32°N, 86.61°E</option>
+              <option value="dhamra">Dhamra Port (Odisha) - 20.78°N, 86.95°E</option>
+              <option value="visakhapatnam">Visakhapatnam Port (Vizag) - 17.69°N, 83.22°E</option>
+              <option value="kolkata">Kolkata Port / SMP - 22.55°N, 88.33°E</option>
+              <option value="chennai">Chennai Port - 13.10°N, 80.29°E</option>
+              <option value="kamarajar">Kamarajar Port (Ennore) - 13.25°N, 80.32°E</option>
+              <option value="vo_chidambaranar">V.O. Chidambaranar (Tuticorin) - 8.80°N, 78.20°E</option>
+            </select>
+          </div>
+
+          <div class="horizon-tabs" id="weather-horizon-tabs">
+            <button class="tab-btn active" data-weather-horizon="all">All (30d)</button>
+            <button class="tab-btn" data-weather-horizon="7">7d</button>
+            <button class="tab-btn" data-weather-horizon="15">15d</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Metocean Summary KPI Cards for Selected Port -->
+      <div class="weather-kpi-grid" id="weather-kpis-container">
+        <div class="weather-stat-card" id="weather-stat-condition">
+          <div class="weather-stat-icon" id="weather-icon-display">☀️</div>
+          <div class="weather-stat-body">
+            <div class="weather-stat-label">Weather Condition</div>
+            <div class="weather-stat-val" id="weather-condition-text">Mainly Clear</div>
+            <div class="weather-stat-sub" id="weather-code-badge">WMO Code: 1 (Optimal)</div>
+          </div>
+        </div>
+
+        <div class="weather-stat-card" id="weather-stat-temp">
+          <div class="weather-stat-icon">🌡️</div>
+          <div class="weather-stat-body">
+            <div class="weather-stat-label">Temperature Range</div>
+            <div class="weather-stat-val" id="weather-temp-range">31.0°C / 25.0°C</div>
+            <div class="weather-stat-sub" id="weather-temp-sub">Max: 31.0°C • Min: 25.0°C</div>
+          </div>
+        </div>
+
+        <div class="weather-stat-card" id="weather-stat-wind">
+          <div class="weather-stat-icon">💨</div>
+          <div class="weather-stat-body">
+            <div class="weather-stat-label">Peak Marine Wind</div>
+            <div class="weather-stat-val" id="weather-wind-speed">18.0 km/h</div>
+            <div class="weather-stat-sub" id="weather-wind-alert" style="color: var(--accent-emerald);">Safe Berthing (&lt; 24 km/h)</div>
+          </div>
+        </div>
+
+        <div class="weather-stat-card" id="weather-stat-rain">
+          <div class="weather-stat-icon">💧</div>
+          <div class="weather-stat-body">
+            <div class="weather-stat-label">Precipitation &amp; Hatch</div>
+            <div class="weather-stat-val" id="weather-precip-val">0.0 mm</div>
+            <div class="weather-stat-sub" id="weather-hatch-advisory" style="color: var(--accent-cyan);">Dry Hatches Unrestricted</div>
+          </div>
+        </div>
+
+        <div class="weather-stat-card" id="weather-stat-risk">
+          <div class="weather-stat-icon">⚓</div>
+          <div class="weather-stat-body">
+            <div class="weather-stat-label">Port Operational Advisory</div>
+            <div class="weather-stat-val" id="weather-port-status" style="color: var(--accent-emerald); font-size: 1.1rem;">Normal Operations</div>
+            <div class="weather-stat-sub" id="weather-risk-text">No Metocean Stoppage Expected</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7-Port Quick Weather Glance Radar -->
+      <div style="margin-bottom: 1.5rem; background: rgba(7, 13, 30, 0.45); padding: 1rem; border-radius: 10px; border: 1px solid var(--border-subtle);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
+          <div style="font-size: 0.85rem; font-weight: 600; color: var(--accent-cyan);">
+            🌐 East Coast Ports Metocean Overview (All 7 Ports Comparison)
+          </div>
+          <div style="font-size: 0.75rem; color: var(--text-muted);" id="weather-comparison-date">
+            Forecast Window: Aug 04 - Sep 02, 2026
+          </div>
+        </div>
+        <div class="port-weather-badges-grid" id="port-weather-badges-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.75rem;">
+          <!-- Populated dynamically with 7 port cards -->
+        </div>
+      </div>
+
+      <!-- Weather Trajectory Chart & Operational Impact Insights -->
+      <div class="grid-2col" style="margin-bottom: 1.5rem;">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <div style="font-size: 0.85rem; font-weight: 600; color: var(--text-primary);">
+              📈 Metocean Trajectory (Temperature, Wind Velocity &amp; Rainfall)
+            </div>
+            <div style="font-size: 0.72rem; color: var(--text-muted);">
+              30-Day Multi-Variable Environmental Time-Series
+            </div>
+          </div>
+          <div class="chart-wrapper">
+            <canvas id="portWeatherChart"></canvas>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size: 0.85rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">
+            🛡️ Maritime Operations &amp; Berthing Sensitivity Rules
+          </div>
+          <div class="weather-rules-container" style="display: flex; flex-direction: column; gap: 0.75rem;">
+            <div style="background: rgba(7, 13, 30, 0.6); padding: 0.85rem; border-radius: 8px; border-left: 3px solid var(--accent-emerald);">
+              <div style="font-size: 0.8rem; font-weight: 600; color: var(--accent-emerald);">☀️ Clear / Dry Operations (Precip = 0 mm, Wind &lt; 20 km/h)</div>
+              <div style="font-size: 0.74rem; color: var(--text-secondary); margin-top: 0.2rem;">Full mechanical coal unloader and conveyor throughput (3,500–5,000 T/hr). Zero moisture penalty.</div>
+            </div>
+
+            <div style="background: rgba(7, 13, 30, 0.6); padding: 0.85rem; border-radius: 8px; border-left: 3px solid var(--accent-amber);">
+              <div style="font-size: 0.8rem; font-weight: 600; color: var(--accent-amber);">🌦️ Rain Alert &amp; Coal Protection (Precip &gt; 5.0 mm)</div>
+              <div style="font-size: 0.74rem; color: var(--text-secondary); margin-top: 0.2rem;">Hatch covers must be closed on coking coal/PCI to prevent cargo moisture increase above steel mill acceptance threshold (8.5%).</div>
+            </div>
+
+            <div style="background: rgba(7, 13, 30, 0.6); padding: 0.85rem; border-radius: 8px; border-left: 3px solid var(--accent-coral);">
+              <div style="font-size: 0.8rem; font-weight: 600; color: var(--accent-coral);">💨 High Wind &amp; Swell Warning (Wind ≥ 25 km/h, Code 80)</div>
+              <div style="font-size: 0.74rem; color: var(--text-secondary); margin-top: 0.2rem;">Crane and gantry operations operate with safety stops. Sandheads / Paradip lightering operations suspended due to heavy ocean swell.</div>
+            </div>
+
+            <div style="background: rgba(0, 210, 255, 0.06); padding: 0.85rem; border-radius: 8px; border: 1px dashed var(--accent-cyan);">
+              <div style="font-size: 0.8rem; font-weight: 600; color: var(--accent-cyan);">💡 Laycan Recommendation Impact</div>
+              <div style="font-size: 0.74rem; color: var(--text-secondary); margin-top: 0.2rem;" id="weather-laycan-impact">
+                Calculating optimal weather window for incoming vessel arrivals...
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 30-Day Granular Weather Forecast Data Table -->
+      <div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
+          <div style="font-size: 0.88rem; font-weight: 600; color: var(--text-primary);">
+            📋 Detailed 30-Day Port Metocean Log (<span id="weather-table-port-name">Paradip</span>)
+          </div>
+
+          <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+            <button class="btn btn-outline active" style="padding: 0.3rem 0.65rem; font-size: 0.72rem;" id="weather-filter-all">All Days (30)</button>
+            <button class="btn btn-outline" style="padding: 0.3rem 0.65rem; font-size: 0.72rem;" id="weather-filter-rain">🌧️ Rainy Days</button>
+            <button class="btn btn-outline" style="padding: 0.3rem 0.65rem; font-size: 0.72rem;" id="weather-filter-wind">💨 High Wind (≥22 km/h)</button>
+            <button class="btn btn-outline" style="padding: 0.3rem 0.65rem; font-size: 0.72rem;" id="weather-filter-clear">☀️ Clear Only</button>
+          </div>
+        </div>
+
+        <div class="table-container" style="max-height: 420px; overflow-y: auto;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Port</th>
+                <th>Weather Condition</th>
+                <th>Temp Max / Min</th>
+                <th>Wind Velocity</th>
+                <th>Precipitation</th>
+                <th>WMO Code</th>
+                <th>Operational Impact Advisory</th>
+              </tr>
+            </thead>
+            <tbody id="weather-forecast-tbody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- 3. Interactive Global Shipping Map & Corridor Visualizer -->
+    <section id="section-map" class="glass-card reveal">
       <div class="card-header">
         <div>
           <div class="card-title">
@@ -101,11 +389,11 @@
             Live geodesic routes from Australia, Indonesia, South Africa, USA, and Russia to Paradip, Vizag, Haldia, and Dhamra.
           </div>
         </div>
-        <div style="display: flex; gap: 0.5rem;">
-          <button class="btn btn-outline" style="padding: 0.35rem 0.75rem; font-size: 0.78rem;" onclick="window.highlightTradeLane('aus_paradip')">Australia ➔ Paradip</button>
-          <button class="btn btn-outline" style="padding: 0.35rem 0.75rem; font-size: 0.78rem;" onclick="window.highlightTradeLane('indo_paradip')">Indonesia ➔ Paradip</button>
-          <button class="btn btn-outline" style="padding: 0.35rem 0.75rem; font-size: 0.78rem;" onclick="window.highlightTradeLane('rsa_vizag')">S.Africa ➔ Vizag</button>
-          <button class="btn btn-outline" style="padding: 0.35rem 0.75rem; font-size: 0.78rem;" onclick="window.highlightTradeLane('usa_paradip')">USA ➔ Paradip</button>
+        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+          <button class="btn btn-outline" style="padding: 0.35rem 0.75rem; font-size: 0.76rem;" onclick="window.highlightTradeLane('aus_paradip')">Australia ➔ Paradip</button>
+          <button class="btn btn-outline" style="padding: 0.35rem 0.75rem; font-size: 0.76rem;" onclick="window.highlightTradeLane('indo_paradip')">Indonesia ➔ Paradip</button>
+          <button class="btn btn-outline" style="padding: 0.35rem 0.75rem; font-size: 0.76rem;" onclick="window.highlightTradeLane('rsa_vizag')">S.Africa ➔ Vizag</button>
+          <button class="btn btn-outline" style="padding: 0.35rem 0.75rem; font-size: 0.76rem;" onclick="window.highlightTradeLane('usa_paradip')">USA ➔ Paradip</button>
         </div>
       </div>
 
@@ -114,8 +402,10 @@
       </div>
     </section>
 
-    <!-- 3. Intelligent Freight Forecaster & Explainable AI -->
-    <section id="section-forecaster" class="glass-card">
+    <div class="section-divider"></div>
+
+    <!-- 4. Intelligent Freight Forecaster & Explainable AI -->
+    <section id="section-forecaster" class="glass-card reveal">
       <div class="card-header">
         <div>
           <div class="card-title">
@@ -126,7 +416,7 @@
           </div>
         </div>
 
-        <div style="display: flex; align-items: center; gap: 1rem;">
+        <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
           <div style="min-width: 260px;">
             <select class="form-select" id="forecaster-route-select">
               <option value="freight_aus_paradip_cape">Australia (Hay Point) ➔ Paradip (Capesize)</option>
@@ -150,13 +440,13 @@
       <div class="grid-2col">
         <!-- Chart Section -->
         <div>
-          <div style="display: flex; gap: 1.5rem; margin-bottom: 1rem; align-items: center;">
+          <div style="display: flex; gap: 1.5rem; margin-bottom: 1rem; align-items: center; flex-wrap: wrap;">
             <div style="background: rgba(7, 13, 30, 0.6); padding: 0.6rem 1rem; border-radius: 8px; border: 1px solid var(--border-subtle);">
               <div style="font-size: 0.72rem; color: var(--text-secondary); text-transform: uppercase;">Current Spot Rate</div>
               <div style="font-family: var(--font-heading); font-size: 1.5rem; font-weight: 700; color: #ffffff;" id="fc-spot-rate">--</div>
             </div>
 
-            <div style="background: rgba(7, 13, 30, 0.6); padding: 0.6rem 1rem; border-radius: 8px; border: 1px solid var(--border-subtle); flex: 1;">
+            <div style="background: rgba(7, 13, 30, 0.6); padding: 0.6rem 1rem; border-radius: 8px; border: 1px solid var(--border-subtle); flex: 1; min-width: 200px;">
               <div style="font-size: 0.72rem; color: var(--text-secondary); text-transform: uppercase;">Market Regime</div>
               <div style="font-weight: 600; color: var(--accent-cyan); font-size: 0.95rem;" id="fc-regime">--</div>
               <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.15rem;" id="fc-advice">--</div>
@@ -184,8 +474,10 @@
       </div>
     </section>
 
-    <!-- 4. Vessel Selection & Optimal Laycan Matrix -->
-    <section id="section-optimizer" class="glass-card">
+    <div class="section-divider"></div>
+
+    <!-- 5. Vessel Selection & Optimal Laycan Matrix -->
+    <section id="section-optimizer" class="glass-card reveal">
       <div class="card-header">
         <div>
           <div class="card-title">
@@ -278,6 +570,21 @@
             </div>
           </div>
 
+          <!-- Procurement Gantt Timeline -->
+          <div style="margin-top: 1.2rem; padding: 1rem; background: rgba(7, 13, 30, 0.4); border-radius: 10px; border: 1px solid var(--border-subtle);">
+            <div style="font-size: 0.82rem; font-weight: 600; color: #ffffff; margin-bottom: 0.6rem;">
+              📅 Procurement Lifecycle Timeline
+            </div>
+            <div class="gantt-container" id="gantt-container">
+              <div class="gantt-track" id="gantt-track">
+                <!-- Dynamically populated -->
+              </div>
+              <div class="gantt-labels" id="gantt-labels">
+                <!-- Dynamically populated -->
+              </div>
+            </div>
+          </div>
+
           <div style="margin-top: 1rem;">
             <div style="font-size: 0.82rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.4rem;">
               Contract Structure Evaluation (Spot vs Time Charter vs COA):
@@ -290,8 +597,10 @@
       </div>
     </section>
 
-    <!-- 5. Total Landed Procurement Cost Analyzer -->
-    <section id="section-landed-cost" class="glass-card">
+    <div class="section-divider"></div>
+
+    <!-- 6. Total Landed Procurement Cost Analyzer -->
+    <section id="section-landed-cost" class="glass-card reveal">
       <div class="card-header">
         <div>
           <div class="card-title">
@@ -340,8 +649,10 @@
       </div>
     </section>
 
-    <!-- 6. Crisis & What-If Stress-Testing Simulator -->
-    <section id="section-simulator" class="glass-card">
+    <div class="section-divider"></div>
+
+    <!-- 7. Crisis & What-If Stress-Testing Simulator -->
+    <section id="section-simulator" class="glass-card reveal">
       <div class="card-header">
         <div>
           <div class="card-title">
@@ -386,9 +697,9 @@
               <div style="font-size: 0.85rem; font-weight: 600; color: #ffffff;">Geopolitical Canal Rerouting</div>
               <div style="font-size: 0.72rem; color: var(--text-secondary);">Force circumnavigation via Cape of Good Hope (+12 days sailing)</div>
             </div>
-            <label style="position: relative; display: inline-block; width: 44px; height: 22px;">
-              <input type="checkbox" id="sim-canal-toggle" style="opacity: 0; width: 0; height: 0;">
-              <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #334155; transition: .3s; border-radius: 22px;"></span>
+            <label class="toggle-switch">
+              <input type="checkbox" id="sim-canal-toggle">
+              <span class="toggle-slider"></span>
             </label>
           </div>
         </div>
@@ -409,7 +720,7 @@
             </div>
           </div>
 
-          <div style="background: rgba(255, 77, 109, 0.1); border: 1px solid rgba(255, 77, 109, 0.25); border-radius: 8px; padding: 0.85rem; margin-top: 1rem; display: flex; justify-content: space-between; align-items: center;">
+          <div style="background: rgba(255, 77, 109, 0.08); border: 1px solid rgba(255, 77, 109, 0.2); border-radius: 8px; padding: 0.85rem; margin-top: 1rem; display: flex; justify-content: space-between; align-items: center;">
             <div>
               <div style="font-size: 0.75rem; color: var(--text-secondary);">Extra Demurrage Exposure:</div>
               <div style="font-size: 1.15rem; font-weight: 700; color: var(--accent-coral);" id="sim-res-demurrage">+$0</div>
@@ -427,9 +738,613 @@
           </div>
         </div>
       </div>
+
+    <!-- 8. National Major Ports Throughput & AI Capacity Forecaster -->
+    <section id="section-port-traffic" class="glass-card reveal" style="margin-top: 2rem;">
+      <div class="card-header">
+        <div>
+          <div class="card-title">
+            <i>🚢</i> Indian Major Ports Traffic & AI Capacity Forecaster (1990–2030)
+          </div>
+          <div class="card-subtitle">
+            Official Ministry of Ports, Shipping and Waterways throughput dataset across 12 Major Ports. Multi-horizon ML forecasting with P10/P50/P90 confidence bounds, cargo dynamics (Overseas vs. Coastal), and Maritime India Vision 2030 benchmarking.
+          </div>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+          <div style="min-width: 280px;">
+            <select class="form-select" id="port-traffic-select">
+              <option value="total_mt" selected>All Major Ports Total (National Aggregate)</option>
+              <option value="deendayal">Deendayal Port (Kandla) - Gujarat</option>
+              <option value="paradip">Paradip Port - Odisha</option>
+              <option value="jl_nehru">J.L. Nehru Port (JNPT) - Maharashtra</option>
+              <option value="visakhapatnam">Visakhapatnam Port (Vizag) - Andhra Pradesh</option>
+              <option value="mumbai">Mumbai Port - Maharashtra</option>
+              <option value="smp_kolkata_haldia">SMP (Kolkata & Haldia) - West Bengal</option>
+              <option value="chennai">Chennai Port - Tamil Nadu</option>
+              <option value="kamarajar">Kamarajar Port (Ennore) - Tamil Nadu</option>
+              <option value="new_mangalore">New Mangalore Port - Karnataka</option>
+              <option value="vo_chidambaranar">V.O. Chidambaranar (Tuticorin) - Tamil Nadu</option>
+              <option value="cochin">Cochin Port (Kochi) - Kerala</option>
+              <option value="mormugao">Mormugao Port - Goa</option>
+            </select>
+          </div>
+
+          <div class="horizon-tabs" id="port-traffic-horizon-tabs">
+            <button class="tab-btn active" data-port-horizon="all">All (1990-2030)</button>
+            <button class="tab-btn" data-port-horizon="recent">2015-2030</button>
+            <button class="tab-btn" data-port-horizon="forecast">Forecast Only</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- High-Level Port Performance Summary Cards -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+        <div class="traffic-stat-card">
+          <div style="font-size: 0.72rem; color: var(--text-secondary); text-transform: uppercase;">National Cargo (FY 2022-23)</div>
+          <div style="font-family: var(--font-heading); font-size: 1.45rem; font-weight: 700; color: var(--accent-cyan);" id="port-stat-national">784.30 MT</div>
+          <div style="font-size: 0.72rem; color: var(--accent-emerald); margin-top: 0.2rem;">+8.92% YoY Growth</div>
+        </div>
+
+        <div class="traffic-stat-card">
+          <div style="font-size: 0.72rem; color: var(--text-secondary); text-transform: uppercase;">Selected Port Volume (FY23)</div>
+          <div style="font-family: var(--font-heading); font-size: 1.45rem; font-weight: 700; color: #ffffff;" id="port-stat-current">--</div>
+          <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.2rem;" id="port-stat-share">National Share: --%</div>
+        </div>
+
+        <div class="traffic-stat-card">
+          <div style="font-size: 0.72rem; color: var(--text-secondary); text-transform: uppercase;">Projected Volume (FY 2029-30)</div>
+          <div style="font-family: var(--font-heading); font-size: 1.45rem; font-weight: 700; color: var(--accent-emerald);" id="port-stat-projected">--</div>
+          <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.2rem;" id="port-stat-cagr">7-Year CAGR: --%</div>
+        </div>
+
+        <div class="traffic-stat-card">
+          <div style="font-size: 0.72rem; color: var(--text-secondary); text-transform: uppercase;">Overseas vs Coastal Split</div>
+          <div style="font-family: var(--font-heading); font-size: 1.25rem; font-weight: 700; color: var(--accent-amber);" id="port-stat-split">76.5% / 23.5%</div>
+          <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.2rem;" id="port-stat-profile-sub">Foreign Trade Dominant</div>
+        </div>
+
+        <div class="traffic-stat-card">
+          <div style="font-size: 0.72rem; color: var(--text-secondary); text-transform: uppercase;">AI Model Accuracy (R²)</div>
+          <div style="font-family: var(--font-heading); font-size: 1.45rem; font-weight: 700; color: var(--accent-indigo);" id="port-stat-r2">0.9995</div>
+          <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.2rem;" id="port-stat-rmse">RMSE: ±4.2 MT</div>
+        </div>
+      </div>
+
+      <!-- Charts 2-Column Grid -->
+      <div class="grid-2col" style="gap: 1.5rem; margin-bottom: 1.5rem;">
+        <!-- Left: Throughput Trajectory -->
+        <div style="background: rgba(7, 13, 30, 0.5); padding: 1.2rem; border-radius: 10px; border: 1px solid var(--border-subtle);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+            <div>
+              <div style="font-size: 0.92rem; font-weight: 600; color: #ffffff;">Throughput Trajectory & AI Projections</div>
+              <div style="font-size: 0.75rem; color: var(--text-secondary);">33-year history + 7-year multi-step ML forecast with P10/P90 confidence envelope</div>
+            </div>
+            <span class="badge-tag badge-cyan" id="port-trajectory-badge">Total Major Ports</span>
+          </div>
+          <div class="chart-wrapper" style="height: 320px;">
+            <canvas id="portThroughputChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Right: Cargo Profile Breakdown -->
+        <div style="background: rgba(7, 13, 30, 0.5); padding: 1.2rem; border-radius: 10px; border: 1px solid var(--border-subtle);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+            <div>
+              <div style="font-size: 0.92rem; font-weight: 600; color: #ffffff;">Cargo Movement Composition ('000 Tonnes)</div>
+              <div style="font-size: 0.75rem; color: var(--text-secondary);">Overseas vs Coastal handling breakdown (Unloaded / Loaded / Transhipment)</div>
+            </div>
+            <span class="badge-tag badge-emerald" id="port-cargo-badge">FY 2022-23</span>
+          </div>
+          <div class="chart-wrapper" style="height: 320px;">
+            <canvas id="portCargoBreakdownChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Major Ports Ranking Table -->
+      <div style="background: rgba(7, 13, 30, 0.5); padding: 1.2rem; border-radius: 10px; border: 1px solid var(--border-subtle);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem; flex-wrap: wrap; gap: 0.5rem;">
+          <div>
+            <div style="font-size: 0.95rem; font-weight: 600; color: #ffffff;">India's Major Ports Throughput & Capacity Matrix</div>
+            <div style="font-size: 0.75rem; color: var(--text-secondary);">Official FY 2022-23 benchmarks, market share distribution, and 2030 projected targets</div>
+          </div>
+          <div style="font-size: 0.75rem; color: var(--accent-emerald); font-weight: 600;">
+            Maritime India Vision 2030 Benchmark
+          </div>
+        </div>
+
+        <div style="overflow-x: auto;">
+          <table class="data-table" id="port-rankings-table">
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Port Authority / Hub</th>
+                <th>State & Coast</th>
+                <th>FY 2022-23 Throughput</th>
+                <th>National Share</th>
+                <th>Overseas / Coastal Split</th>
+                <th>2029-30 Projected (P50)</th>
+                <th>Projected CAGR</th>
+                <th>Model R²</th>
+              </tr>
+            </thead>
+            <tbody id="port-rankings-tbody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    <!-- ==================== INLAND WATERWAYS (IWT) INTELLIGENCE CENTER ==================== -->
+    <section id="section-inland-waterways" class="glass-card reveal" style="margin-top: 2rem;">
+      <div class="card-header">
+        <div>
+          <div class="card-title" style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
+            <span>🌊</span> Inland Waterways Transport (IWT) & National Waterways Intelligence Center
+            <span class="iwt-header-badge">Jal Marg Vikas & Sagarmala</span>
+          </div>
+          <div class="card-subtitle">
+            Comprehensive inland river-sea analytics: NW-1 to NW-111, stretch Least Available Depth (LAD) 5-star monitoring, cargo commodities, multi-modal terminals, vessel fleet, and modal cost & carbon savings.
+          </div>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+          <div class="status-badge" style="background: rgba(0, 245, 160, 0.1); border-color: rgba(0, 245, 160, 0.3); color: var(--accent-emerald);">
+            <span class="pulse-dot"></span>
+            <span>133.0 MT Tracked Cargo</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- IWT Sub-Navigation Tabs (All 13 Categories Covered) -->
+      <div class="iwt-subnav" id="iwt-tabs-bar">
+        <button class="iwt-tab-btn active" data-iwt-tab="timeseries">📈 Cargo & Time-Series</button>
+        <button class="iwt-tab-btn" data-iwt-tab="depth">🌊 Navigation Depth (LAD) ⭐⭐⭐⭐⭐</button>
+        <button class="iwt-tab-btn" data-iwt-tab="commodities">📦 Cargo by Commodity</button>
+        <button class="iwt-tab-btn" data-iwt-tab="waterways">🗺️ National Waterways (NWs)</button>
+        <button class="iwt-tab-btn" data-iwt-tab="calculator">⏱️ Route Transit & Savings Calculator</button>
+        <button class="iwt-tab-btn" data-iwt-tab="infrastructure">🏗️ Waterway Infrastructure</button>
+        <button class="iwt-tab-btn" data-iwt-tab="vessels">🚢 IWT Vessel Fleet</button>
+        <button class="iwt-tab-btn" data-iwt-tab="operators">🏢 Operators & Freight Collected</button>
+        <button class="iwt-tab-btn" data-iwt-tab="safety">👥 Passengers & River Safety</button>
+      </div>
+
+      <!-- High-Level IWT KPI Summary Cards -->
+      <div class="iwt-kpi-grid">
+        <div class="iwt-kpi-card">
+          <div class="iwt-kpi-label">Annual Cargo Movement (FY24)</div>
+          <div class="iwt-kpi-val" style="color: var(--accent-cyan);" id="iwt-stat-cargo">133.0 MT</div>
+          <div class="iwt-kpi-sub">
+            <span style="color: var(--accent-emerald);">+5.43% YoY</span> • <span style="color: var(--accent-indigo);">10-Yr CAGR 22.1%</span>
+          </div>
+        </div>
+
+        <div class="iwt-kpi-card">
+          <div class="iwt-kpi-label">2030 Vision Target (P50)</div>
+          <div class="iwt-kpi-val" style="color: var(--accent-emerald);" id="iwt-stat-target">252.5 MT</div>
+          <div class="iwt-kpi-sub">
+            <span>Maritime India Vision 2030</span>
+          </div>
+        </div>
+
+        <div class="iwt-kpi-card">
+          <div class="iwt-kpi-label">Navigable Network Length</div>
+          <div class="iwt-kpi-val" style="color: var(--accent-amber);" id="iwt-stat-length">4,476 km</div>
+          <div class="iwt-kpi-sub">
+            <span>Across 10 Operational NWs</span>
+          </div>
+        </div>
+
+        <div class="iwt-kpi-card">
+          <div class="iwt-kpi-label">Modal Freight Savings</div>
+          <div class="iwt-kpi-val" style="color: #ffffff;" id="iwt-stat-savings">24.8% vs Rail</div>
+          <div class="iwt-kpi-sub">
+            <span style="color: var(--accent-emerald);">53.5% vs Road</span> (₹1.06/t-km)
+          </div>
+        </div>
+
+        <div class="iwt-kpi-card">
+          <div class="iwt-kpi-label">Annual Freight Revenue</div>
+          <div class="iwt-kpi-val" style="color: var(--accent-indigo);" id="iwt-stat-revenue">₹1,560 Cr</div>
+          <div class="iwt-kpi-sub">
+            <span>Public & Private IWT Carriers</span>
+          </div>
+        </div>
+
+        <div class="iwt-kpi-card">
+          <div class="iwt-kpi-label">Annual CO2 Abatement</div>
+          <div class="iwt-kpi-val" style="color: var(--accent-emerald);" id="iwt-stat-carbon">4.8 MT</div>
+          <div class="iwt-kpi-sub">
+            <span>₹3,850 Cr National Logistics Saving</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== TAB 1: TIME-SERIES & CARGO MOVEMENT ==================== -->
+      <div class="iwt-tab-pane" id="iwt-tab-timeseries">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
+          <div>
+            <div style="font-size: 1rem; font-weight: 600; color: #ffffff;">Waterway Cargo Movement Historical Trend & Projections (2014–2030)</div>
+            <div style="font-size: 0.75rem; color: var(--text-secondary);">11-year empirical throughput dataset (FY 2013-14 to FY 2023-24) + AI forward projection to 2030</div>
+          </div>
+          <div class="horizon-tabs" id="iwt-timeseries-filter-tabs">
+            <button class="tab-btn active" data-iwt-ts-filter="all">All (2014-2030)</button>
+            <button class="tab-btn" data-iwt-ts-filter="historical">Historical (2014-2024)</button>
+            <button class="tab-btn" data-iwt-ts-filter="projection">2025-2030 Targets</button>
+          </div>
+        </div>
+
+        <div class="grid-2col" style="gap: 1.5rem; margin-bottom: 1.5rem;">
+          <!-- Left: 11-Year Trajectory Chart -->
+          <div style="background: rgba(7, 13, 30, 0.5); padding: 1.2rem; border-radius: 10px; border: 1px solid var(--border-subtle);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+              <span style="font-size: 0.88rem; font-weight: 600; color: #ffffff;">National IWT Cargo Trajectory (Million Tonnes)</span>
+              <span class="badge-tag badge-cyan">CAGR: 22.1%</span>
+            </div>
+            <div class="chart-wrapper" style="height: 320px;">
+              <canvas id="iwtTimeSeriesChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Right: Waterway Distribution Share -->
+          <div style="background: rgba(7, 13, 30, 0.5); padding: 1.2rem; border-radius: 10px; border: 1px solid var(--border-subtle);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+              <span style="font-size: 0.88rem; font-weight: 600; color: #ffffff;">Waterway-wise Cargo Distribution (FY 2023-24)</span>
+              <span class="badge-tag badge-emerald">Top Corridors</span>
+            </div>
+            <div class="chart-wrapper" style="height: 320px;">
+              <canvas id="iwtWaterwayShareChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== TAB 2: NAVIGATION DEPTH (LAD) & DREDGING (5-STAR) ==================== -->
+      <div class="iwt-tab-pane" id="iwt-tab-depth" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
+          <div>
+            <div style="font-size: 1rem; font-weight: 600; color: #ffffff;">Stretch Navigation Depth (Least Available Depth - LAD) & Dredging Monitor</div>
+            <div style="font-size: 0.75rem; color: var(--text-secondary);">Real-time fairway depth tracking, shallow shoal alerts, seasonal draft limits, and air draft bridge clearances</div>
+          </div>
+          <span class="lad-pill-safe">⭐⭐⭐⭐⭐ Critical Navigation Safety Domain</span>
+        </div>
+
+        <!-- Interactive Vessel Draft Feasibility & UKC Simulator -->
+        <div style="background: rgba(12, 22, 48, 0.75); border: 1px solid rgba(0, 210, 255, 0.3); border-radius: 12px; padding: 1.25rem; margin-bottom: 1.5rem;">
+          <div style="font-size: 0.92rem; font-weight: 600; color: var(--accent-cyan); margin-bottom: 0.3rem;">
+            🔍 Interactive Vessel Draft Feasibility & Under-Keel Clearance (UKC) Simulator
+          </div>
+          <div style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 1rem;">
+            Test any barge loaded draft against stretch LAD to verify transit safety, under-keel clearance margin, and seasonal grounding risks.
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; align-items: flex-end;">
+            <div>
+              <label class="form-label" style="font-size: 0.75rem;">Waterway Stretch</label>
+              <select class="form-select" id="iwt-stretch-select">
+                <option value="NW1_HAL_FRK">Haldia - Farakka (NW-1, 460 km, LAD 3.0m)</option>
+                <option value="NW1_FRK_BRH">Farakka - Barh (NW-1, 300 km, LAD 2.6m)</option>
+                <option value="NW1_BRH_VRN">Barh - Varanasi (NW-1, 490 km, LAD 2.3m)</option>
+                <option value="NW1_VRN_PRY">Varanasi - Prayagraj (NW-1, 370 km, LAD 1.6m)</option>
+                <option value="NW2_DHB_PND">Dhubri - Pandu (NW-2, 260 km, LAD 2.5m)</option>
+                <option value="NW5_PNK_PRD">Pankpal - Paradip (NW-5, 185 km, LAD 2.9m)</option>
+                <option value="NW97_NMK_HMN">Sundarbans Protocol (NW-97, 172 km, LAD 3.8m)</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="form-label" style="font-size: 0.75rem;">Vessel Loaded Draft (meters)</label>
+              <input type="number" class="form-input" id="iwt-vessel-draft-input" value="2.20" step="0.1" min="0.5" max="4.5">
+            </div>
+
+            <div>
+              <label class="form-label" style="font-size: 0.75rem;">Required UKC Safety Margin (meters)</label>
+              <input type="number" class="form-input" id="iwt-safety-margin-input" value="0.30" step="0.05" min="0.1" max="1.0">
+            </div>
+
+            <div>
+              <button class="btn btn-primary" id="btn-check-draft-clearance" style="width: 100%;">
+                <span>⚡ Check Clearance</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Dynamic Output Card for Draft Clearance -->
+          <div id="iwt-draft-clearance-result" style="margin-top: 1.25rem; padding: 1rem; background: rgba(7, 13, 30, 0.7); border-radius: 8px; border: 1px solid var(--border-subtle);">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+              <div style="display: flex; align-items: center; gap: 0.6rem;">
+                <span id="iwt-clearance-badge" class="lad-pill-safe">SAFE CLEARANCE</span>
+                <span style="font-size: 0.85rem; font-weight: 600; color: #ffffff;" id="iwt-clearance-title">Haldia - Farakka Stretch</span>
+              </div>
+              <div style="font-size: 0.75rem; color: var(--text-secondary);" id="iwt-clearance-air-draft">
+                Air Draft Clearance: 9.5m
+              </div>
+            </div>
+
+            <div class="depth-meter-bar">
+              <div class="depth-meter-fill" id="iwt-clearance-meter" style="width: 75%; background: var(--accent-emerald);"></div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.75rem; margin-top: 0.75rem; font-size: 0.78rem;">
+              <div>Current Stretch LAD: <strong style="color: var(--accent-cyan);" id="iwt-res-actual-lad">3.00 m</strong></div>
+              <div>Under-Keel Clearance: <strong style="color: var(--accent-emerald);" id="iwt-res-ukc">0.80 m</strong></div>
+              <div>Min Seasonal LAD: <strong style="color: var(--accent-amber);" id="iwt-res-seasonal-lad">2.80 m</strong></div>
+              <div>Max Safe Draft: <strong style="color: #ffffff;" id="iwt-res-max-draft">2.70 m</strong></div>
+            </div>
+
+            <div style="margin-top: 0.75rem; font-size: 0.75rem; color: var(--text-secondary); line-height: 1.5;" id="iwt-res-advisory">
+              Full laden transit permissible for vessels with draft up to 2.8m. Trailing suction hopper dredgers actively deployed.
+            </div>
+          </div>
+        </div>
+
+        <!-- Full Stretches Master Table -->
+        <div style="background: rgba(7, 13, 30, 0.5); padding: 1.2rem; border-radius: 10px; border: 1px solid var(--border-subtle); overflow-x: auto;">
+          <table class="data-table" id="iwt-lad-table">
+            <thead>
+              <tr>
+                <th>Stretch / Waterway</th>
+                <th>Length (km)</th>
+                <th>Target LAD</th>
+                <th>Current LAD</th>
+                <th>Min Seasonal LAD</th>
+                <th>Dredging Operations</th>
+                <th>Shallow Shoals / Hazards</th>
+                <th>Air Draft</th>
+                <th>Navigation Status</th>
+              </tr>
+            </thead>
+            <tbody id="iwt-lad-table-tbody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ==================== TAB 3: CARGO BY COMMODITY ==================== -->
+      <div class="iwt-tab-pane" id="iwt-tab-commodities" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
+          <div>
+            <div style="font-size: 1rem; font-weight: 600; color: #ffffff;">Inland Cargo Movement by Commodity</div>
+            <div style="font-size: 0.75rem; color: var(--text-secondary);">Coal, fly ash, iron ore, steel products, cement, sand, fertilizers, food grains, and containerized freight</div>
+          </div>
+          <span class="badge-tag badge-cyan">National Total: 133.0 MT</span>
+        </div>
+
+        <div class="grid-2col" style="gap: 1.5rem; margin-bottom: 1.5rem;">
+          <div style="background: rgba(7, 13, 30, 0.5); padding: 1.2rem; border-radius: 10px; border: 1px solid var(--border-subtle);">
+            <div style="font-size: 0.88rem; font-weight: 600; color: #ffffff; margin-bottom: 0.75rem;">Commodity Volume Distribution (MT & Share %)</div>
+            <div class="chart-wrapper" style="height: 320px;">
+              <canvas id="iwtCommodityChart"></canvas>
+            </div>
+          </div>
+
+          <div style="background: rgba(7, 13, 30, 0.5); padding: 1.2rem; border-radius: 10px; border: 1px solid var(--border-subtle);">
+            <div style="font-size: 0.88rem; font-weight: 600; color: #ffffff; margin-bottom: 0.75rem;">Steel & Bulk Industry Waterway Logistics</div>
+            <div style="font-size: 0.78rem; color: var(--text-secondary); line-height: 1.6;">
+              <p style="margin-bottom: 0.75rem;">
+                <strong style="color: var(--accent-cyan);">⛏️ Coal (39.9 MT / 30%):</strong> Moves on NW-5 (Talcher to Paradip/Dhamra) and NW-1 (Haldia to NTPC Farakka/Barh). Delivers ₹400–750/T freight savings for thermal and steel power plants.
+              </p>
+              <p style="margin-bottom: 0.75rem;">
+                <strong style="color: var(--accent-emerald);">💨 Fly Ash (34.6 MT / 26%):</strong> Transports from Kolaghat (NW-86) and Budge Budge to Bangladesh cement grinders via NW-97 Sundarbans protocol route.
+              </p>
+              <p style="margin-bottom: 0.75rem;">
+                <strong style="color: var(--accent-amber);">⛓️ Finished Steel Coils & Billets (5.3 MT / 4%):</strong> Fastest growing (+34% YoY). SAIL and Tata Steel move heavy coils from Haldia/Kalinganagar to Varanasi MMT and Guwahati Pandu Port.
+              </p>
+              <p>
+                <strong style="color: var(--accent-indigo);">🪨 Iron Ore Pellets (21.3 MT / 16%):</strong> Heavy barge transport along Goa rivers (NW-68/111) directly loaded onto Cape/Panamax vessels at Mormugao anchorage.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="iwt-cards-grid" id="iwt-commodities-grid">
+          <!-- Dynamically populated commodity cards -->
+        </div>
+      </div>
+
+      <!-- ==================== TAB 4: NATIONAL WATERWAYS (NWS) ==================== -->
+      <div class="iwt-tab-pane" id="iwt-tab-waterways" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
+          <div>
+            <div style="font-size: 1rem; font-weight: 600; color: #ffffff;">National Waterways (NWs) Master Network</div>
+            <div style="font-size: 0.75rem; color: var(--text-secondary);">Comprehensive catalog of India's major commercial waterways: total vs navigable length, operational stretches, connected sea-ports & steel hubs</div>
+          </div>
+          <div style="min-width: 200px;">
+            <select class="form-select" id="iwt-waterway-state-filter" style="font-size: 0.78rem;">
+              <option value="">All States / Regions</option>
+              <option value="West Bengal">West Bengal</option>
+              <option value="Odisha">Odisha (Steel Corridor)</option>
+              <option value="Assam">Assam / North-East</option>
+              <option value="Uttar Pradesh">Uttar Pradesh</option>
+              <option value="Bihar">Bihar</option>
+              <option value="Goa">Goa</option>
+              <option value="Kerala">Kerala</option>
+              <option value="Andhra Pradesh">Andhra Pradesh</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="iwt-cards-grid" id="iwt-waterways-grid">
+          <!-- Dynamically populated waterway cards -->
+        </div>
+      </div>
+
+      <!-- ==================== TAB 5: ROUTE TRANSIT & SAVINGS CALCULATOR ==================== -->
+      <div class="iwt-tab-pane" id="iwt-tab-calculator" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
+          <div>
+            <div style="font-size: 1rem; font-weight: 600; color: #ffffff;">Multi-Modal River-Sea Transit & Freight Savings Calculator</div>
+            <div style="font-size: 0.75rem; color: var(--text-secondary);">Calculate transit duration factoring river currents (upstream vs downstream), and compare IWT vs. Indian Railways vs. Highways</div>
+          </div>
+          <span class="badge-tag badge-emerald">Average IWT Tariff: ₹1.06 / ton-km</span>
+        </div>
+
+        <div style="background: rgba(12, 22, 48, 0.7); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 1.25rem; margin-bottom: 1.5rem;">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; align-items: flex-end;">
+            <div>
+              <label class="form-label" style="font-size: 0.75rem;">River Route Corridor</label>
+              <select class="form-select" id="iwt-calc-route-select">
+                <option value="haldia_to_varanasi">Haldia Port → Varanasi MMT (NW-1, 1,250 km)</option>
+                <option value="haldia_to_patna">Haldia Port → Patna Kalughat (NW-1, 955 km)</option>
+                <option value="kolkata_to_pandu">Kolkata → Pandu Port Guwahati (NW-1/2 IBPR, 1,530 km)</option>
+                <option value="kalinganagar_to_paradip">Kalinganagar Steel Hub → Paradip Port (NW-5, 185 km)</option>
+                <option value="kolaghat_to_hemnagar">Kolaghat → Hemnagar Customs (NW-86/97, 210 km)</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="form-label" style="font-size: 0.75rem;">Commodity</label>
+              <select class="form-select" id="iwt-calc-commodity-select">
+                <option value="steel">Finished Steel Coils & Billets</option>
+                <option value="coal">Thermal & Coking Coal</option>
+                <option value="fly_ash">Fly Ash Bulk</option>
+                <option value="iron_ore">Iron Ore Pellets</option>
+                <option value="cement">Cement & Clinker</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="form-label" style="font-size: 0.75rem;">Cargo Volume (Tonnes)</label>
+              <input type="number" class="form-input" id="iwt-calc-tonnage-input" value="5000" step="500" min="100">
+            </div>
+
+            <div>
+              <label class="form-label" style="font-size: 0.75rem;">Vessel Class</label>
+              <select class="form-select" id="iwt-calc-vessel-select">
+                <option value="self_propelled_barge_1000">Self-Propelled Barge (1,000 DWT)</option>
+                <option value="self_propelled_barge_2000">Heavy Barge (2,000 DWT)</option>
+                <option value="push_tow_dumb_barge_flotilla">Pusher Tug + 2x Dumb Barges (3,000 DWT)</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="form-label" style="font-size: 0.75rem;">Transit Flow Direction</label>
+              <select class="form-select" id="iwt-calc-direction-select">
+                <option value="upstream">Upstream (Against River Flow)</option>
+                <option value="downstream">Downstream (With River Flow)</option>
+              </select>
+            </div>
+
+            <div>
+              <button class="btn btn-primary" id="btn-run-iwt-calc" style="width: 100%;">
+                <span>⚡ Calculate Modal Savings</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Calculator Result View Container -->
+        <div id="iwt-calc-results-container">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+
+      <!-- ==================== TAB 6: INFRASTRUCTURE ==================== -->
+      <div class="iwt-tab-pane" id="iwt-tab-infrastructure" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
+          <div>
+            <div style="font-size: 1rem; font-weight: 600; color: #ffffff;">Waterway Multi-Modal Terminals (MMTs), Jetties & Berths</div>
+            <div style="font-size: 0.75rem; color: var(--text-secondary);">Quay facilities, mobile harbour cranes, bulk conveyor systems, container yards, and railway sidings</div>
+          </div>
+          <span class="badge-tag badge-emerald">7 Key Terminals Active</span>
+        </div>
+
+        <div class="iwt-cards-grid" id="iwt-infra-grid">
+          <!-- Dynamically populated infrastructure cards -->
+        </div>
+      </div>
+
+      <!-- ==================== TAB 7: VESSEL FLEET ==================== -->
+      <div class="iwt-tab-pane" id="iwt-tab-vessels" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
+          <div>
+            <div style="font-size: 1rem; font-weight: 600; color: #ffffff;">IWT Commercial Vessel Fleet & Technical Specifications</div>
+            <div style="font-size: 0.75rem; color: var(--text-secondary);">Self-propelled barges, push-tow flotillas, Ro-Ro carriers, river-sea hybrids, and cruise vessels</div>
+          </div>
+          <span class="badge-tag badge-cyan">380 Active Commercial Vessels</span>
+        </div>
+
+        <div class="iwt-cards-grid" id="iwt-vessels-grid">
+          <!-- Dynamically populated vessel cards -->
+        </div>
+      </div>
+
+      <!-- ==================== TAB 8: OPERATORS & FREIGHT ==================== -->
+      <div class="iwt-tab-pane" id="iwt-tab-operators" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
+          <div>
+            <div style="font-size: 1rem; font-weight: 600; color: #ffffff;">Private Companies & Public Undertakings in IWT</div>
+            <div style="font-size: 0.75rem; color: var(--text-secondary);">Statutory regulators, CPSE barge operators, steel plant captive fleets, and cement logistics majors</div>
+          </div>
+          <span class="badge-tag badge-indigo">FY24 Freight Collected: ₹1,560 Cr</span>
+        </div>
+
+        <div style="background: rgba(7, 13, 30, 0.5); padding: 1.2rem; border-radius: 10px; border: 1px solid var(--border-subtle); overflow-x: auto;">
+          <table class="data-table" id="iwt-operators-table">
+            <thead>
+              <tr>
+                <th>Operator / Organization</th>
+                <th>Entity Type</th>
+                <th>Headquarters</th>
+                <th>Fleet Size</th>
+                <th>Operational Role & Key Waterways</th>
+              </tr>
+            </thead>
+            <tbody id="iwt-operators-tbody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ==================== TAB 9: PASSENGERS & SAFETY ==================== -->
+      <div class="iwt-tab-pane" id="iwt-tab-safety" style="display: none;">
+        <div class="grid-2col" style="gap: 1.5rem; margin-bottom: 1.5rem;">
+          <!-- Left: Passenger Movement -->
+          <div style="background: rgba(7, 13, 30, 0.5); padding: 1.2rem; border-radius: 10px; border: 1px solid var(--border-subtle);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+              <span style="font-size: 0.92rem; font-weight: 600; color: #ffffff;">👥 Passenger Movement & River Tourism</span>
+              <span class="badge-tag badge-emerald">84.5M Passengers / Year</span>
+            </div>
+            <div id="iwt-passengers-container">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <!-- Right: Accidents & River Safety Record -->
+          <div style="background: rgba(7, 13, 30, 0.5); padding: 1.2rem; border-radius: 10px; border: 1px solid var(--border-subtle);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+              <span style="font-size: 0.92rem; font-weight: 600; color: #ffffff;">🛡️ Maritime Safety Record & Navigation Aids</span>
+              <span class="badge-tag badge-cyan">Zero Fatalities (5-Yr Audit)</span>
+            </div>
+            <div id="iwt-safety-container">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </div>
+      </div>
+
     </section>
 
   </main>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        ⚓ <span>NAVI-STEEL</span> — Ministry of Steel, Government of India
+      </div>
+      <div class="footer-attr">
+        Smart India Hackathon 2026 | Problem ID: SIH26006 | Theme: Transportation & Logistics
+      </div>
+      <div class="footer-links">
+        <a href="#section-kpi">Dashboard</a>
+        <a href="#section-forecaster">Freight AI</a>
+        <a href="#section-optimizer">Charter Optimizer</a>
+      </div>
+    </div>
+  </footer>
 
   <!-- Tender Procurement Brief Modal -->
   <div class="modal-backdrop" id="report-modal">

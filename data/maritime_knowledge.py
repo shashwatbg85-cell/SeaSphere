@@ -389,3 +389,299 @@ COMMODITIES = {
         "default_vessel": "Supramax"
     }
 }
+
+# ---------------------------------------------------------
+# Comprehensive Metadata & Throughput for All 12 Major Ports
+# ---------------------------------------------------------
+ALL_MAJOR_PORTS = {
+    "deendayal": {
+        "id": "deendayal",
+        "port": "Deendayal",
+        "aliases": ["Kandla", "Deendayal Port Authority", "DPA"],
+        "state": "Gujarat",
+        "coast": "West Coast",
+        "coordinates": [23.0033, 70.2186],
+        "max_draft_meters": 14.5,
+        "max_dwt": 120000,
+        "traffic_2022_23_mt": 137.56,
+        "traffic_rank_2022_23": 1,
+        "overseas_total_000t": 122236,
+        "coastal_total_000t": 15325,
+        "grand_total_000t": 137561,
+        "overseas_share_pct": 88.86,
+        "coastal_share_pct": 11.14,
+        "major_commodities": ["Crude Oil (Vadinar)", "POL", "Dry Bulk", "Fertilizer", "Grain"],
+        "description": "India's highest cargo throughput port, premier gateway for crude oil and agricultural bulk."
+    },
+    "paradip": {
+        "id": "paradip",
+        "port": "Paradip",
+        "aliases": ["Paradip Port Authority", "PPA"],
+        "state": "Odisha",
+        "coast": "East Coast",
+        "coordinates": [20.2644, 86.6715],
+        "max_draft_meters": 17.1,
+        "max_dwt": 180000,
+        "traffic_2022_23_mt": 135.36,
+        "traffic_rank_2022_23": 2,
+        "overseas_total_000t": 76938,
+        "coastal_total_000t": 58423,
+        "grand_total_000t": 135361,
+        "overseas_share_pct": 56.84,
+        "coastal_share_pct": 43.16,
+        "major_commodities": ["Thermal Coal", "Coking Coal", "Iron Ore Pellets", "Crude Oil"],
+        "description": "Premier deep-draft hub on East Coast; top thermal coal evacuation and coking coal import terminal."
+    },
+    "jl_nehru": {
+        "id": "jl_nehru",
+        "port": "J.L. Nehru",
+        "aliases": ["JNPT", "Jawaharlal Nehru Port", "Nhava Sheva", "J.L.Nehru"],
+        "state": "Maharashtra",
+        "coast": "West Coast",
+        "coordinates": [18.9499, 72.9515],
+        "max_draft_meters": 15.0,
+        "max_dwt": 140000,
+        "traffic_2022_23_mt": 83.86,
+        "traffic_rank_2022_23": 3,
+        "overseas_total_000t": 78884,
+        "coastal_total_000t": 4977,
+        "grand_total_000t": 83861,
+        "overseas_share_pct": 94.07,
+        "coastal_share_pct": 5.93,
+        "major_commodities": ["Containerized Cargo", "Liquid Chemical Bulk", "Automobiles"],
+        "description": "India's premier container transshipment and gateway hub handling over 50% of container traffic."
+    },
+    "visakhapatnam": {
+        "id": "visakhapatnam",
+        "port": "Visakhapatnam",
+        "aliases": ["Vizag", "Visakhapatnam Port Authority", "VPA"],
+        "state": "Andhra Pradesh",
+        "coast": "East Coast",
+        "coordinates": [17.6868, 83.2185],
+        "max_draft_meters": 18.1,
+        "max_dwt": 200000,
+        "traffic_2022_23_mt": 73.75,
+        "traffic_rank_2022_23": 4,
+        "overseas_total_000t": 54600,
+        "coastal_total_000t": 19150,
+        "grand_total_000t": 73750,
+        "overseas_share_pct": 74.03,
+        "coastal_share_pct": 25.97,
+        "major_commodities": ["Coking Coal", "Iron Ore", "POL Products", "Thermal Coal", "Alumina"],
+        "description": "Key industrial port on Bay of Bengal directly feeding Vizag Steel (RINL) and NMDC export corridors."
+    },
+    "smp_haldia": {
+        "id": "smp_haldia",
+        "port": "SMP (Haldia Dock Complex)",
+        "aliases": ["Syama Prasad Mookerjee Port - Haldia", "Haldia", "HDC", "SMP(Kolkata/Haldia)"],
+        "state": "West Bengal",
+        "coast": "East Coast",
+        "coordinates": [22.0232, 88.0645],
+        "max_draft_meters": 8.5,
+        "max_dwt": 55000,
+        "traffic_2022_23_mt": 48.61,
+        "traffic_rank_2022_23": 5,
+        "overseas_total_000t": 43656,
+        "coastal_total_000t": 4952,
+        "grand_total_000t": 48608,
+        "overseas_share_pct": 89.81,
+        "coastal_share_pct": 10.19,
+        "major_commodities": ["Coking Coal", "POL Products", "LPG", "Petrochemicals", "Thermal Coal"],
+        "description": "Strategic riverine bulk dock closest to Durgapur and Burnpur steel clusters."
+    },
+    "chennai": {
+        "id": "chennai",
+        "port": "Chennai",
+        "aliases": ["Madras Port", "Chennai Port Authority", "ChPA"],
+        "state": "Tamil Nadu",
+        "coast": "East Coast",
+        "coordinates": [13.0844, 80.2974],
+        "max_draft_meters": 15.5,
+        "max_dwt": 120000,
+        "traffic_2022_23_mt": 48.95,
+        "traffic_rank_2022_23": 6,
+        "overseas_total_000t": 43032,
+        "coastal_total_000t": 5917,
+        "grand_total_000t": 48949,
+        "overseas_share_pct": 87.91,
+        "coastal_share_pct": 12.09,
+        "major_commodities": ["Automobiles", "Containers", "POL Products", "Clean Cargo"],
+        "description": "One of India's oldest artificial deepwater ports and major automotive export gateway."
+    },
+    "kamarajar": {
+        "id": "kamarajar",
+        "port": "Kamarajar",
+        "aliases": ["Ennore", "Kamarajar Port Limited", "KPL"],
+        "state": "Tamil Nadu",
+        "coast": "East Coast",
+        "coordinates": [13.2625, 80.3347],
+        "max_draft_meters": 16.0,
+        "max_dwt": 150000,
+        "traffic_2022_23_mt": 43.51,
+        "traffic_rank_2022_23": 7,
+        "overseas_total_000t": 26006,
+        "coastal_total_000t": 17501,
+        "grand_total_000t": 43507,
+        "overseas_share_pct": 59.77,
+        "coastal_share_pct": 40.23,
+        "major_commodities": ["Thermal Coal", "Automobiles (Ro-Ro)", "POL / LPG", "Containers"],
+        "description": "India's only corporatized major port; primary energy and coal supply gateway for TANGEDCO power plants."
+    },
+    "new_mangalore": {
+        "id": "new_mangalore",
+        "port": "New Mangalore",
+        "aliases": ["NMPA", "Panambur"],
+        "state": "Karnataka",
+        "coast": "West Coast",
+        "coordinates": [12.9287, 74.8214],
+        "max_draft_meters": 15.1,
+        "max_dwt": 125000,
+        "traffic_2022_23_mt": 41.42,
+        "traffic_rank_2022_23": 8,
+        "overseas_total_000t": 32341,
+        "coastal_total_000t": 9076,
+        "grand_total_000t": 41417,
+        "overseas_share_pct": 78.09,
+        "coastal_share_pct": 21.91,
+        "major_commodities": ["POL Crude", "LPG", "Fertilizers", "Iron Ore Pellets", "Coal"],
+        "description": "Deepwater all-weather port on the West Coast serving MRPL refinery and Kudremukh pellet plants."
+    },
+    "vo_chidambaranar": {
+        "id": "vo_chidambaranar",
+        "port": "V.O. Chidambaranar",
+        "aliases": ["Tuticorin", "VOC Port", "Thoothukudi", "V.O.Chidambaranar"],
+        "state": "Tamil Nadu",
+        "coast": "East Coast",
+        "coordinates": [8.7538, 78.1884],
+        "max_draft_meters": 14.2,
+        "max_dwt": 95000,
+        "traffic_2022_23_mt": 38.04,
+        "traffic_rank_2022_23": 9,
+        "overseas_total_000t": 25470,
+        "coastal_total_000t": 12572,
+        "grand_total_000t": 38041,
+        "overseas_share_pct": 66.95,
+        "coastal_share_pct": 33.05,
+        "major_commodities": ["Thermal Coal", "Containers", "Fertilizers", "Industrial Chemicals"],
+        "description": "Strategic southern gateway on the Gulf of Mannar near international East-West shipping lanes."
+    },
+    "cochin": {
+        "id": "cochin",
+        "port": "Cochin",
+        "aliases": ["Kochi", "Cochin Port Authority", "Vallarpadam"],
+        "state": "Kerala",
+        "coast": "West Coast",
+        "coordinates": [9.9656, 76.2690],
+        "max_draft_meters": 14.5,
+        "max_dwt": 115000,
+        "traffic_2022_23_mt": 35.26,
+        "traffic_rank_2022_23": 10,
+        "overseas_total_000t": 23150,
+        "coastal_total_000t": 12106,
+        "grand_total_000t": 35256,
+        "overseas_share_pct": 65.66,
+        "coastal_share_pct": 34.34,
+        "major_commodities": ["Crude Oil (BPCL Kochi)", "Containers (ICTT)", "LNG", "Dry Bulk"],
+        "description": "Natural harbor located just 11 nautical miles from the primary East-West maritime route."
+    },
+    "mumbai": {
+        "id": "mumbai",
+        "port": "Mumbai",
+        "aliases": ["Mumbai Port Trust", "MbPT"],
+        "state": "Maharashtra",
+        "coast": "West Coast",
+        "coordinates": [18.9438, 72.8466],
+        "max_draft_meters": 11.5,
+        "max_dwt": 80000,
+        "traffic_2022_23_mt": 63.61,
+        "traffic_rank_2022_23": 11,
+        "overseas_total_000t": 41006,
+        "coastal_total_000t": 22602,
+        "grand_total_000t": 63608,
+        "overseas_share_pct": 64.47,
+        "coastal_share_pct": 35.53,
+        "major_commodities": ["POL Products", "General Cargo", "Vehicles", "Cruise Vessels"],
+        "description": "Historic natural deepwater port handling heavy liquid bulk and general coastal cargo."
+    },
+    "mormugao": {
+        "id": "mormugao",
+        "port": "Mormugao",
+        "aliases": ["Goa Port", "Mormugao Port Authority", "MPA"],
+        "state": "Goa",
+        "coast": "West Coast",
+        "coordinates": [15.4137, 73.8016],
+        "max_draft_meters": 14.1,
+        "max_dwt": 85000,
+        "traffic_2022_23_mt": 17.33,
+        "traffic_rank_2022_23": 12,
+        "overseas_total_000t": 15601,
+        "coastal_total_000t": 1733,
+        "grand_total_000t": 17334,
+        "overseas_share_pct": 90.00,
+        "coastal_share_pct": 10.00,
+        "major_commodities": ["Iron Ore", "Thermal Coal", "Met Coke", "Cruise"],
+        "description": "Leading iron ore and bulk coal terminal on the mouth of Zuari River in Goa."
+    },
+    "smp_kolkata": {
+        "id": "smp_kolkata",
+        "port": "SMP (Kolkata Dock System)",
+        "aliases": ["Syama Prasad Mookerjee Port - Kolkata", "Kolkata", "KDS", "Calcutta Port"],
+        "state": "West Bengal",
+        "coast": "East Coast",
+        "coordinates": [22.5448, 88.3184],
+        "max_draft_meters": 7.5,
+        "max_dwt": 30000,
+        "traffic_2022_23_mt": 17.05,
+        "traffic_rank_2022_23": 13,
+        "overseas_total_000t": 16660,
+        "coastal_total_000t": 391,
+        "grand_total_000t": 17051,
+        "overseas_share_pct": 97.71,
+        "coastal_share_pct": 2.29,
+        "major_commodities": ["Containers", "Break Bulk", "Nepal & Bhutan Transit Cargo", "Timber"],
+        "description": "Inland riverine dock system and principal transit lifeline for landlocked neighboring countries."
+    }
+}
+
+def find_major_port(query_str):
+    """
+    Looks up a port in ALL_MAJOR_PORTS by exact ID, display name, or alias.
+    Case-insensitive.
+    """
+    if not query_str:
+        return None
+    q = str(query_str).strip().lower()
+    
+    # Check ID direct match
+    if q in ALL_MAJOR_PORTS:
+        return ALL_MAJOR_PORTS[q]
+        
+    for port_id, data in ALL_MAJOR_PORTS.items():
+        if data["port"].lower() == q:
+            return data
+        for alias in data.get("aliases", []):
+            if alias.lower() == q or q in alias.lower():
+                return data
+                
+    return None
+
+def get_national_port_cargo_totals():
+    """
+    Returns aggregated figures for all major Indian ports (FY 2022-23 benchmark).
+    """
+    return {
+        "total_traffic_mt": 784.30,
+        "grand_total_000t": 784305,
+        "overseas_unloaded_000t": 439801,
+        "overseas_loaded_000t": 146283,
+        "overseas_transhipment_000t": 13495,
+        "overseas_total_000t": 599579,
+        "overseas_share_pct": 76.45,
+        "coastal_unloaded_000t": 73796,
+        "coastal_loaded_000t": 100627,
+        "coastal_transhipment_000t": 10302,
+        "coastal_total_000t": 184725,
+        "coastal_share_pct": 23.55,
+        "active_major_ports": len(ALL_MAJOR_PORTS),
+        "top_ports_by_volume": ["deendayal", "paradip", "jl_nehru", "visakhapatnam", "mumbai"]
+    }

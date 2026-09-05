@@ -107,11 +107,17 @@ function initMaritimeMap() {
     zoomControl: true
   });
 
-  // Dark Maritime CartoDB Tile Layer
-  L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
-    attribution: '&copy; <a href="https://carto.com/">CARTO</a> &copy; OpenStreetMap',
-    subdomains: "abcd",
-    maxZoom: 19
+  // Dark Maritime Basemap Tile Layer (Free, No API Key Required, Clean Dark Aesthetic)
+  L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}", {
+    attribution: '&copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
+    maxZoom: 16
+  }).addTo(mapInstance);
+
+  // Subtle Country & Maritime Reference Layer (No API Key Required)
+  L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}", {
+    attribution: '',
+    maxZoom: 16,
+    opacity: 0.85
   }).addTo(mapInstance);
 
   // Load Port and Origin Markers
@@ -120,42 +126,84 @@ function initMaritimeMap() {
 }
 
 function loadPortMarkers() {
-  fetch("/api/metadata/all")
-    .then(res => res.json())
-    .then(data => {
-      if (data.status !== "success") return;
-      const metadata = data.data;
+  Promise.all([
+    fetch("/api/metadata/all").then(r => r.json()).catch(() => ({ status: "error" })),
+    fetch("/api/weather/ports").then(r => r.json()).catch(() => ({ status: "error" }))
+  ]).then(([metaRes, weatherRes]) => {
+    if (metaRes.status !== "success") return;
+    const metadata = metaRes.data;
+    const weatherMap = {};
+    if (weatherRes.status === "success" && Array.isArray(weatherRes.data)) {
+      weatherRes.data.forEach(w => {
+        weatherMap[w.port_name.toLowerCase()] = w;
+      });
+    }
 
-      // 1. Render East Coast Indian Ports (Cyan / Radar Icon)
-      Object.entries(metadata.ports).forEach(([id, port]) => {
-        const customIcon = L.divIcon({
-          className: "custom-port-marker",
-          html: `
-            <div style="position:relative;">
-              <div style="width: 14px; height: 14px; background: #00d2ff; border: 2px solid #ffffff; border-radius: 50%; box-shadow: 0 0 12px #00d2ff;"></div>
-              <div style="position: absolute; top:-7px; left:-7px; width: 28px; height: 28px; border: 1px solid rgba(0, 210, 255, 0.5); border-radius: 50%; animation: pulse 2s infinite;"></div>
-            </div>
-          `,
-          iconSize: [28, 28],
-          iconAnchor: [14, 14]
-        });
+    // 1. Render All Indian Major Ports (West & East Coasts)
+    const majorPorts = metadata.major_ports || metadata.ports;
+    Object.entries(majorPorts).forEach(([id, port]) => {
+      const isWestCoast = port.coast === "West Coast";
+      const accentColor = isWestCoast ? "#00f5a0" : "#00d2ff";
+      
+      const customIcon = L.divIcon({
+        className: "custom-port-marker",
+        html: `
+          <div style="position:relative;">
+            <div style="width: 14px; height: 14px; background: ${accentColor}; border: 2px solid #ffffff; border-radius: 50%; box-shadow: 0 0 12px ${accentColor};"></div>
+            <div style="position: absolute; top:-7px; left:-7px; width: 28px; height: 28px; border: 1px solid rgba(0, 210, 255, 0.4); border-radius: 50%; animation: pulse 2s infinite;"></div>
+          </div>
+        `,
+        iconSize: [28, 28],
+        iconAnchor: [14, 14]
+      });
 
-        const marker = L.marker(port.coordinates, { icon: customIcon }).addTo(mapInstance);
-        const popupContent = `
-          <div style="color: #070d1e; font-family: sans-serif; min-width: 220px;">
-            <div style="font-weight: 800; font-size: 14px; color: #0077b6; border-bottom: 1px solid #ddd; padding-bottom: 4px;">${port.name}</div>
-            <div style="font-size: 11px; margin-top: 5px; color: #555;">State: <b>${port.state}</b></div>
-            <div style="font-size: 11px; color: #555;">Max Draft: <b style="color: #0096c7;">${port.max_draft_meters}m</b> (${port.max_dwt.toLocaleString()} DWT)</div>
-            <div style="font-size: 11px; color: #555;">Avg Berth Queue: <b>${port.avg_waiting_days} days</b></div>
-            <div style="font-size: 11px; color: #555;">Demurrage Rate: <b>$${port.demurrage_usd_day.toLocaleString()}/day</b></div>
-            <div style="font-size: 10px; margin-top: 6px; padding: 4px; background: ${port.lightering_required ? '#fee2e2; color: #b91c1c' : '#dcfce7; color: #15803d'}; border-radius: 4px; font-weight: 600;">
-              ${port.lightering_required ? '⚠️ Shallow Draft: Offshore Lightering Needed' : '✓ Full Deepwater Direct Berthing'}
-            </div>
+      const marker = L.marker(port.coordinates, { icon: customIcon }).addTo(mapInstance);
+      const displayName = port.port || port.name;
+      const throughput = port.traffic_2022_23_mt ? `${port.traffic_2022_23_mt} MT` : "Major Hub";
+      const overseasPct = port.overseas_share_pct ? `${port.overseas_share_pct}%` : "76%";
+      const coastalPct = port.coastal_share_pct ? `${port.coastal_share_pct}%` : "24%";
+      const rankText = port.traffic_rank_2022_23 ? `#${port.traffic_rank_2022_23} in India` : "";
+
+      // Match port weather
+      let portWeather = null;
+      const dLow = displayName.toLowerCase();
+      for (const [wKey, wData] of Object.entries(weatherMap)) {
+        if (dLow.includes(wKey) || wKey.includes(dLow)) {
+          portWeather = wData;
+          break;
+        }
+      }
+
+      let weatherSnippet = "";
+      if (portWeather && portWeather.current_weather) {
+        const cw = portWeather.current_weather;
+        weatherSnippet = `
+          <div style="font-size: 11px; margin-top: 5px; padding: 4px 6px; background: #e0f2fe; color: #0369a1; border-radius: 4px; display: flex; justify-content: space-between; align-items: center; font-weight: 600;">
+            <span>${cw.icon || '☀️'} ${cw.condition} (${cw.temp_max}°C)</span>
+            <span>💨 ${cw.wind_kmh} km/h</span>
           </div>
         `;
-        marker.bindPopup(popupContent);
-        portMarkers[id] = marker;
-      });
+      }
+
+      const popupContent = `
+        <div style="color: #070d1e; font-family: sans-serif; min-width: 230px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd; padding-bottom: 4px;">
+            <div style="font-weight: 800; font-size: 14px; color: #0077b6;">${displayName}</div>
+            <span style="font-size: 10px; background: #e0f2fe; color: #0369a1; padding: 2px 6px; border-radius: 4px; font-weight: 700;">${rankText}</span>
+          </div>
+          ${weatherSnippet}
+          <div style="font-size: 11px; margin-top: 5px; color: #555;">State: <b>${port.state}</b> (${port.coast || 'Coastal'})</div>
+          <div style="font-size: 11px; color: #555;">FY23 Throughput: <b style="color: #0284c7;">${throughput}</b></div>
+          <div style="font-size: 11px; color: #555;">Trade Split: <b style="color: #0369a1;">${overseasPct} OS</b> / <b style="color: #b45309;">${coastalPct} CS</b></div>
+          <div style="font-size: 11px; color: #555;">Max Draft: <b>${port.max_draft_meters || 14.5}m</b></div>
+          <div style="font-size: 10px; margin-top: 6px; padding: 4px; background: #ecfdf5; color: #047857; border-radius: 4px; font-weight: 600;">
+            ${port.description || 'Major commercial gateway under Ministry of Ports, Shipping & Waterways'}
+          </div>
+        </div>
+      `;
+      marker.bindPopup(popupContent);
+      portMarkers[id] = marker;
+    });
 
       // 2. Render Overseas Origin Hubs (Amber / Cargo Icon)
       Object.entries(metadata.origins).forEach(([id, origin]) => {

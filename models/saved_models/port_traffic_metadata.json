@@ -1,0 +1,2913 @@
+{
+  "dataset_info": {
+    "start_year": "1990-91",
+    "end_year": "2022-23",
+    "total_historical_years": 33,
+    "source": "Ministry of Ports, Shipping and Waterways / IPA",
+    "forecast_horizons": [
+      "2023-24",
+      "2024-25",
+      "2025-26",
+      "2026-27",
+      "2027-28",
+      "2028-29",
+      "2029-30"
+    ]
+  },
+  "ports": {
+    "deendayal": {
+      "id": "deendayal",
+      "display_name": "Deendayal (Kandla)",
+      "column": "Deendayal",
+      "model_file": "hybrid_traffic_deendayal.joblib",
+      "features": [
+        "year_idx",
+        "trend_sq",
+        "lag_1",
+        "lag_2",
+        "lag_3",
+        "sma_3",
+        "sma_5",
+        "std_3",
+        "yoy_growth",
+        "cagr_3y",
+        "share_of_total_lag1"
+      ],
+      "metrics": {
+        "r2": 0.9987,
+        "test_r2": 0.5569,
+        "rmse": 5.25,
+        "mae": 4.17,
+        "mape": 3.45,
+        "residual_std": 1.21,
+        "cagr_2023_2030_pct": 3.88,
+        "volume_2022_23_mt": 137.56,
+        "projected_2029_30_mt": 179.51
+      },
+      "historical": [
+        {
+          "year": "1990-91",
+          "traffic_mt": 19.69
+        },
+        {
+          "year": "1991-92",
+          "traffic_mt": 21.0
+        },
+        {
+          "year": "1992-93",
+          "traffic_mt": 22.91
+        },
+        {
+          "year": "1993-94",
+          "traffic_mt": 24.5
+        },
+        {
+          "year": "1994-95",
+          "traffic_mt": 26.5
+        },
+        {
+          "year": "1995-96",
+          "traffic_mt": 30.34
+        },
+        {
+          "year": "1996-97",
+          "traffic_mt": 33.73
+        },
+        {
+          "year": "1997-98",
+          "traffic_mt": 38.9
+        },
+        {
+          "year": "1998-99",
+          "traffic_mt": 40.64
+        },
+        {
+          "year": "1999-00",
+          "traffic_mt": 46.3
+        },
+        {
+          "year": "2000-01",
+          "traffic_mt": 36.74
+        },
+        {
+          "year": "2001-02",
+          "traffic_mt": 37.73
+        },
+        {
+          "year": "2002-03",
+          "traffic_mt": 40.63
+        },
+        {
+          "year": "2003-04",
+          "traffic_mt": 41.52
+        },
+        {
+          "year": "2004-05",
+          "traffic_mt": 41.55
+        },
+        {
+          "year": "2005-06",
+          "traffic_mt": 45.91
+        },
+        {
+          "year": "2006-07",
+          "traffic_mt": 52.98
+        },
+        {
+          "year": "2007-08",
+          "traffic_mt": 64.92
+        },
+        {
+          "year": "2008-09",
+          "traffic_mt": 72.22
+        },
+        {
+          "year": "2009-10",
+          "traffic_mt": 79.5
+        },
+        {
+          "year": "2010-11",
+          "traffic_mt": 81.88
+        },
+        {
+          "year": "2011-12",
+          "traffic_mt": 82.5
+        },
+        {
+          "year": "2012-13",
+          "traffic_mt": 93.62
+        },
+        {
+          "year": "2013-14",
+          "traffic_mt": 87.01
+        },
+        {
+          "year": "2014-15",
+          "traffic_mt": 92.5
+        },
+        {
+          "year": "2015-16",
+          "traffic_mt": 99.46
+        },
+        {
+          "year": "2016-17",
+          "traffic_mt": 105.44
+        },
+        {
+          "year": "2017-18",
+          "traffic_mt": 110.1
+        },
+        {
+          "year": "2018-19",
+          "traffic_mt": 115.4
+        },
+        {
+          "year": "2019-20",
+          "traffic_mt": 122.61
+        },
+        {
+          "year": "2020-21",
+          "traffic_mt": 117.57
+        },
+        {
+          "year": "2021-22",
+          "traffic_mt": 127.1
+        },
+        {
+          "year": "2022-23",
+          "traffic_mt": 137.56
+        }
+      ],
+      "forecast": [
+        {
+          "year": "2023-24",
+          "step_horizon": 1,
+          "lower_p10": 140.55,
+          "predicted_p50": 142.25,
+          "upper_p90": 143.95,
+          "yoy_growth_pct": 3.41
+        },
+        {
+          "year": "2024-25",
+          "step_horizon": 2,
+          "lower_p10": 144.88,
+          "predicted_p50": 146.71,
+          "upper_p90": 148.54,
+          "yoy_growth_pct": 3.14
+        },
+        {
+          "year": "2025-26",
+          "step_horizon": 3,
+          "lower_p10": 150.55,
+          "predicted_p50": 152.51,
+          "upper_p90": 154.47,
+          "yoy_growth_pct": 3.95
+        },
+        {
+          "year": "2026-27",
+          "step_horizon": 4,
+          "lower_p10": 158.11,
+          "predicted_p50": 160.19,
+          "upper_p90": 162.27,
+          "yoy_growth_pct": 5.04
+        },
+        {
+          "year": "2027-28",
+          "step_horizon": 5,
+          "lower_p10": 164.46,
+          "predicted_p50": 166.65,
+          "upper_p90": 168.84,
+          "yoy_growth_pct": 4.03
+        },
+        {
+          "year": "2028-29",
+          "step_horizon": 6,
+          "lower_p10": 170.82,
+          "predicted_p50": 173.12,
+          "upper_p90": 175.42,
+          "yoy_growth_pct": 3.88
+        },
+        {
+          "year": "2029-30",
+          "step_horizon": 7,
+          "lower_p10": 177.11,
+          "predicted_p50": 179.51,
+          "upper_p90": 181.91,
+          "yoy_growth_pct": 3.69
+        }
+      ]
+    },
+    "mumbai": {
+      "id": "mumbai",
+      "display_name": "Mumbai Port",
+      "column": "Mumbai",
+      "model_file": "hybrid_traffic_mumbai.joblib",
+      "features": [
+        "year_idx",
+        "trend_sq",
+        "lag_1",
+        "lag_2",
+        "lag_3",
+        "sma_3",
+        "sma_5",
+        "std_3",
+        "yoy_growth",
+        "cagr_3y",
+        "share_of_total_lag1"
+      ],
+      "metrics": {
+        "r2": 0.9943,
+        "test_r2": -16.8423,
+        "rmse": 14.37,
+        "mae": 13.64,
+        "mape": 23.22,
+        "residual_std": 1.04,
+        "cagr_2023_2030_pct": 1.49,
+        "volume_2022_23_mt": 63.61,
+        "projected_2029_30_mt": 70.56
+      },
+      "historical": [
+        {
+          "year": "1990-91",
+          "traffic_mt": 28.9
+        },
+        {
+          "year": "1991-92",
+          "traffic_mt": 26.26
+        },
+        {
+          "year": "1992-93",
+          "traffic_mt": 28.95
+        },
+        {
+          "year": "1993-94",
+          "traffic_mt": 30.51
+        },
+        {
+          "year": "1994-95",
+          "traffic_mt": 30.67
+        },
+        {
+          "year": "1995-96",
+          "traffic_mt": 33.92
+        },
+        {
+          "year": "1996-97",
+          "traffic_mt": 33.73
+        },
+        {
+          "year": "1997-98",
+          "traffic_mt": 32.1
+        },
+        {
+          "year": "1998-99",
+          "traffic_mt": 30.97
+        },
+        {
+          "year": "1999-00",
+          "traffic_mt": 30.41
+        },
+        {
+          "year": "2000-01",
+          "traffic_mt": 27.06
+        },
+        {
+          "year": "2001-02",
+          "traffic_mt": 26.43
+        },
+        {
+          "year": "2002-03",
+          "traffic_mt": 26.8
+        },
+        {
+          "year": "2003-04",
+          "traffic_mt": 30.0
+        },
+        {
+          "year": "2004-05",
+          "traffic_mt": 35.19
+        },
+        {
+          "year": "2005-06",
+          "traffic_mt": 44.19
+        },
+        {
+          "year": "2006-07",
+          "traffic_mt": 52.36
+        },
+        {
+          "year": "2007-08",
+          "traffic_mt": 57.04
+        },
+        {
+          "year": "2008-09",
+          "traffic_mt": 51.88
+        },
+        {
+          "year": "2009-10",
+          "traffic_mt": 54.54
+        },
+        {
+          "year": "2010-11",
+          "traffic_mt": 54.59
+        },
+        {
+          "year": "2011-12",
+          "traffic_mt": 56.19
+        },
+        {
+          "year": "2012-13",
+          "traffic_mt": 58.04
+        },
+        {
+          "year": "2013-14",
+          "traffic_mt": 59.18
+        },
+        {
+          "year": "2014-15",
+          "traffic_mt": 61.66
+        },
+        {
+          "year": "2015-16",
+          "traffic_mt": 61.12
+        },
+        {
+          "year": "2016-17",
+          "traffic_mt": 63.13
+        },
+        {
+          "year": "2017-18",
+          "traffic_mt": 62.9
+        },
+        {
+          "year": "2018-19",
+          "traffic_mt": 60.63
+        },
+        {
+          "year": "2019-20",
+          "traffic_mt": 60.7
+        },
+        {
+          "year": "2020-21",
+          "traffic_mt": 53.32
+        },
+        {
+          "year": "2021-22",
+          "traffic_mt": 59.89
+        },
+        {
+          "year": "2022-23",
+          "traffic_mt": 63.61
+        }
+      ],
+      "forecast": [
+        {
+          "year": "2023-24",
+          "step_horizon": 1,
+          "lower_p10": 63.75,
+          "predicted_p50": 65.21,
+          "upper_p90": 66.67,
+          "yoy_growth_pct": 2.52
+        },
+        {
+          "year": "2024-25",
+          "step_horizon": 2,
+          "lower_p10": 65.49,
+          "predicted_p50": 67.07,
+          "upper_p90": 68.65,
+          "yoy_growth_pct": 2.85
+        },
+        {
+          "year": "2025-26",
+          "step_horizon": 3,
+          "lower_p10": 65.35,
+          "predicted_p50": 67.03,
+          "upper_p90": 68.71,
+          "yoy_growth_pct": -0.06
+        },
+        {
+          "year": "2026-27",
+          "step_horizon": 4,
+          "lower_p10": 66.05,
+          "predicted_p50": 67.84,
+          "upper_p90": 69.63,
+          "yoy_growth_pct": 1.21
+        },
+        {
+          "year": "2027-28",
+          "step_horizon": 5,
+          "lower_p10": 66.92,
+          "predicted_p50": 68.8,
+          "upper_p90": 70.68,
+          "yoy_growth_pct": 1.42
+        },
+        {
+          "year": "2028-29",
+          "step_horizon": 6,
+          "lower_p10": 67.72,
+          "predicted_p50": 69.69,
+          "upper_p90": 71.66,
+          "yoy_growth_pct": 1.29
+        },
+        {
+          "year": "2029-30",
+          "step_horizon": 7,
+          "lower_p10": 68.5,
+          "predicted_p50": 70.56,
+          "upper_p90": 72.62,
+          "yoy_growth_pct": 1.25
+        }
+      ]
+    },
+    "jl_nehru": {
+      "id": "jl_nehru",
+      "display_name": "J.L. Nehru (JNPT)",
+      "column": "J.L.Nehru",
+      "model_file": "hybrid_traffic_jl_nehru.joblib",
+      "features": [
+        "year_idx",
+        "trend_sq",
+        "lag_1",
+        "lag_2",
+        "lag_3",
+        "sma_3",
+        "sma_5",
+        "std_3",
+        "yoy_growth",
+        "cagr_3y",
+        "share_of_total_lag1"
+      ],
+      "metrics": {
+        "r2": 0.998,
+        "test_r2": 0.4332,
+        "rmse": 4.99,
+        "mae": 4.05,
+        "mape": 5.69,
+        "residual_std": 1.14,
+        "cagr_2023_2030_pct": -1.05,
+        "volume_2022_23_mt": 83.86,
+        "projected_2029_30_mt": 77.91
+      },
+      "historical": [
+        {
+          "year": "1990-91",
+          "traffic_mt": 2.02
+        },
+        {
+          "year": "1991-92",
+          "traffic_mt": 2.79
+        },
+        {
+          "year": "1992-93",
+          "traffic_mt": 3.01
+        },
+        {
+          "year": "1993-94",
+          "traffic_mt": 3.38
+        },
+        {
+          "year": "1994-95",
+          "traffic_mt": 5.01
+        },
+        {
+          "year": "1995-96",
+          "traffic_mt": 6.87
+        },
+        {
+          "year": "1996-97",
+          "traffic_mt": 8.07
+        },
+        {
+          "year": "1997-98",
+          "traffic_mt": 8.9
+        },
+        {
+          "year": "1998-99",
+          "traffic_mt": 11.72
+        },
+        {
+          "year": "1999-00",
+          "traffic_mt": 14.98
+        },
+        {
+          "year": "2000-01",
+          "traffic_mt": 18.58
+        },
+        {
+          "year": "2001-02",
+          "traffic_mt": 22.52
+        },
+        {
+          "year": "2002-03",
+          "traffic_mt": 26.84
+        },
+        {
+          "year": "2003-04",
+          "traffic_mt": 31.19
+        },
+        {
+          "year": "2004-05",
+          "traffic_mt": 32.81
+        },
+        {
+          "year": "2005-06",
+          "traffic_mt": 37.84
+        },
+        {
+          "year": "2006-07",
+          "traffic_mt": 44.82
+        },
+        {
+          "year": "2007-08",
+          "traffic_mt": 55.84
+        },
+        {
+          "year": "2008-09",
+          "traffic_mt": 57.3
+        },
+        {
+          "year": "2009-10",
+          "traffic_mt": 60.76
+        },
+        {
+          "year": "2010-11",
+          "traffic_mt": 64.32
+        },
+        {
+          "year": "2011-12",
+          "traffic_mt": 65.73
+        },
+        {
+          "year": "2012-13",
+          "traffic_mt": 64.49
+        },
+        {
+          "year": "2013-14",
+          "traffic_mt": 62.33
+        },
+        {
+          "year": "2014-15",
+          "traffic_mt": 63.8
+        },
+        {
+          "year": "2015-16",
+          "traffic_mt": 64.03
+        },
+        {
+          "year": "2016-17",
+          "traffic_mt": 62.15
+        },
+        {
+          "year": "2017-18",
+          "traffic_mt": 66.0
+        },
+        {
+          "year": "2018-19",
+          "traffic_mt": 70.71
+        },
+        {
+          "year": "2019-20",
+          "traffic_mt": 68.45
+        },
+        {
+          "year": "2020-21",
+          "traffic_mt": 64.81
+        },
+        {
+          "year": "2021-22",
+          "traffic_mt": 76.0
+        },
+        {
+          "year": "2022-23",
+          "traffic_mt": 83.86
+        }
+      ],
+      "forecast": [
+        {
+          "year": "2023-24",
+          "step_horizon": 1,
+          "lower_p10": 78.6,
+          "predicted_p50": 80.2,
+          "upper_p90": 81.8,
+          "yoy_growth_pct": -4.36
+        },
+        {
+          "year": "2024-25",
+          "step_horizon": 2,
+          "lower_p10": 72.54,
+          "predicted_p50": 74.27,
+          "upper_p90": 76.0,
+          "yoy_growth_pct": -7.39
+        },
+        {
+          "year": "2025-26",
+          "step_horizon": 3,
+          "lower_p10": 74.17,
+          "predicted_p50": 76.02,
+          "upper_p90": 77.87,
+          "yoy_growth_pct": 2.36
+        },
+        {
+          "year": "2026-27",
+          "step_horizon": 4,
+          "lower_p10": 74.59,
+          "predicted_p50": 76.55,
+          "upper_p90": 78.51,
+          "yoy_growth_pct": 0.7
+        },
+        {
+          "year": "2027-28",
+          "step_horizon": 5,
+          "lower_p10": 74.28,
+          "predicted_p50": 76.34,
+          "upper_p90": 78.4,
+          "yoy_growth_pct": -0.27
+        },
+        {
+          "year": "2028-29",
+          "step_horizon": 6,
+          "lower_p10": 75.16,
+          "predicted_p50": 77.32,
+          "upper_p90": 79.48,
+          "yoy_growth_pct": 1.28
+        },
+        {
+          "year": "2029-30",
+          "step_horizon": 7,
+          "lower_p10": 75.65,
+          "predicted_p50": 77.91,
+          "upper_p90": 80.17,
+          "yoy_growth_pct": 0.76
+        }
+      ]
+    },
+    "mormugao": {
+      "id": "mormugao",
+      "display_name": "Mormugao (Goa)",
+      "column": "Mormugao",
+      "model_file": "hybrid_traffic_mormugao.joblib",
+      "features": [
+        "year_idx",
+        "trend_sq",
+        "lag_1",
+        "lag_2",
+        "lag_3",
+        "sma_3",
+        "sma_5",
+        "std_3",
+        "yoy_growth",
+        "cagr_3y",
+        "share_of_total_lag1"
+      ],
+      "metrics": {
+        "r2": 0.982,
+        "test_r2": -12.0519,
+        "rmse": 7.26,
+        "mae": 6.75,
+        "mape": 36.13,
+        "residual_std": 1.33,
+        "cagr_2023_2030_pct": -100.0,
+        "volume_2022_23_mt": 17.33,
+        "projected_2029_30_mt": 0.0
+      },
+      "historical": [
+        {
+          "year": "1990-91",
+          "traffic_mt": 14.91
+        },
+        {
+          "year": "1991-92",
+          "traffic_mt": 15.1
+        },
+        {
+          "year": "1992-93",
+          "traffic_mt": 16.31
+        },
+        {
+          "year": "1993-94",
+          "traffic_mt": 18.72
+        },
+        {
+          "year": "1994-95",
+          "traffic_mt": 18.88
+        },
+        {
+          "year": "1995-96",
+          "traffic_mt": 18.09
+        },
+        {
+          "year": "1996-97",
+          "traffic_mt": 17.31
+        },
+        {
+          "year": "1997-98",
+          "traffic_mt": 21.18
+        },
+        {
+          "year": "1998-99",
+          "traffic_mt": 18.02
+        },
+        {
+          "year": "1999-00",
+          "traffic_mt": 18.23
+        },
+        {
+          "year": "2000-01",
+          "traffic_mt": 19.63
+        },
+        {
+          "year": "2001-02",
+          "traffic_mt": 22.93
+        },
+        {
+          "year": "2002-03",
+          "traffic_mt": 23.65
+        },
+        {
+          "year": "2003-04",
+          "traffic_mt": 27.87
+        },
+        {
+          "year": "2004-05",
+          "traffic_mt": 30.66
+        },
+        {
+          "year": "2005-06",
+          "traffic_mt": 31.69
+        },
+        {
+          "year": "2006-07",
+          "traffic_mt": 34.24
+        },
+        {
+          "year": "2007-08",
+          "traffic_mt": 35.13
+        },
+        {
+          "year": "2008-09",
+          "traffic_mt": 41.68
+        },
+        {
+          "year": "2009-10",
+          "traffic_mt": 48.85
+        },
+        {
+          "year": "2010-11",
+          "traffic_mt": 50.06
+        },
+        {
+          "year": "2011-12",
+          "traffic_mt": 39.05
+        },
+        {
+          "year": "2012-13",
+          "traffic_mt": 17.74
+        },
+        {
+          "year": "2013-14",
+          "traffic_mt": 11.74
+        },
+        {
+          "year": "2014-15",
+          "traffic_mt": 14.71
+        },
+        {
+          "year": "2015-16",
+          "traffic_mt": 20.78
+        },
+        {
+          "year": "2016-17",
+          "traffic_mt": 33.18
+        },
+        {
+          "year": "2017-18",
+          "traffic_mt": 26.9
+        },
+        {
+          "year": "2018-19",
+          "traffic_mt": 17.68
+        },
+        {
+          "year": "2019-20",
+          "traffic_mt": 16.02
+        },
+        {
+          "year": "2020-21",
+          "traffic_mt": 21.99
+        },
+        {
+          "year": "2021-22",
+          "traffic_mt": 18.46
+        },
+        {
+          "year": "2022-23",
+          "traffic_mt": 17.33
+        }
+      ],
+      "forecast": [
+        {
+          "year": "2023-24",
+          "step_horizon": 1,
+          "lower_p10": 9.58,
+          "predicted_p50": 11.44,
+          "upper_p90": 13.3,
+          "yoy_growth_pct": -33.99
+        },
+        {
+          "year": "2024-25",
+          "step_horizon": 2,
+          "lower_p10": 5.91,
+          "predicted_p50": 7.92,
+          "upper_p90": 9.93,
+          "yoy_growth_pct": -30.77
+        },
+        {
+          "year": "2025-26",
+          "step_horizon": 3,
+          "lower_p10": 2.68,
+          "predicted_p50": 4.83,
+          "upper_p90": 6.98,
+          "yoy_growth_pct": -39.02
+        },
+        {
+          "year": "2026-27",
+          "step_horizon": 4,
+          "lower_p10": 1.55,
+          "predicted_p50": 3.83,
+          "upper_p90": 6.11,
+          "yoy_growth_pct": -20.7
+        },
+        {
+          "year": "2027-28",
+          "step_horizon": 5,
+          "lower_p10": 0.0,
+          "predicted_p50": 1.02,
+          "upper_p90": 3.43,
+          "yoy_growth_pct": -73.37
+        },
+        {
+          "year": "2028-29",
+          "step_horizon": 6,
+          "lower_p10": 0.0,
+          "predicted_p50": 0.0,
+          "upper_p90": 2.53,
+          "yoy_growth_pct": -100.0
+        },
+        {
+          "year": "2029-30",
+          "step_horizon": 7,
+          "lower_p10": 0.0,
+          "predicted_p50": 0.0,
+          "upper_p90": 2.64,
+          "yoy_growth_pct": 0.0
+        }
+      ]
+    },
+    "new_mangalore": {
+      "id": "new_mangalore",
+      "display_name": "New Mangalore",
+      "column": "New Mangalore",
+      "model_file": "hybrid_traffic_new_mangalore.joblib",
+      "features": [
+        "year_idx",
+        "trend_sq",
+        "lag_1",
+        "lag_2",
+        "lag_3",
+        "sma_3",
+        "sma_5",
+        "std_3",
+        "yoy_growth",
+        "cagr_3y",
+        "share_of_total_lag1"
+      ],
+      "metrics": {
+        "r2": 0.996,
+        "test_r2": -0.9162,
+        "rmse": 2.87,
+        "mae": 2.57,
+        "mape": 6.6,
+        "residual_std": 0.71,
+        "cagr_2023_2030_pct": -1.51,
+        "volume_2022_23_mt": 41.42,
+        "projected_2029_30_mt": 37.23
+      },
+      "historical": [
+        {
+          "year": "1990-91",
+          "traffic_mt": 8.02
+        },
+        {
+          "year": "1991-92",
+          "traffic_mt": 8.27
+        },
+        {
+          "year": "1992-93",
+          "traffic_mt": 7.09
+        },
+        {
+          "year": "1993-94",
+          "traffic_mt": 8.63
+        },
+        {
+          "year": "1994-95",
+          "traffic_mt": 8.01
+        },
+        {
+          "year": "1995-96",
+          "traffic_mt": 8.88
+        },
+        {
+          "year": "1996-97",
+          "traffic_mt": 12.45
+        },
+        {
+          "year": "1997-98",
+          "traffic_mt": 15.28
+        },
+        {
+          "year": "1998-99",
+          "traffic_mt": 14.21
+        },
+        {
+          "year": "1999-00",
+          "traffic_mt": 17.6
+        },
+        {
+          "year": "2000-01",
+          "traffic_mt": 17.89
+        },
+        {
+          "year": "2001-02",
+          "traffic_mt": 17.5
+        },
+        {
+          "year": "2002-03",
+          "traffic_mt": 21.43
+        },
+        {
+          "year": "2003-04",
+          "traffic_mt": 26.67
+        },
+        {
+          "year": "2004-05",
+          "traffic_mt": 33.89
+        },
+        {
+          "year": "2005-06",
+          "traffic_mt": 34.45
+        },
+        {
+          "year": "2006-07",
+          "traffic_mt": 32.04
+        },
+        {
+          "year": "2007-08",
+          "traffic_mt": 36.02
+        },
+        {
+          "year": "2008-09",
+          "traffic_mt": 36.69
+        },
+        {
+          "year": "2009-10",
+          "traffic_mt": 35.53
+        },
+        {
+          "year": "2010-11",
+          "traffic_mt": 31.55
+        },
+        {
+          "year": "2011-12",
+          "traffic_mt": 32.94
+        },
+        {
+          "year": "2012-13",
+          "traffic_mt": 37.04
+        },
+        {
+          "year": "2013-14",
+          "traffic_mt": 39.37
+        },
+        {
+          "year": "2014-15",
+          "traffic_mt": 36.57
+        },
+        {
+          "year": "2015-16",
+          "traffic_mt": 35.58
+        },
+        {
+          "year": "2016-17",
+          "traffic_mt": 39.94
+        },
+        {
+          "year": "2017-18",
+          "traffic_mt": 42.06
+        },
+        {
+          "year": "2018-19",
+          "traffic_mt": 42.51
+        },
+        {
+          "year": "2019-20",
+          "traffic_mt": 39.15
+        },
+        {
+          "year": "2020-21",
+          "traffic_mt": 36.5
+        },
+        {
+          "year": "2021-22",
+          "traffic_mt": 39.3
+        },
+        {
+          "year": "2022-23",
+          "traffic_mt": 41.42
+        }
+      ],
+      "forecast": [
+        {
+          "year": "2023-24",
+          "step_horizon": 1,
+          "lower_p10": 40.13,
+          "predicted_p50": 41.13,
+          "upper_p90": 42.13,
+          "yoy_growth_pct": -0.7
+        },
+        {
+          "year": "2024-25",
+          "step_horizon": 2,
+          "lower_p10": 38.76,
+          "predicted_p50": 39.84,
+          "upper_p90": 40.92,
+          "yoy_growth_pct": -3.14
+        },
+        {
+          "year": "2025-26",
+          "step_horizon": 3,
+          "lower_p10": 38.41,
+          "predicted_p50": 39.56,
+          "upper_p90": 40.71,
+          "yoy_growth_pct": -0.7
+        },
+        {
+          "year": "2026-27",
+          "step_horizon": 4,
+          "lower_p10": 38.01,
+          "predicted_p50": 39.23,
+          "upper_p90": 40.45,
+          "yoy_growth_pct": -0.83
+        },
+        {
+          "year": "2027-28",
+          "step_horizon": 5,
+          "lower_p10": 36.93,
+          "predicted_p50": 38.22,
+          "upper_p90": 39.51,
+          "yoy_growth_pct": -2.57
+        },
+        {
+          "year": "2028-29",
+          "step_horizon": 6,
+          "lower_p10": 36.48,
+          "predicted_p50": 37.83,
+          "upper_p90": 39.18,
+          "yoy_growth_pct": -1.02
+        },
+        {
+          "year": "2029-30",
+          "step_horizon": 7,
+          "lower_p10": 35.82,
+          "predicted_p50": 37.23,
+          "upper_p90": 38.64,
+          "yoy_growth_pct": -1.59
+        }
+      ]
+    },
+    "cochin": {
+      "id": "cochin",
+      "display_name": "Cochin (Kochi)",
+      "column": "Cochin",
+      "model_file": "hybrid_traffic_cochin.joblib",
+      "features": [
+        "year_idx",
+        "trend_sq",
+        "lag_1",
+        "lag_2",
+        "lag_3",
+        "sma_3",
+        "sma_5",
+        "std_3",
+        "yoy_growth",
+        "cagr_3y",
+        "share_of_total_lag1"
+      ],
+      "metrics": {
+        "r2": 0.9984,
+        "test_r2": -4.0875,
+        "rmse": 3.3,
+        "mae": 3.09,
+        "mape": 9.14,
+        "residual_std": 0.32,
+        "cagr_2023_2030_pct": 4.79,
+        "volume_2022_23_mt": 35.26,
+        "projected_2029_30_mt": 48.91
+      },
+      "historical": [
+        {
+          "year": "1990-91",
+          "traffic_mt": 7.28
+        },
+        {
+          "year": "1991-92",
+          "traffic_mt": 7.48
+        },
+        {
+          "year": "1992-93",
+          "traffic_mt": 7.98
+        },
+        {
+          "year": "1993-94",
+          "traffic_mt": 7.62
+        },
+        {
+          "year": "1994-95",
+          "traffic_mt": 8.63
+        },
+        {
+          "year": "1995-96",
+          "traffic_mt": 11.5
+        },
+        {
+          "year": "1996-97",
+          "traffic_mt": 11.74
+        },
+        {
+          "year": "1997-98",
+          "traffic_mt": 12.32
+        },
+        {
+          "year": "1998-99",
+          "traffic_mt": 12.68
+        },
+        {
+          "year": "1999-00",
+          "traffic_mt": 12.84
+        },
+        {
+          "year": "2000-01",
+          "traffic_mt": 13.14
+        },
+        {
+          "year": "2001-02",
+          "traffic_mt": 12.06
+        },
+        {
+          "year": "2002-03",
+          "traffic_mt": 13.02
+        },
+        {
+          "year": "2003-04",
+          "traffic_mt": 13.57
+        },
+        {
+          "year": "2004-05",
+          "traffic_mt": 14.1
+        },
+        {
+          "year": "2005-06",
+          "traffic_mt": 13.89
+        },
+        {
+          "year": "2006-07",
+          "traffic_mt": 15.26
+        },
+        {
+          "year": "2007-08",
+          "traffic_mt": 15.81
+        },
+        {
+          "year": "2008-09",
+          "traffic_mt": 15.49
+        },
+        {
+          "year": "2009-10",
+          "traffic_mt": 17.43
+        },
+        {
+          "year": "2010-11",
+          "traffic_mt": 17.87
+        },
+        {
+          "year": "2011-12",
+          "traffic_mt": 20.09
+        },
+        {
+          "year": "2012-13",
+          "traffic_mt": 19.85
+        },
+        {
+          "year": "2013-14",
+          "traffic_mt": 20.89
+        },
+        {
+          "year": "2014-15",
+          "traffic_mt": 21.6
+        },
+        {
+          "year": "2015-16",
+          "traffic_mt": 22.1
+        },
+        {
+          "year": "2016-17",
+          "traffic_mt": 25.01
+        },
+        {
+          "year": "2017-18",
+          "traffic_mt": 29.14
+        },
+        {
+          "year": "2018-19",
+          "traffic_mt": 32.02
+        },
+        {
+          "year": "2019-20",
+          "traffic_mt": 34.04
+        },
+        {
+          "year": "2020-21",
+          "traffic_mt": 31.5
+        },
+        {
+          "year": "2021-22",
+          "traffic_mt": 34.55
+        },
+        {
+          "year": "2022-23",
+          "traffic_mt": 35.26
+        }
+      ],
+      "forecast": [
+        {
+          "year": "2023-24",
+          "step_horizon": 1,
+          "lower_p10": 36.65,
+          "predicted_p50": 37.1,
+          "upper_p90": 37.55,
+          "yoy_growth_pct": 5.22
+        },
+        {
+          "year": "2024-25",
+          "step_horizon": 2,
+          "lower_p10": 38.06,
+          "predicted_p50": 38.54,
+          "upper_p90": 39.02,
+          "yoy_growth_pct": 3.88
+        },
+        {
+          "year": "2025-26",
+          "step_horizon": 3,
+          "lower_p10": 39.89,
+          "predicted_p50": 40.41,
+          "upper_p90": 40.93,
+          "yoy_growth_pct": 4.85
+        },
+        {
+          "year": "2026-27",
+          "step_horizon": 4,
+          "lower_p10": 42.11,
+          "predicted_p50": 42.66,
+          "upper_p90": 43.21,
+          "yoy_growth_pct": 5.57
+        },
+        {
+          "year": "2027-28",
+          "step_horizon": 5,
+          "lower_p10": 44.15,
+          "predicted_p50": 44.73,
+          "upper_p90": 45.31,
+          "yoy_growth_pct": 4.85
+        },
+        {
+          "year": "2028-29",
+          "step_horizon": 6,
+          "lower_p10": 46.19,
+          "predicted_p50": 46.8,
+          "upper_p90": 47.41,
+          "yoy_growth_pct": 4.63
+        },
+        {
+          "year": "2029-30",
+          "step_horizon": 7,
+          "lower_p10": 48.28,
+          "predicted_p50": 48.91,
+          "upper_p90": 49.54,
+          "yoy_growth_pct": 4.51
+        }
+      ]
+    },
+    "vo_chidambaranar": {
+      "id": "vo_chidambaranar",
+      "display_name": "V.O. Chidambaranar (Tuticorin)",
+      "column": "V.O.Chidambaranar",
+      "model_file": "hybrid_traffic_vo_chidambaranar.joblib",
+      "features": [
+        "year_idx",
+        "trend_sq",
+        "lag_1",
+        "lag_2",
+        "lag_3",
+        "sma_3",
+        "sma_5",
+        "std_3",
+        "yoy_growth",
+        "cagr_3y",
+        "share_of_total_lag1"
+      ],
+      "metrics": {
+        "r2": 0.9974,
+        "test_r2": -23.0277,
+        "rmse": 10.25,
+        "mae": 9.61,
+        "mape": 27.83,
+        "residual_std": 0.54,
+        "cagr_2023_2030_pct": 2.99,
+        "volume_2022_23_mt": 38.04,
+        "projected_2029_30_mt": 46.76
+      },
+      "historical": [
+        {
+          "year": "1990-91",
+          "traffic_mt": 5.08
+        },
+        {
+          "year": "1991-92",
+          "traffic_mt": 5.87
+        },
+        {
+          "year": "1992-93",
+          "traffic_mt": 6.22
+        },
+        {
+          "year": "1993-94",
+          "traffic_mt": 6.7
+        },
+        {
+          "year": "1994-95",
+          "traffic_mt": 8.04
+        },
+        {
+          "year": "1995-96",
+          "traffic_mt": 9.29
+        },
+        {
+          "year": "1996-97",
+          "traffic_mt": 9.18
+        },
+        {
+          "year": "1997-98",
+          "traffic_mt": 9.98
+        },
+        {
+          "year": "1998-99",
+          "traffic_mt": 10.15
+        },
+        {
+          "year": "1999-00",
+          "traffic_mt": 9.99
+        },
+        {
+          "year": "2000-01",
+          "traffic_mt": 12.28
+        },
+        {
+          "year": "2001-02",
+          "traffic_mt": 13.02
+        },
+        {
+          "year": "2002-03",
+          "traffic_mt": 13.29
+        },
+        {
+          "year": "2003-04",
+          "traffic_mt": 13.68
+        },
+        {
+          "year": "2004-05",
+          "traffic_mt": 15.81
+        },
+        {
+          "year": "2005-06",
+          "traffic_mt": 17.14
+        },
+        {
+          "year": "2006-07",
+          "traffic_mt": 18.0
+        },
+        {
+          "year": "2007-08",
+          "traffic_mt": 21.48
+        },
+        {
+          "year": "2008-09",
+          "traffic_mt": 22.01
+        },
+        {
+          "year": "2009-10",
+          "traffic_mt": 23.79
+        },
+        {
+          "year": "2010-11",
+          "traffic_mt": 25.73
+        },
+        {
+          "year": "2011-12",
+          "traffic_mt": 28.11
+        },
+        {
+          "year": "2012-13",
+          "traffic_mt": 28.26
+        },
+        {
+          "year": "2013-14",
+          "traffic_mt": 28.64
+        },
+        {
+          "year": "2014-15",
+          "traffic_mt": 32.41
+        },
+        {
+          "year": "2015-16",
+          "traffic_mt": 36.85
+        },
+        {
+          "year": "2016-17",
+          "traffic_mt": 38.46
+        },
+        {
+          "year": "2017-18",
+          "traffic_mt": 36.58
+        },
+        {
+          "year": "2018-19",
+          "traffic_mt": 34.34
+        },
+        {
+          "year": "2019-20",
+          "traffic_mt": 36.08
+        },
+        {
+          "year": "2020-21",
+          "traffic_mt": 31.79
+        },
+        {
+          "year": "2021-22",
+          "traffic_mt": 34.12
+        },
+        {
+          "year": "2022-23",
+          "traffic_mt": 38.04
+        }
+      ],
+      "forecast": [
+        {
+          "year": "2023-24",
+          "step_horizon": 1,
+          "lower_p10": 39.26,
+          "predicted_p50": 40.02,
+          "upper_p90": 40.78,
+          "yoy_growth_pct": 5.21
+        },
+        {
+          "year": "2024-25",
+          "step_horizon": 2,
+          "lower_p10": 39.95,
+          "predicted_p50": 40.77,
+          "upper_p90": 41.59,
+          "yoy_growth_pct": 1.87
+        },
+        {
+          "year": "2025-26",
+          "step_horizon": 3,
+          "lower_p10": 40.35,
+          "predicted_p50": 41.22,
+          "upper_p90": 42.09,
+          "yoy_growth_pct": 1.1
+        },
+        {
+          "year": "2026-27",
+          "step_horizon": 4,
+          "lower_p10": 42.11,
+          "predicted_p50": 43.04,
+          "upper_p90": 43.97,
+          "yoy_growth_pct": 4.42
+        },
+        {
+          "year": "2027-28",
+          "step_horizon": 5,
+          "lower_p10": 43.29,
+          "predicted_p50": 44.27,
+          "upper_p90": 45.25,
+          "yoy_growth_pct": 2.86
+        },
+        {
+          "year": "2028-29",
+          "step_horizon": 6,
+          "lower_p10": 44.7,
+          "predicted_p50": 45.73,
+          "upper_p90": 46.76,
+          "yoy_growth_pct": 3.3
+        },
+        {
+          "year": "2029-30",
+          "step_horizon": 7,
+          "lower_p10": 45.69,
+          "predicted_p50": 46.76,
+          "upper_p90": 47.83,
+          "yoy_growth_pct": 2.25
+        }
+      ]
+    },
+    "chennai": {
+      "id": "chennai",
+      "display_name": "Chennai Port",
+      "column": "Chennai",
+      "model_file": "hybrid_traffic_chennai.joblib",
+      "features": [
+        "year_idx",
+        "trend_sq",
+        "lag_1",
+        "lag_2",
+        "lag_3",
+        "sma_3",
+        "sma_5",
+        "std_3",
+        "yoy_growth",
+        "cagr_3y",
+        "share_of_total_lag1"
+      ],
+      "metrics": {
+        "r2": 0.9922,
+        "test_r2": -0.4714,
+        "rmse": 3.74,
+        "mae": 2.94,
+        "mape": 6.4,
+        "residual_std": 0.87,
+        "cagr_2023_2030_pct": -3.97,
+        "volume_2022_23_mt": 48.95,
+        "projected_2029_30_mt": 36.86
+      },
+      "historical": [
+        {
+          "year": "1990-91",
+          "traffic_mt": 24.52
+        },
+        {
+          "year": "1991-92",
+          "traffic_mt": 25.05
+        },
+        {
+          "year": "1992-93",
+          "traffic_mt": 25.33
+        },
+        {
+          "year": "1993-94",
+          "traffic_mt": 26.54
+        },
+        {
+          "year": "1994-95",
+          "traffic_mt": 29.46
+        },
+        {
+          "year": "1995-96",
+          "traffic_mt": 30.72
+        },
+        {
+          "year": "1996-97",
+          "traffic_mt": 31.85
+        },
+        {
+          "year": "1997-98",
+          "traffic_mt": 35.53
+        },
+        {
+          "year": "1998-99",
+          "traffic_mt": 35.2
+        },
+        {
+          "year": "1999-00",
+          "traffic_mt": 37.44
+        },
+        {
+          "year": "2000-01",
+          "traffic_mt": 41.22
+        },
+        {
+          "year": "2001-02",
+          "traffic_mt": 36.12
+        },
+        {
+          "year": "2002-03",
+          "traffic_mt": 33.69
+        },
+        {
+          "year": "2003-04",
+          "traffic_mt": 36.71
+        },
+        {
+          "year": "2004-05",
+          "traffic_mt": 43.81
+        },
+        {
+          "year": "2005-06",
+          "traffic_mt": 47.25
+        },
+        {
+          "year": "2006-07",
+          "traffic_mt": 53.41
+        },
+        {
+          "year": "2007-08",
+          "traffic_mt": 57.15
+        },
+        {
+          "year": "2008-09",
+          "traffic_mt": 57.49
+        },
+        {
+          "year": "2009-10",
+          "traffic_mt": 61.06
+        },
+        {
+          "year": "2010-11",
+          "traffic_mt": 61.46
+        },
+        {
+          "year": "2011-12",
+          "traffic_mt": 55.71
+        },
+        {
+          "year": "2012-13",
+          "traffic_mt": 53.4
+        },
+        {
+          "year": "2013-14",
+          "traffic_mt": 51.11
+        },
+        {
+          "year": "2014-15",
+          "traffic_mt": 52.54
+        },
+        {
+          "year": "2015-16",
+          "traffic_mt": 50.06
+        },
+        {
+          "year": "2016-17",
+          "traffic_mt": 50.21
+        },
+        {
+          "year": "2017-18",
+          "traffic_mt": 51.88
+        },
+        {
+          "year": "2018-19",
+          "traffic_mt": 53.01
+        },
+        {
+          "year": "2019-20",
+          "traffic_mt": 46.76
+        },
+        {
+          "year": "2020-21",
+          "traffic_mt": 43.55
+        },
+        {
+          "year": "2021-22",
+          "traffic_mt": 48.56
+        },
+        {
+          "year": "2022-23",
+          "traffic_mt": 48.95
+        }
+      ],
+      "forecast": [
+        {
+          "year": "2023-24",
+          "step_horizon": 1,
+          "lower_p10": 43.49,
+          "predicted_p50": 44.71,
+          "upper_p90": 45.93,
+          "yoy_growth_pct": -8.66
+        },
+        {
+          "year": "2024-25",
+          "step_horizon": 2,
+          "lower_p10": 42.51,
+          "predicted_p50": 43.83,
+          "upper_p90": 45.15,
+          "yoy_growth_pct": -1.97
+        },
+        {
+          "year": "2025-26",
+          "step_horizon": 3,
+          "lower_p10": 39.99,
+          "predicted_p50": 41.4,
+          "upper_p90": 42.81,
+          "yoy_growth_pct": -5.54
+        },
+        {
+          "year": "2026-27",
+          "step_horizon": 4,
+          "lower_p10": 39.38,
+          "predicted_p50": 40.87,
+          "upper_p90": 42.36,
+          "yoy_growth_pct": -1.28
+        },
+        {
+          "year": "2027-28",
+          "step_horizon": 5,
+          "lower_p10": 37.83,
+          "predicted_p50": 39.4,
+          "upper_p90": 40.97,
+          "yoy_growth_pct": -3.6
+        },
+        {
+          "year": "2028-29",
+          "step_horizon": 6,
+          "lower_p10": 37.22,
+          "predicted_p50": 38.87,
+          "upper_p90": 40.52,
+          "yoy_growth_pct": -1.35
+        },
+        {
+          "year": "2029-30",
+          "step_horizon": 7,
+          "lower_p10": 35.13,
+          "predicted_p50": 36.86,
+          "upper_p90": 38.59,
+          "yoy_growth_pct": -5.17
+        }
+      ]
+    },
+    "kamarajar": {
+      "id": "kamarajar",
+      "display_name": "Kamarajar (Ennore)",
+      "column": "Kamarajar",
+      "model_file": "hybrid_traffic_kamarajar.joblib",
+      "features": [
+        "year_idx",
+        "trend_sq",
+        "lag_1",
+        "lag_2",
+        "lag_3",
+        "sma_3",
+        "sma_5",
+        "std_3",
+        "yoy_growth",
+        "cagr_3y",
+        "share_of_total_lag1"
+      ],
+      "metrics": {
+        "r2": 0.9945,
+        "test_r2": -0.2635,
+        "rmse": 6.75,
+        "mae": 5.65,
+        "mape": 18.12,
+        "residual_std": 0.82,
+        "cagr_2023_2030_pct": 2.15,
+        "volume_2022_23_mt": 43.51,
+        "projected_2029_30_mt": 50.48
+      },
+      "historical": [
+        {
+          "year": "1990-91",
+          "traffic_mt": 0.0
+        },
+        {
+          "year": "1991-92",
+          "traffic_mt": 0.0
+        },
+        {
+          "year": "1992-93",
+          "traffic_mt": 0.0
+        },
+        {
+          "year": "1993-94",
+          "traffic_mt": 0.0
+        },
+        {
+          "year": "1994-95",
+          "traffic_mt": 0.0
+        },
+        {
+          "year": "1995-96",
+          "traffic_mt": 0.0
+        },
+        {
+          "year": "1996-97",
+          "traffic_mt": 0.0
+        },
+        {
+          "year": "1997-98",
+          "traffic_mt": 0.0
+        },
+        {
+          "year": "1998-99",
+          "traffic_mt": 0.0
+        },
+        {
+          "year": "1999-00",
+          "traffic_mt": 0.0
+        },
+        {
+          "year": "2000-01",
+          "traffic_mt": 0.0
+        },
+        {
+          "year": "2001-02",
+          "traffic_mt": 3.4
+        },
+        {
+          "year": "2002-03",
+          "traffic_mt": 8.49
+        },
+        {
+          "year": "2003-04",
+          "traffic_mt": 9.28
+        },
+        {
+          "year": "2004-05",
+          "traffic_mt": 9.48
+        },
+        {
+          "year": "2005-06",
+          "traffic_mt": 9.16
+        },
+        {
+          "year": "2006-07",
+          "traffic_mt": 10.71
+        },
+        {
+          "year": "2007-08",
+          "traffic_mt": 11.56
+        },
+        {
+          "year": "2008-09",
+          "traffic_mt": 11.5
+        },
+        {
+          "year": "2009-10",
+          "traffic_mt": 10.7
+        },
+        {
+          "year": "2010-11",
+          "traffic_mt": 11.01
+        },
+        {
+          "year": "2011-12",
+          "traffic_mt": 14.96
+        },
+        {
+          "year": "2012-13",
+          "traffic_mt": 17.89
+        },
+        {
+          "year": "2013-14",
+          "traffic_mt": 27.34
+        },
+        {
+          "year": "2014-15",
+          "traffic_mt": 30.25
+        },
+        {
+          "year": "2015-16",
+          "traffic_mt": 32.21
+        },
+        {
+          "year": "2016-17",
+          "traffic_mt": 30.02
+        },
+        {
+          "year": "2017-18",
+          "traffic_mt": 30.45
+        },
+        {
+          "year": "2018-19",
+          "traffic_mt": 34.5
+        },
+        {
+          "year": "2019-20",
+          "traffic_mt": 31.75
+        },
+        {
+          "year": "2020-21",
+          "traffic_mt": 25.89
+        },
+        {
+          "year": "2021-22",
+          "traffic_mt": 38.74
+        },
+        {
+          "year": "2022-23",
+          "traffic_mt": 43.51
+        }
+      ],
+      "forecast": [
+        {
+          "year": "2023-24",
+          "step_horizon": 1,
+          "lower_p10": 38.26,
+          "predicted_p50": 39.41,
+          "upper_p90": 40.56,
+          "yoy_growth_pct": -9.42
+        },
+        {
+          "year": "2024-25",
+          "step_horizon": 2,
+          "lower_p10": 36.43,
+          "predicted_p50": 37.67,
+          "upper_p90": 38.91,
+          "yoy_growth_pct": -4.42
+        },
+        {
+          "year": "2025-26",
+          "step_horizon": 3,
+          "lower_p10": 40.87,
+          "predicted_p50": 42.2,
+          "upper_p90": 43.53,
+          "yoy_growth_pct": 12.03
+        },
+        {
+          "year": "2026-27",
+          "step_horizon": 4,
+          "lower_p10": 42.38,
+          "predicted_p50": 43.79,
+          "upper_p90": 45.2,
+          "yoy_growth_pct": 3.77
+        },
+        {
+          "year": "2027-28",
+          "step_horizon": 5,
+          "lower_p10": 44.87,
+          "predicted_p50": 46.35,
+          "upper_p90": 47.83,
+          "yoy_growth_pct": 5.85
+        },
+        {
+          "year": "2028-29",
+          "step_horizon": 6,
+          "lower_p10": 46.77,
+          "predicted_p50": 48.33,
+          "upper_p90": 49.89,
+          "yoy_growth_pct": 4.27
+        },
+        {
+          "year": "2029-30",
+          "step_horizon": 7,
+          "lower_p10": 48.85,
+          "predicted_p50": 50.48,
+          "upper_p90": 52.11,
+          "yoy_growth_pct": 4.45
+        }
+      ]
+    },
+    "visakhapatnam": {
+      "id": "visakhapatnam",
+      "display_name": "Visakhapatnam (Vizag)",
+      "column": "Visakhapatnam",
+      "model_file": "hybrid_traffic_visakhapatnam.joblib",
+      "features": [
+        "year_idx",
+        "trend_sq",
+        "lag_1",
+        "lag_2",
+        "lag_3",
+        "sma_3",
+        "sma_5",
+        "std_3",
+        "yoy_growth",
+        "cagr_3y",
+        "share_of_total_lag1"
+      ],
+      "metrics": {
+        "r2": 0.997,
+        "test_r2": -5.1425,
+        "rmse": 7.39,
+        "mae": 6.63,
+        "mape": 9.28,
+        "residual_std": 0.75,
+        "cagr_2023_2030_pct": -1.31,
+        "volume_2022_23_mt": 73.75,
+        "projected_2029_30_mt": 67.27
+      },
+      "historical": [
+        {
+          "year": "1990-91",
+          "traffic_mt": 19.42
+        },
+        {
+          "year": "1991-92",
+          "traffic_mt": 21.52
+        },
+        {
+          "year": "1992-93",
+          "traffic_mt": 22.76
+        },
+        {
+          "year": "1993-94",
+          "traffic_mt": 25.59
+        },
+        {
+          "year": "1994-95",
+          "traffic_mt": 30.03
+        },
+        {
+          "year": "1995-96",
+          "traffic_mt": 32.82
+        },
+        {
+          "year": "1996-97",
+          "traffic_mt": 34.5
+        },
+        {
+          "year": "1997-98",
+          "traffic_mt": 36.01
+        },
+        {
+          "year": "1998-99",
+          "traffic_mt": 35.65
+        },
+        {
+          "year": "1999-00",
+          "traffic_mt": 39.51
+        },
+        {
+          "year": "2000-01",
+          "traffic_mt": 44.69
+        },
+        {
+          "year": "2001-02",
+          "traffic_mt": 44.34
+        },
+        {
+          "year": "2002-03",
+          "traffic_mt": 46.01
+        },
+        {
+          "year": "2003-04",
+          "traffic_mt": 47.74
+        },
+        {
+          "year": "2004-05",
+          "traffic_mt": 50.15
+        },
+        {
+          "year": "2005-06",
+          "traffic_mt": 55.8
+        },
+        {
+          "year": "2006-07",
+          "traffic_mt": 56.39
+        },
+        {
+          "year": "2007-08",
+          "traffic_mt": 64.6
+        },
+        {
+          "year": "2008-09",
+          "traffic_mt": 63.91
+        },
+        {
+          "year": "2009-10",
+          "traffic_mt": 65.5
+        },
+        {
+          "year": "2010-11",
+          "traffic_mt": 68.04
+        },
+        {
+          "year": "2011-12",
+          "traffic_mt": 67.42
+        },
+        {
+          "year": "2012-13",
+          "traffic_mt": 59.04
+        },
+        {
+          "year": "2013-14",
+          "traffic_mt": 58.5
+        },
+        {
+          "year": "2014-15",
+          "traffic_mt": 58.0
+        },
+        {
+          "year": "2015-16",
+          "traffic_mt": 57.03
+        },
+        {
+          "year": "2016-17",
+          "traffic_mt": 61.02
+        },
+        {
+          "year": "2017-18",
+          "traffic_mt": 63.54
+        },
+        {
+          "year": "2018-19",
+          "traffic_mt": 65.3
+        },
+        {
+          "year": "2019-20",
+          "traffic_mt": 72.72
+        },
+        {
+          "year": "2020-21",
+          "traffic_mt": 69.84
+        },
+        {
+          "year": "2021-22",
+          "traffic_mt": 69.03
+        },
+        {
+          "year": "2022-23",
+          "traffic_mt": 73.75
+        }
+      ],
+      "forecast": [
+        {
+          "year": "2023-24",
+          "step_horizon": 1,
+          "lower_p10": 66.66,
+          "predicted_p50": 67.71,
+          "upper_p90": 68.76,
+          "yoy_growth_pct": -8.19
+        },
+        {
+          "year": "2024-25",
+          "step_horizon": 2,
+          "lower_p10": 68.09,
+          "predicted_p50": 69.23,
+          "upper_p90": 70.37,
+          "yoy_growth_pct": 2.24
+        },
+        {
+          "year": "2025-26",
+          "step_horizon": 3,
+          "lower_p10": 68.35,
+          "predicted_p50": 69.56,
+          "upper_p90": 70.77,
+          "yoy_growth_pct": 0.48
+        },
+        {
+          "year": "2026-27",
+          "step_horizon": 4,
+          "lower_p10": 66.73,
+          "predicted_p50": 68.02,
+          "upper_p90": 69.31,
+          "yoy_growth_pct": -2.21
+        },
+        {
+          "year": "2027-28",
+          "step_horizon": 5,
+          "lower_p10": 66.97,
+          "predicted_p50": 68.33,
+          "upper_p90": 69.69,
+          "yoy_growth_pct": 0.46
+        },
+        {
+          "year": "2028-29",
+          "step_horizon": 6,
+          "lower_p10": 66.51,
+          "predicted_p50": 67.93,
+          "upper_p90": 69.35,
+          "yoy_growth_pct": -0.59
+        },
+        {
+          "year": "2029-30",
+          "step_horizon": 7,
+          "lower_p10": 65.78,
+          "predicted_p50": 67.27,
+          "upper_p90": 68.76,
+          "yoy_growth_pct": -0.97
+        }
+      ]
+    },
+    "paradip": {
+      "id": "paradip",
+      "display_name": "Paradip Port",
+      "column": "Paradip",
+      "model_file": "hybrid_traffic_paradip.joblib",
+      "features": [
+        "year_idx",
+        "trend_sq",
+        "lag_1",
+        "lag_2",
+        "lag_3",
+        "sma_3",
+        "sma_5",
+        "std_3",
+        "yoy_growth",
+        "cagr_3y",
+        "share_of_total_lag1"
+      ],
+      "metrics": {
+        "r2": 0.9991,
+        "test_r2": 0.7298,
+        "rmse": 4.76,
+        "mae": 4.22,
+        "mape": 3.5,
+        "residual_std": 1.15,
+        "cagr_2023_2030_pct": 4.82,
+        "volume_2022_23_mt": 135.36,
+        "projected_2029_30_mt": 188.21
+      },
+      "historical": [
+        {
+          "year": "1990-91",
+          "traffic_mt": 6.88
+        },
+        {
+          "year": "1991-92",
+          "traffic_mt": 7.3
+        },
+        {
+          "year": "1992-93",
+          "traffic_mt": 7.6
+        },
+        {
+          "year": "1993-94",
+          "traffic_mt": 8.33
+        },
+        {
+          "year": "1994-95",
+          "traffic_mt": 10.12
+        },
+        {
+          "year": "1995-96",
+          "traffic_mt": 11.26
+        },
+        {
+          "year": "1996-97",
+          "traffic_mt": 11.58
+        },
+        {
+          "year": "1997-98",
+          "traffic_mt": 13.3
+        },
+        {
+          "year": "1998-99",
+          "traffic_mt": 13.11
+        },
+        {
+          "year": "1999-00",
+          "traffic_mt": 13.64
+        },
+        {
+          "year": "2000-01",
+          "traffic_mt": 19.9
+        },
+        {
+          "year": "2001-02",
+          "traffic_mt": 21.13
+        },
+        {
+          "year": "2002-03",
+          "traffic_mt": 23.9
+        },
+        {
+          "year": "2003-04",
+          "traffic_mt": 25.31
+        },
+        {
+          "year": "2004-05",
+          "traffic_mt": 30.1
+        },
+        {
+          "year": "2005-06",
+          "traffic_mt": 33.11
+        },
+        {
+          "year": "2006-07",
+          "traffic_mt": 38.52
+        },
+        {
+          "year": "2007-08",
+          "traffic_mt": 42.44
+        },
+        {
+          "year": "2008-09",
+          "traffic_mt": 46.41
+        },
+        {
+          "year": "2009-10",
+          "traffic_mt": 57.01
+        },
+        {
+          "year": "2010-11",
+          "traffic_mt": 56.04
+        },
+        {
+          "year": "2011-12",
+          "traffic_mt": 54.25
+        },
+        {
+          "year": "2012-13",
+          "traffic_mt": 56.55
+        },
+        {
+          "year": "2013-14",
+          "traffic_mt": 68.0
+        },
+        {
+          "year": "2014-15",
+          "traffic_mt": 71.01
+        },
+        {
+          "year": "2015-16",
+          "traffic_mt": 76.4
+        },
+        {
+          "year": "2016-17",
+          "traffic_mt": 88.96
+        },
+        {
+          "year": "2017-18",
+          "traffic_mt": 102.03
+        },
+        {
+          "year": "2018-19",
+          "traffic_mt": 109.3
+        },
+        {
+          "year": "2019-20",
+          "traffic_mt": 112.69
+        },
+        {
+          "year": "2020-21",
+          "traffic_mt": 114.55
+        },
+        {
+          "year": "2021-22",
+          "traffic_mt": 116.13
+        },
+        {
+          "year": "2022-23",
+          "traffic_mt": 135.36
+        }
+      ],
+      "forecast": [
+        {
+          "year": "2023-24",
+          "step_horizon": 1,
+          "lower_p10": 139.32,
+          "predicted_p50": 140.93,
+          "upper_p90": 142.54,
+          "yoy_growth_pct": 4.11
+        },
+        {
+          "year": "2024-25",
+          "step_horizon": 2,
+          "lower_p10": 146.79,
+          "predicted_p50": 148.53,
+          "upper_p90": 150.27,
+          "yoy_growth_pct": 5.39
+        },
+        {
+          "year": "2025-26",
+          "step_horizon": 3,
+          "lower_p10": 151.06,
+          "predicted_p50": 152.92,
+          "upper_p90": 154.78,
+          "yoy_growth_pct": 2.96
+        },
+        {
+          "year": "2026-27",
+          "step_horizon": 4,
+          "lower_p10": 159.34,
+          "predicted_p50": 161.31,
+          "upper_p90": 163.28,
+          "yoy_growth_pct": 5.49
+        },
+        {
+          "year": "2027-28",
+          "step_horizon": 5,
+          "lower_p10": 167.86,
+          "predicted_p50": 169.94,
+          "upper_p90": 172.02,
+          "yoy_growth_pct": 5.35
+        },
+        {
+          "year": "2028-29",
+          "step_horizon": 6,
+          "lower_p10": 176.94,
+          "predicted_p50": 179.12,
+          "upper_p90": 181.3,
+          "yoy_growth_pct": 5.4
+        },
+        {
+          "year": "2029-30",
+          "step_horizon": 7,
+          "lower_p10": 185.93,
+          "predicted_p50": 188.21,
+          "upper_p90": 190.49,
+          "yoy_growth_pct": 5.07
+        }
+      ]
+    },
+    "smp_kolkata_haldia": {
+      "id": "smp_kolkata_haldia",
+      "display_name": "SMP (Kolkata & Haldia)",
+      "column": "SMP(Kolkata/Haldia)",
+      "model_file": "hybrid_traffic_smp_kolkata_haldia.joblib",
+      "features": [
+        "year_idx",
+        "trend_sq",
+        "lag_1",
+        "lag_2",
+        "lag_3",
+        "sma_3",
+        "sma_5",
+        "std_3",
+        "yoy_growth",
+        "cagr_3y",
+        "share_of_total_lag1"
+      ],
+      "metrics": {
+        "r2": 0.9954,
+        "test_r2": -13.2518,
+        "rmse": 9.8,
+        "mae": 9.33,
+        "mape": 14.81,
+        "residual_std": 0.94,
+        "cagr_2023_2030_pct": -0.48,
+        "volume_2022_23_mt": 65.66,
+        "projected_2029_30_mt": 63.47
+      },
+      "historical": [
+        {
+          "year": "1990-91",
+          "traffic_mt": 14.95
+        },
+        {
+          "year": "1991-92",
+          "traffic_mt": 16.0
+        },
+        {
+          "year": "1992-93",
+          "traffic_mt": 18.34
+        },
+        {
+          "year": "1993-94",
+          "traffic_mt": 18.5
+        },
+        {
+          "year": "1994-95",
+          "traffic_mt": 20.54
+        },
+        {
+          "year": "1995-96",
+          "traffic_mt": 21.52
+        },
+        {
+          "year": "1996-97",
+          "traffic_mt": 23.12
+        },
+        {
+          "year": "1997-98",
+          "traffic_mt": 28.16
+        },
+        {
+          "year": "1998-99",
+          "traffic_mt": 29.39
+        },
+        {
+          "year": "1999-00",
+          "traffic_mt": 31.03
+        },
+        {
+          "year": "2000-01",
+          "traffic_mt": 30.0
+        },
+        {
+          "year": "2001-02",
+          "traffic_mt": 30.4
+        },
+        {
+          "year": "2002-03",
+          "traffic_mt": 35.8
+        },
+        {
+          "year": "2003-04",
+          "traffic_mt": 41.26
+        },
+        {
+          "year": "2004-05",
+          "traffic_mt": 46.21
+        },
+        {
+          "year": "2005-06",
+          "traffic_mt": 53.14
+        },
+        {
+          "year": "2006-07",
+          "traffic_mt": 55.05
+        },
+        {
+          "year": "2007-08",
+          "traffic_mt": 57.33
+        },
+        {
+          "year": "2008-09",
+          "traffic_mt": 54.22
+        },
+        {
+          "year": "2009-10",
+          "traffic_mt": 46.42
+        },
+        {
+          "year": "2010-11",
+          "traffic_mt": 47.54
+        },
+        {
+          "year": "2011-12",
+          "traffic_mt": 43.25
+        },
+        {
+          "year": "2012-13",
+          "traffic_mt": 39.93
+        },
+        {
+          "year": "2013-14",
+          "traffic_mt": 41.39
+        },
+        {
+          "year": "2014-15",
+          "traffic_mt": 46.29
+        },
+        {
+          "year": "2015-16",
+          "traffic_mt": 50.29
+        },
+        {
+          "year": "2016-17",
+          "traffic_mt": 50.95
+        },
+        {
+          "year": "2017-18",
+          "traffic_mt": 57.89
+        },
+        {
+          "year": "2018-19",
+          "traffic_mt": 63.76
+        },
+        {
+          "year": "2019-20",
+          "traffic_mt": 63.98
+        },
+        {
+          "year": "2020-21",
+          "traffic_mt": 61.37
+        },
+        {
+          "year": "2021-22",
+          "traffic_mt": 58.18
+        },
+        {
+          "year": "2022-23",
+          "traffic_mt": 65.66
+        }
+      ],
+      "forecast": [
+        {
+          "year": "2023-24",
+          "step_horizon": 1,
+          "lower_p10": 63.55,
+          "predicted_p50": 64.87,
+          "upper_p90": 66.19,
+          "yoy_growth_pct": -1.2
+        },
+        {
+          "year": "2024-25",
+          "step_horizon": 2,
+          "lower_p10": 62.46,
+          "predicted_p50": 63.88,
+          "upper_p90": 65.3,
+          "yoy_growth_pct": -1.53
+        },
+        {
+          "year": "2025-26",
+          "step_horizon": 3,
+          "lower_p10": 61.05,
+          "predicted_p50": 62.57,
+          "upper_p90": 64.09,
+          "yoy_growth_pct": -2.05
+        },
+        {
+          "year": "2026-27",
+          "step_horizon": 4,
+          "lower_p10": 61.68,
+          "predicted_p50": 63.29,
+          "upper_p90": 64.9,
+          "yoy_growth_pct": 1.15
+        },
+        {
+          "year": "2027-28",
+          "step_horizon": 5,
+          "lower_p10": 61.09,
+          "predicted_p50": 62.79,
+          "upper_p90": 64.49,
+          "yoy_growth_pct": -0.79
+        },
+        {
+          "year": "2028-29",
+          "step_horizon": 6,
+          "lower_p10": 61.68,
+          "predicted_p50": 63.46,
+          "upper_p90": 65.24,
+          "yoy_growth_pct": 1.07
+        },
+        {
+          "year": "2029-30",
+          "step_horizon": 7,
+          "lower_p10": 61.61,
+          "predicted_p50": 63.47,
+          "upper_p90": 65.33,
+          "yoy_growth_pct": 0.02
+        }
+      ]
+    },
+    "total_mt": {
+      "id": "total_mt",
+      "display_name": "All Major Ports Total",
+      "column": "total_mt",
+      "model_file": "hybrid_traffic_total_mt.joblib",
+      "features": [
+        "year_idx",
+        "trend_sq",
+        "lag_1",
+        "lag_2",
+        "lag_3",
+        "sma_3",
+        "sma_5",
+        "std_3",
+        "yoy_growth",
+        "cagr_3y",
+        "share_of_total_lag1"
+      ],
+      "metrics": {
+        "r2": 0.9995,
+        "test_r2": 0.6194,
+        "rmse": 23.02,
+        "mae": 18.05,
+        "mape": 2.61,
+        "residual_std": 4.27,
+        "cagr_2023_2030_pct": 1.95,
+        "volume_2022_23_mt": 784.3,
+        "projected_2029_30_mt": 897.6
+      },
+      "historical": [
+        {
+          "year": "1990-91",
+          "traffic_mt": 151.67
+        },
+        {
+          "year": "1991-92",
+          "traffic_mt": 156.64
+        },
+        {
+          "year": "1992-93",
+          "traffic_mt": 166.5
+        },
+        {
+          "year": "1993-94",
+          "traffic_mt": 179.02
+        },
+        {
+          "year": "1994-95",
+          "traffic_mt": 195.89
+        },
+        {
+          "year": "1995-96",
+          "traffic_mt": 215.21
+        },
+        {
+          "year": "1996-97",
+          "traffic_mt": 227.26
+        },
+        {
+          "year": "1997-98",
+          "traffic_mt": 251.66
+        },
+        {
+          "year": "1998-99",
+          "traffic_mt": 251.74
+        },
+        {
+          "year": "1999-00",
+          "traffic_mt": 271.97
+        },
+        {
+          "year": "2000-01",
+          "traffic_mt": 281.13
+        },
+        {
+          "year": "2001-02",
+          "traffic_mt": 287.58
+        },
+        {
+          "year": "2002-03",
+          "traffic_mt": 313.55
+        },
+        {
+          "year": "2003-04",
+          "traffic_mt": 344.8
+        },
+        {
+          "year": "2004-05",
+          "traffic_mt": 383.76
+        },
+        {
+          "year": "2005-06",
+          "traffic_mt": 423.57
+        },
+        {
+          "year": "2006-07",
+          "traffic_mt": 463.78
+        },
+        {
+          "year": "2007-08",
+          "traffic_mt": 519.31
+        },
+        {
+          "year": "2008-09",
+          "traffic_mt": 530.8
+        },
+        {
+          "year": "2009-10",
+          "traffic_mt": 561.09
+        },
+        {
+          "year": "2010-11",
+          "traffic_mt": 570.09
+        },
+        {
+          "year": "2011-12",
+          "traffic_mt": 560.19
+        },
+        {
+          "year": "2012-13",
+          "traffic_mt": 545.83
+        },
+        {
+          "year": "2013-14",
+          "traffic_mt": 555.49
+        },
+        {
+          "year": "2014-15",
+          "traffic_mt": 581.34
+        },
+        {
+          "year": "2015-16",
+          "traffic_mt": 605.89
+        },
+        {
+          "year": "2016-17",
+          "traffic_mt": 648.47
+        },
+        {
+          "year": "2017-18",
+          "traffic_mt": 679.47
+        },
+        {
+          "year": "2018-19",
+          "traffic_mt": 699.17
+        },
+        {
+          "year": "2019-20",
+          "traffic_mt": 704.93
+        },
+        {
+          "year": "2020-21",
+          "traffic_mt": 672.68
+        },
+        {
+          "year": "2021-22",
+          "traffic_mt": 720.05
+        },
+        {
+          "year": "2022-23",
+          "traffic_mt": 784.3
+        }
+      ],
+      "forecast": [
+        {
+          "year": "2023-24",
+          "step_horizon": 1,
+          "lower_p10": 784.3,
+          "predicted_p50": 790.29,
+          "upper_p90": 796.28,
+          "yoy_growth_pct": 0.76
+        },
+        {
+          "year": "2024-25",
+          "step_horizon": 2,
+          "lower_p10": 798.02,
+          "predicted_p50": 804.49,
+          "upper_p90": 810.96,
+          "yoy_growth_pct": 1.8
+        },
+        {
+          "year": "2025-26",
+          "step_horizon": 3,
+          "lower_p10": 772.13,
+          "predicted_p50": 779.04,
+          "upper_p90": 785.95,
+          "yoy_growth_pct": -3.16
+        },
+        {
+          "year": "2026-27",
+          "step_horizon": 4,
+          "lower_p10": 798.51,
+          "predicted_p50": 805.84,
+          "upper_p90": 813.17,
+          "yoy_growth_pct": 3.44
+        },
+        {
+          "year": "2027-28",
+          "step_horizon": 5,
+          "lower_p10": 813.84,
+          "predicted_p50": 821.57,
+          "upper_p90": 829.3,
+          "yoy_growth_pct": 1.95
+        },
+        {
+          "year": "2028-29",
+          "step_horizon": 6,
+          "lower_p10": 864.21,
+          "predicted_p50": 872.32,
+          "upper_p90": 880.43,
+          "yoy_growth_pct": 6.18
+        },
+        {
+          "year": "2029-30",
+          "step_horizon": 7,
+          "lower_p10": 889.13,
+          "predicted_p50": 897.6,
+          "upper_p90": 906.07,
+          "yoy_growth_pct": 2.9
+        }
+      ]
+    }
+  },
+  "vision_2030_analysis": {
+    "miv_target_range_mt": "1,050 - 1,200 MT",
+    "projected_total_2029_30_mt": 897.6,
+    "vision_on_track": false,
+    "required_annual_cagr_pct": 5.2,
+    "projected_cagr_pct": 1.95,
+    "summary": "National major port cargo throughput is projected to expand from 784.3 MT in FY23 to 897.6 MT by FY30."
+  }
+}
