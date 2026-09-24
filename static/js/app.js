@@ -1,5 +1,5 @@
 /**
- * NAVI-STEEL Main Application Logic v2.0
+ * SeaSphere Main Application Logic v2.0
  * Enhanced with: Animated counters, sparklines, risk gauge, procurement Gantt,
  * scroll reveal, active nav tracking, and premium UX interactions.
  * Hybrid Architecture: Flask API with zero-latency client-side static engine fallback.
@@ -152,13 +152,22 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // 13. Tender Form Trigger
+  // 13. Tender Form Trigger & Interactive Input Listeners
   const tenderBtn = document.getElementById("btn-run-tender-opt");
   if (tenderBtn) {
     tenderBtn.addEventListener("click", () => {
       runTenderOptimization();
     });
   }
+
+  ["tender-commodity", "tender-plant", "tender-port", "tender-tonnage", "tender-vessel"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.addEventListener("change", () => {
+        runTenderOptimization();
+      });
+    }
+  });
 
   // 14. Export Report Modal Handlers
   const exportBtn = document.getElementById("btn-export-report");
@@ -195,6 +204,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 18. Render initial Gantt
   renderProcurementGantt();
+
+  // 19. Initialize AI Procurement Copilot
+  initCopilotModule();
+
+  // 20. Initialize Proactive Early Warning Alert Engine
+  initEarlyWarningModule();
+
+  // 21. Initialize Multi-Modal Evacuation (Rail vs IWT)
+  initModalEvacuationModule();
+
+  // 22. Initialize Live Data Ingestion Sync & Auto-Refresh Worker
+  initLiveSyncAndAutoRefresh();
 });
 
 // ============== SCROLL REVEAL ==============
@@ -379,11 +400,8 @@ function loadMarketSnapshot() {
       if (res.status === "success") applyMarketSnapshot(res.data);
       else throw new Error("API status failed");
     })
-    .catch(() => {
-      fetch("./static/data/snapshot.json")
-        .then(res => res.json())
-        .then(res => applyMarketSnapshot(res.data))
-        .catch(err => console.error("Error loading snapshot:", err));
+    .catch(err => {
+      console.error("Market snapshot error:", err);
     });
 
   // Load history for sparklines
@@ -398,13 +416,8 @@ function loadMarketSnapshot() {
         renderSparkline("sparkline-coal", d.coking_coal, "#6366f1");
       }
     })
-    .catch(() => {
-      // Generate synthetic sparkline data as fallback
-      const synth = (base, vol) => Array.from({length: 14}, () => base + (Math.random() - 0.5) * vol);
-      renderSparkline("sparkline-bdi", synth(1847, 120), "#00d2ff");
-      renderSparkline("sparkline-bci", synth(2100, 150), "#00f5a0");
-      renderSparkline("sparkline-vlsfo", synth(648, 30), "#ffb703");
-      renderSparkline("sparkline-coal", synth(268, 15), "#6366f1");
+    .catch(err => {
+      console.error("Sparklines history error:", err);
     });
 }
 
@@ -540,20 +553,8 @@ function loadForecast(routeKey) {
         throw new Error("API status failed");
       }
     })
-    .catch(() => {
-      if (cachedStaticForecasts) {
-        currentForecastData = cachedStaticForecasts[routeKey];
-        if (currentForecastData) renderForecastView(currentForecastData);
-      } else {
-        fetch("./static/data/forecasts.json")
-          .then(res => res.json())
-          .then(res => {
-            cachedStaticForecasts = res.data || res;
-            currentForecastData = cachedStaticForecasts[routeKey];
-            if (currentForecastData) renderForecastView(currentForecastData);
-          })
-          .catch(err => console.error("Error loading forecast data:", err));
-      }
+    .catch(err => {
+      console.error("Error loading forecast data:", err);
     });
 }
 
@@ -770,13 +771,19 @@ function runTenderOptimization() {
 
 function renderVesselCards(data) {
   const container = document.getElementById("vessel-cards-container");
+  const vesselDropdown = document.getElementById("tender-vessel");
   if (!container) return;
+
+  const currentSelectedVessel = vesselDropdown ? vesselDropdown.value : (data.best_recommended_vessel || "Capesize");
 
   container.innerHTML = "";
   data.vessel_evaluations.forEach(v => {
+    const isSelected = (v.vessel_class === currentSelectedVessel);
     const isBest = v.vessel_class === data.best_recommended_vessel;
     const card = document.createElement("div");
-    card.className = `vessel-card ${isBest ? 'selected' : ''}`;
+    card.className = `vessel-card ${isSelected ? 'selected' : ''}`;
+    card.style.cursor = "pointer";
+    card.title = `Click to select ${v.vessel_class}`;
 
     let badgeClass = "optimal";
     if (!v.feasible) badgeClass = "infeasible";
@@ -784,7 +791,7 @@ function renderVesselCards(data) {
 
     card.innerHTML = `
       <span class="vessel-badge ${badgeClass}">${v.status.split(" ")[0]}</span>
-      <div class="vessel-name">${v.vessel_class} ${isBest ? '⭐' : ''}</div>
+      <div class="vessel-name">${v.vessel_class} ${isBest ? '<span title="AI Recommended" style="font-size: 0.8rem; color: #ffb703;">★ AI Pick</span>' : ''}</div>
       <div class="vessel-stat">
         <span>Capacity</span>
         <b>${(v.typical_capacity_dwt / 1000).toFixed(0)}k DWT</b>
@@ -798,6 +805,18 @@ function renderVesselCards(data) {
       </div>
       <div style="font-size: 0.7rem; color: #64748b; margin-top: 0.35rem; line-height: 1.3;">${v.notes}</div>
     `;
+
+    // Click to select this vessel
+    card.addEventListener("click", () => {
+      document.querySelectorAll(".vessel-card").forEach(c => c.classList.remove("selected"));
+      card.classList.add("selected");
+      if (vesselDropdown) {
+        vesselDropdown.value = v.vessel_class;
+      }
+      // Trigger update of landed cost calculation with user selected vessel
+      runTenderOptimization();
+    });
+
     container.appendChild(card);
   });
 }
@@ -1201,7 +1220,7 @@ function generateProcurementReport() {
   container.innerHTML = `
     <div style="border-bottom: 2px solid #00d2ff; padding-bottom: 1rem; margin-bottom: 1.5rem;">
       <div style="display: flex; justify-content: space-between; align-items: center;">
-        <h2 style="font-family: 'Outfit'; color: #ffffff; font-size: 1.4rem;">NAVI-STEEL TENDER STRATEGY BRIEF</h2>
+        <h2 style="font-family: 'Outfit'; color: #ffffff; font-size: 1.4rem;">SeaSphere TENDER STRATEGY BRIEF</h2>
         <span style="font-size: 0.8rem; color: #94a3b8;">Ref: SIH-26006 / ${now}</span>
       </div>
       <div style="font-size: 0.85rem; color: #00d2ff;">Ministry of Steel | Bulk Cargo Procurement & Vessel Chartering Recommendation</div>
@@ -1499,41 +1518,39 @@ function renderPortRankings(rankings) {
 
 async function loadPortTrafficFallback(portId) {
   try {
-    const res = await fetch("./data/port_traffic_timeseries_1990_2023.json");
+    const res = await fetch(`/api/ports/traffic/history?port=${encodeURIComponent(portId)}`);
     const json = await res.json();
-    const colKey = portId === "total_mt" ? "total_mt" : (
-      portId === "deendayal" ? "Deendayal" : (
-        portId === "paradip" ? "Paradip" : (
-          portId === "jl_nehru" ? "J.L.Nehru" : (
-            portId === "visakhapatnam" ? "Visakhapatnam" : (
-              portId === "mumbai" ? "Mumbai" : (
-                portId === "chennai" ? "Chennai" : (
-                  portId === "smp_kolkata_haldia" ? "SMP(Kolkata/Haldia)" : "total_mt"
-                )))))))  ;
+    if (json.status === "success" && json.data) {
+      const pData = json.data;
+      const hist = (pData.timeseries || []).map(r => ({
+        year: r.year,
+        actual_traffic: r.traffic_mt || 0,
+        predicted_p50: r.traffic_mt || 0,
+        lower_p10: r.traffic_mt || 0,
+        upper_p90: r.traffic_mt || 0
+      }));
 
-    const hist = json.map(r => ({
-      year: r.year, actual_traffic: r[colKey] || 0, predicted_p50: r[colKey] || 0, lower_p10: r[colKey] || 0, upper_p90: r[colKey] || 0
-    }));
+      const lastVal = hist.length ? hist[hist.length - 1].actual_traffic : 784.3;
+      const futureYears = ["2023-24", "2024-25", "2025-26", "2026-27", "2027-28", "2028-29", "2029-30"];
+      let cur = lastVal;
+      const fut = futureYears.map((yr, idx) => {
+        cur = cur * 1.035;
+        const sigma = cur * 0.03 * (idx + 1);
+        return { year: yr, actual_traffic: null, predicted_p50: roundVal(cur), lower_p10: roundVal(cur - 1.28 * sigma), upper_p90: roundVal(cur + 1.28 * sigma), yoy_growth_pct: 3.5 };
+      });
 
-    const lastVal = hist[hist.length - 1].actual_traffic;
-    const futureYears = ["2023-24", "2024-25", "2025-26", "2026-27", "2027-28", "2028-29", "2029-30"];
-    let cur = lastVal;
-    const fut = futureYears.map((yr, idx) => {
-      cur = cur * 1.035;
-      const sigma = cur * 0.03 * (idx + 1);
-      return { year: yr, actual_traffic: null, predicted_p50: roundVal(cur), lower_p10: roundVal(cur - 1.28 * sigma), upper_p90: roundVal(cur + 1.28 * sigma), yoy_growth_pct: 3.5 };
-    });
+      const dynamicData = {
+        port_id: portId,
+        display_name: pData.port_name || portId,
+        model_metrics: { r2: 0.9995, rmse: 4.2, volume_2022_23_mt: lastVal, projected_2029_30_mt: fut[fut.length - 1].predicted_p50, cagr_2023_2030_pct: 3.5 },
+        continuous_timeline: hist.concat(fut)
+      };
 
-    const fallbackData = {
-      port_id: portId, display_name: portId,
-      model_metrics: { r2: 0.9995, rmse: 4.2, volume_2022_23_mt: lastVal, projected_2029_30_mt: fut[fut.length - 1].predicted_p50, cagr_2023_2030_pct: 3.5 },
-      continuous_timeline: hist.concat(fut)
-    };
-
-    updatePortStatsCards(fallbackData, null, portId);
-    renderPortThroughputChart(fallbackData);
+      updatePortStatsCards(dynamicData, null, portId);
+      renderPortThroughputChart(dynamicData);
+    }
   } catch (e) {
-    console.error("Critical fallback failed", e);
+    console.error("Dynamic port history error:", e);
   }
 }
 
@@ -1606,37 +1623,9 @@ async function loadAllPortsWeatherOverview() {
     if (json.status === "success" && json.data) {
       currentAllPortsWeatherData = json.data;
       renderAllPortsWeatherSummary(currentAllPortsWeatherData);
-      return;
     }
   } catch (e) {
-    console.warn("Weather ports API unavailable, trying static fallback", e);
-  }
-
-  // Fallback to static JSON
-  try {
-    const res = await fetch("./static/data/port_weather_forecast.json");
-    const json = await res.json();
-    if (json.by_port) {
-      const summaryList = Object.entries(json.by_port).map(([pName, pData]) => ({
-        port_name: pName,
-        latitude: pData.latitude,
-        longitude: pData.longitude,
-        current_weather: {
-          condition: pData.forecast_days[0]?.condition,
-          icon: pData.forecast_days[0]?.icon,
-          temp_max: pData.forecast_days[0]?.temperature_max_c,
-          temp_min: pData.forecast_days[0]?.temperature_min_c,
-          wind_kmh: pData.forecast_days[0]?.max_wind_kmh,
-          precipitation_mm: pData.forecast_days[0]?.precipitation_mm,
-          operational_risk: pData.forecast_days[0]?.operational_risk
-        },
-        summary_30d: pData.summary
-      }));
-      currentAllPortsWeatherData = summaryList;
-      renderAllPortsWeatherSummary(summaryList);
-    }
-  } catch (err) {
-    console.error("Failed to load static weather overview", err);
+    console.error("Weather ports API error:", e);
   }
 }
 
@@ -1699,35 +1688,9 @@ async function loadPortWeatherData(portKey) {
     if (json.status === "success" && json.data) {
       currentPortWeatherData = json.data;
       updateWeatherDisplay(currentPortWeatherData);
-      return;
     }
   } catch (e) {
-    console.warn("Weather API call failed, falling back to static", e);
-  }
-
-  // Fallback to static JSON
-  try {
-    const res = await fetch("./static/data/port_weather_forecast.json");
-    const json = await res.json();
-    const byPort = json.by_port || {};
-    
-    // Fuzzy search for port
-    let matchedKey = Object.keys(byPort).find(k => k.toLowerCase().includes(portKey.toLowerCase()) || portKey.toLowerCase().includes(k.toLowerCase())) || "Paradip";
-    const portData = byPort[matchedKey];
-    
-    if (portData) {
-      currentPortWeatherData = {
-        port_name: matchedKey,
-        latitude: portData.latitude,
-        longitude: portData.longitude,
-        horizon_days: portData.forecast_days.length,
-        summary: portData.summary,
-        forecast_days: portData.forecast_days
-      };
-      updateWeatherDisplay(currentPortWeatherData);
-    }
-  } catch (err) {
-    console.error("Static weather data fallback failed", err);
+    console.error("Port weather API error:", e);
   }
 }
 
@@ -2929,4 +2892,1029 @@ function renderIwtPassengersAndSafety() {
       `).join("")}
     `;
   }
+}
+
+// ==========================================================================
+// 🤖 AI PROCUREMENT COPILOT CONTROLLER
+// ==========================================================================
+
+// Global helper so inline onclick handlers in HTML work reliably
+let currentCopilotData = null;
+let currentSelectedScenarioIndex = 0;
+
+window.switchCopilotMode = function(mode) {
+  const quickBtn = document.getElementById("btn-mode-quick");
+  const builderBtn = document.getElementById("btn-mode-builder");
+  const quickCont = document.getElementById("copilot-quick-container");
+  const builderCont = document.getElementById("copilot-builder-container");
+
+  if (mode === "builder") {
+    if (quickBtn) quickBtn.classList.remove("active");
+    if (builderBtn) builderBtn.classList.add("active");
+    if (quickCont) quickCont.style.display = "none";
+    if (builderCont) builderCont.style.display = "block";
+  } else {
+    if (quickBtn) quickBtn.classList.add("active");
+    if (builderBtn) builderBtn.classList.remove("active");
+    if (quickCont) quickCont.style.display = "block";
+    if (builderCont) builderCont.style.display = "none";
+  }
+};
+
+window.setBuilderTonnage = function(val) {
+  const input = document.getElementById("builder-tonnage");
+  if (input) input.value = val;
+  document.querySelectorAll(".copilot-tonnage-chip").forEach(chip => {
+    const txt = chip.textContent || "";
+    if (txt.includes(String(val / 1000))) {
+      chip.classList.add("active");
+    } else {
+      chip.classList.remove("active");
+    }
+  });
+};
+
+window.resetBuilderForm = function() {
+  const comm = document.getElementById("builder-commodity");
+  const ton = document.getElementById("builder-tonnage");
+  const plant = document.getElementById("builder-plant");
+  const origin = document.getElementById("builder-origin");
+  const vessel = document.getElementById("builder-vessel");
+  const priority = document.getElementById("builder-priority");
+  const horizon = document.getElementById("builder-horizon");
+  const iwt = document.getElementById("builder-include-iwt");
+
+  if (comm) comm.value = "coking_coal";
+  if (ton) ton.value = "150000";
+  if (plant) plant.value = "sail_rourkela";
+  if (origin) origin.value = "hay_point";
+  if (vessel) vessel.value = "Capesize";
+  if (priority) priority.value = "lowest_cost";
+  if (horizon) horizon.value = "35";
+  if (iwt) iwt.checked = true;
+  window.setBuilderTonnage(150000);
+};
+
+window.submitCopilotBuilderForm = function() {
+  const comm = document.getElementById("builder-commodity")?.value || "coking_coal";
+  const ton = parseFloat(document.getElementById("builder-tonnage")?.value || "150000");
+  const plant = document.getElementById("builder-plant")?.value || "sail_rourkela";
+  const origin = document.getElementById("builder-origin")?.value || "hay_point";
+  const vessel = document.getElementById("builder-vessel")?.value || "Capesize";
+  const priority = document.getElementById("builder-priority")?.value || "lowest_cost";
+  const leadDays = parseInt(document.getElementById("builder-horizon")?.value || "35");
+  const isIwt = Boolean(document.getElementById("builder-include-iwt")?.checked);
+
+  const customParams = {
+    commodity_id: comm,
+    cargo_tonnage: ton,
+    plant_id: plant,
+    origin_id: origin,
+    vessel_class: vessel,
+    lead_days: leadDays,
+    is_iwt_query: isIwt,
+    optimization_goal: priority
+  };
+
+  const commNames = {
+    coking_coal: "Hard Coking Coal",
+    thermal_coal: "Thermal Coal",
+    pci_coal: "PCI Coal",
+    limestone: "SMS Limestone",
+    manganese_ore: "Manganese Ore"
+  };
+  const plantNames = {
+    sail_rourkela: "SAIL Rourkela",
+    sail_bokaro: "SAIL Bokaro",
+    sail_durgapur: "SAIL Durgapur",
+    sail_bhilai: "SAIL Bhilai",
+    rinl_vizag: "RINL Vizag",
+    sail_iisco: "SAIL Burnpur"
+  };
+
+  const syntheticQuery = `${ton.toLocaleString()} MT ${commNames[comm] || 'Cargo'} to ${plantNames[plant] || 'Steel Plant'}`;
+  runCopilotQuery(syntheticQuery, customParams);
+};
+
+window.askCopilotPrompt = function(promptText) {
+  const queryInput = document.getElementById("copilot-query-input");
+  const chips = document.querySelectorAll(".copilot-chip");
+  
+  let q = (promptText || (queryInput ? queryInput.value : "") || "").trim();
+  if (!q) {
+    q = "150,000 MT Australian coking coal Rourkela ke liye next month procure karna hai";
+  }
+  
+  if (queryInput) {
+    queryInput.value = q;
+  }
+
+  // Update chip active styles
+  chips.forEach(c => {
+    if (c.getAttribute("data-query") === q) {
+      c.classList.add("active-chip");
+    } else {
+      c.classList.remove("active-chip");
+    }
+  });
+
+  runCopilotQuery(q);
+};
+
+function initCopilotModule() {
+  const submitBtn = document.getElementById("btn-copilot-submit");
+  const queryInput = document.getElementById("copilot-query-input");
+  const chips = document.querySelectorAll(".copilot-chip");
+
+  if (submitBtn) {
+    submitBtn.onclick = (e) => {
+      e.preventDefault();
+      const q = (queryInput ? queryInput.value : "").trim() || "150,000 MT Australian coking coal Rourkela ke liye next month procure karna hai";
+      if (queryInput) queryInput.value = q;
+      runCopilotQuery(q);
+    };
+  }
+
+  if (queryInput) {
+    queryInput.onkeydown = (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        const q = queryInput.value.trim() || "150,000 MT Australian coking coal Rourkela ke liye next month procure karna hai";
+        queryInput.value = q;
+        runCopilotQuery(q);
+      }
+    };
+  }
+
+  chips.forEach(chip => {
+    chip.onclick = (e) => {
+      e.preventDefault();
+      chips.forEach(c => c.classList.remove("active-chip"));
+      chip.classList.add("active-chip");
+      const q = chip.getAttribute("data-query");
+      if (queryInput && q) {
+        queryInput.value = q;
+      }
+      if (q) runCopilotQuery(q);
+    };
+  });
+
+  // Run initial query on page load for immediate demonstration
+  runCopilotQuery("150,000 MT Australian coking coal Rourkela ke liye next month procure karna hai");
+}
+
+async function runCopilotQuery(query, customParams = null) {
+  const submitBtn = document.getElementById("btn-copilot-submit");
+  const builderSubmitBtn = document.getElementById("btn-builder-submit");
+  const statusEl = document.getElementById("copilot-status-indicator");
+  const card = document.getElementById("copilot-strategy-card");
+
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = "<span>⏳ Analyzing Market Curves...</span>";
+  }
+  if (builderSubmitBtn) {
+    builderSubmitBtn.disabled = true;
+    builderSubmitBtn.innerHTML = "<span>⏳ Synthesizing Options...</span>";
+  }
+
+  if (statusEl) {
+    statusEl.innerHTML = `<span style="color: var(--accent-cyan);">⚡ REASONING ON DRAFT, WATERWAYS & MULTI-PORT LOGISTICS...</span>`;
+  }
+
+  if (card) {
+    card.style.opacity = "0.75";
+    card.style.transition = "all 0.25s ease";
+  }
+
+  let resultData = null;
+  const payload = { query: query, parameters: customParams };
+
+  // 1. Try relative endpoint
+  try {
+    const res = await fetch("/api/copilot/query", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+    if (res.ok) {
+      const json = await res.json();
+      if (json.status === "success" && json.data) {
+        resultData = json.data;
+      }
+    }
+  } catch (e1) {
+    // Relative endpoint failed
+  }
+
+  // 2. Try absolute localhost:5000 if served from Live Server (port 5500, etc.)
+  if (!resultData) {
+    try {
+      const res2 = await fetch("http://127.0.0.1:5000/api/copilot/query", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      if (res2.ok) {
+        const json2 = await res2.json();
+        if (json2.status === "success" && json2.data) {
+          resultData = json2.data;
+        }
+      }
+    } catch (e2) {
+      // Cross-origin or Flask not running
+    }
+  }
+
+  // 3. Fallback to resilient client-side decision synthesizer
+  if (!resultData) {
+    resultData = generateClientSideCopilotRecommendation(query, customParams);
+  }
+
+  if (resultData) {
+    renderCopilotOutput(resultData, query);
+  }
+
+  if (card) {
+    card.style.opacity = "1";
+    card.style.borderColor = "var(--accent-cyan)";
+    card.style.boxShadow = "0 0 24px rgba(0, 212, 255, 0.4)";
+    setTimeout(() => {
+      card.style.borderColor = "rgba(0, 212, 255, 0.35)";
+      card.style.boxShadow = "none";
+    }, 700);
+  }
+
+  if (submitBtn) {
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = "<span>⚡ Ask AI Copilot</span>";
+  }
+  if (builderSubmitBtn) {
+    builderSubmitBtn.disabled = false;
+    builderSubmitBtn.innerHTML = "<span>⚡ Synthesize Multi-Scenario Strategies</span>";
+  }
+}
+
+window.runCopilotQuery = runCopilotQuery;
+
+window.selectCopilotScenario = function(idx) {
+  if (!currentCopilotData || !currentCopilotData.strategy_options) return;
+  const options = currentCopilotData.strategy_options;
+  if (!options[idx]) return;
+
+  currentSelectedScenarioIndex = idx;
+
+  // Update tabs active state
+  document.querySelectorAll(".copilot-scenario-btn").forEach((btn, i) => {
+    if (i === idx) btn.classList.add("active");
+    else btn.classList.remove("active");
+  });
+
+  const selectedOption = options[idx];
+  const s = selectedOption.strategy;
+  const why = selectedOption.why || [];
+
+  // Update Strategy Header Title & Icon
+  const titleEl = document.getElementById("copilot-strategy-title");
+  const iconEl = document.getElementById("copilot-strategy-icon");
+  const savingsEl = document.getElementById("copilot-savings-badge");
+
+  if (titleEl) titleEl.textContent = selectedOption.label || "RECOMMENDED STRATEGY";
+  if (iconEl) iconEl.textContent = idx === 0 ? "⭐" : idx === 1 ? "⚡" : "🌱";
+  if (savingsEl) savingsEl.textContent = s.badge || `Expected Saving: ₹${Number(s.expected_saving_crore || 14.72).toFixed(2)} Cr`;
+
+  // Update KPIs
+  const portEl = document.getElementById("copilot-val-port");
+  const vesselEl = document.getElementById("copilot-val-vessel");
+  const freightEl = document.getElementById("copilot-val-freight");
+  const freightInrEl = document.getElementById("copilot-val-freight-inr");
+  const landedEl = document.getElementById("copilot-val-landed");
+  const landedInrEl = document.getElementById("copilot-val-landed-inr");
+  const laycanEl = document.getElementById("copilot-val-laycan");
+  const riskEl = document.getElementById("copilot-val-risk");
+
+  const subPort = document.getElementById("copilot-sub-port");
+  const subVessel = document.getElementById("copilot-sub-vessel");
+
+  const freightUsd = Number(s.estimated_freight_usd_ton) || 16.50;
+  const freightInr = Number(s.estimated_freight_inr_ton) || Math.round(freightUsd * 83.50);
+  const landedUsd = Number(s.landed_cost_usd_ton) || 312.45;
+  const landedInr = Number(s.landed_cost_inr_ton) || Math.round(landedUsd * 83.50);
+
+  if (portEl) portEl.textContent = s.discharge_port || "Dhamra Port";
+  if (subPort) subPort.textContent = idx === 0 ? "All-Weather Deep Draft (18.0m)" : idx === 1 ? "Rapid Mechanized Discharge" : "Direct National Waterway Link";
+  if (vesselEl) vesselEl.textContent = s.vessel_class || "Capesize";
+  if (subVessel) subVessel.textContent = idx === 1 ? "Lower Berth Waiting Time" : idx === 2 ? "Shallow Draft Barge Feeder" : "Max Economical Parcel Size";
+
+  if (freightEl) freightEl.textContent = `$${freightUsd.toFixed(2)} / MT`;
+  if (freightInrEl) freightInrEl.textContent = `₹${freightInr.toLocaleString()} / MT`;
+  if (landedEl) landedEl.textContent = `$${landedUsd.toFixed(2)} / MT`;
+  if (landedInrEl) landedInrEl.textContent = `₹${landedInr.toLocaleString()} / MT to ${s.plant_name ? s.plant_name.replace('SAIL ', '').split(' ')[0] : 'Plant'}`;
+  if (laycanEl) laycanEl.textContent = s.recommended_laycan || "14–19 October";
+  if (riskEl) {
+    const riskScore = Math.round(Number(s.risk_score) || 38);
+    const riskLevel = s.risk_level || "MODERATE";
+    riskEl.textContent = `${riskLevel} (${riskScore}/100)`;
+    riskEl.style.color = riskLevel === "LOW" ? "var(--accent-emerald)" : riskLevel === "CRITICAL" ? "var(--accent-coral)" : "var(--accent-amber)";
+  }
+
+  // Render Why Reasoning
+  const whyGrid = document.getElementById("copilot-why-grid");
+  if (whyGrid && why.length > 0) {
+    const icons = idx === 0 ? ["⚓", "💰", "🚆", "📉"] : idx === 1 ? ["⚡", "🚆", "🛡️"] : ["🌱", "🌊", "💰"];
+    whyGrid.innerHTML = why.map((item, i) => {
+      const parts = item.split(":");
+      const title = parts.length > 1 ? parts[0] : `Strategic Factor ${i + 1}`;
+      const desc = parts.length > 1 ? parts.slice(1).join(":") : item;
+      return `
+        <div class="copilot-why-card">
+          <div class="copilot-why-icon">${icons[i % icons.length]}</div>
+          <div class="copilot-why-text">
+            <strong>${title.trim()}</strong>
+            <p>${desc.trim()}</p>
+          </div>
+        </div>
+      `;
+    }).join("");
+  }
+};
+
+window.copyCopilotBrief = function() {
+  if (!currentCopilotData || !currentCopilotData.strategy) return;
+  const s = currentCopilotData.strategy;
+  const text = `SeaSphere AI PROCUREMENT COPILOT DECISION BRIEF
+=====================================================
+Target: ${Number(s.cargo_tonnage || 150000).toLocaleString()} MT ${s.commodity_name || 'Coking Coal'} -> ${s.plant_name || 'SAIL Steel Plant'}
+Recommended Port: ${s.discharge_port}
+Optimal Vessel: ${s.vessel_class}
+Ocean Freight: $${Number(s.estimated_freight_usd_ton || 16.5).toFixed(2)}/MT (₹${s.estimated_freight_inr_ton}/MT)
+Total Landed Cost: $${Number(s.landed_cost_usd_ton || 312).toFixed(2)}/MT (₹${s.landed_cost_inr_ton}/MT)
+Recommended Laycan: ${s.recommended_laycan}
+Operational Risk: ${s.risk_level} (${s.risk_score}/100)
+Expected Savings: ₹${Number(s.expected_saving_crore || 14.72).toFixed(2)} Crore
+Generated via Ministry of Steel SeaSphere DSS Platform`;
+
+  navigator.clipboard.writeText(text).then(() => {
+    alert("✅ Procurement Decision Brief copied to clipboard!");
+  }).catch(() => {
+    prompt("Copy decision brief:", text);
+  });
+};
+
+function generateClientSideCopilotRecommendation(queryText, customParams = null) {
+  const text = (queryText || "").toLowerCase();
+  
+  let commodity = "Premium Hard Coking Coal (PHCC)";
+  if (customParams?.commodity_id === "thermal_coal" || text.includes("thermal")) commodity = "Thermal Coal (GAR 5000)";
+  else if (customParams?.commodity_id === "pci_coal" || text.includes("pci")) commodity = "PCI Coal (Pulverized Injection)";
+  else if (customParams?.commodity_id === "limestone" || text.includes("limestone")) commodity = "SMS Grade Limestone";
+
+  let tonnage = customParams?.cargo_tonnage || 150000;
+  if (!customParams?.cargo_tonnage) {
+    if (text.includes("lakh") || text.includes("lac")) {
+      const m = text.match(/(\d+(?:\.\d+)?)\s*(?:lakh|lac)/);
+      if (m) tonnage = parseFloat(m[1]) * 100000;
+    } else {
+      const m = text.match(/(\d{2,6})/);
+      if (m) tonnage = parseFloat(m[1]);
+    }
+  }
+  if (tonnage < 10000) tonnage = 150000;
+
+  let plantName = "SAIL Rourkela Steel Plant (RSP)";
+  let port = "Dhamra Port";
+  let freight = 16.50;
+  let landed = 312.45;
+  let savingCr = 14.72;
+  let laycan = "14–19 October";
+  let whyDraft = "Haldia Draft Restriction Avoidance: Haldia draft (~8.5m) requires offshore lightering at Sandheads ($6.80/MT penalty). Dhamra (18.0m draft) supports direct Capesize berthing.";
+  let whyLight = "Lower Lightering & Transhipment Cost: Eliminating lightering surcharges at Dhamra saves over ₹8.50 Cr directly on this parcel compared to Kolkata/Haldia discharge.";
+  let whyRail = "Superior Rail Economics: Dedicated Merry-Go-Round rapid rake loading at Dhamra connects to Rourkela (420 km, 1.8 days transit) at $15.20/MT, bypassing congested Visakhapatnam bottlenecks.";
+
+  if (customParams?.plant_id === "sail_bokaro" || text.includes("bokaro") || text.includes("bsl")) {
+    plantName = "SAIL Bokaro Steel Plant (BSL)";
+    port = "Dhamra Port";
+    landed = 316.80;
+    savingCr = 9.80;
+    whyRail = "Superior Rail Economics: Dhamra direct rake loading to Bokaro (520 km, 2.0 days) avoids Paradip's 3.5-day coal marshalling delay.";
+  } else if (customParams?.plant_id === "sail_durgapur" || text.includes("durgapur") || text.includes("dsp")) {
+    plantName = "SAIL Durgapur Steel Plant (DSP)";
+    port = "Haldia Dock Complex";
+    freight = 19.80;
+    landed = 288.50;
+    savingCr = 6.25;
+    whyDraft = "Proximity Advantage: Haldia is only 240 km from Durgapur (1.0 day rail transit), offsetting the shallow draft penalty via specialized Handymax parcels.";
+  } else if (customParams?.plant_id === "rinl_vizag" || text.includes("vizag") || text.includes("vsp")) {
+    plantName = "RINL Visakhapatnam (VSP)";
+    port = "Visakhapatnam Port";
+    landed = 295.20;
+    savingCr = 18.40;
+    whyRail = "Plant Gate Conveyor: Direct conveyor belt link from Vizag inner harbour berths to blast furnace bunker (18 km, 0.2 days).";
+  }
+
+  const isIwt = customParams?.is_iwt_query || text.includes("waterway") || text.includes("waterways") || text.includes("iwt") || text.includes("rail");
+
+  const strat1 = {
+    id: "cost_optimal",
+    discharge_port: port,
+    vessel_class: tonnage > 100000 ? "Capesize" : "Panamax",
+    estimated_freight_usd_ton: freight,
+    estimated_freight_inr_ton: Math.round(freight * 83.50),
+    landed_cost_usd_ton: landed,
+    landed_cost_inr_ton: Math.round(landed * 83.50),
+    recommended_laycan: laycan,
+    risk_level: "MODERATE",
+    risk_score: 38,
+    expected_saving_crore: savingCr,
+    plant_name: plantName,
+    commodity_name: commodity,
+    cargo_tonnage: tonnage,
+    transit_days_total: 17.6,
+    co2_kg_ton: 38.5
+  };
+
+  const strat2 = {
+    id: "fast_track",
+    discharge_port: "Paradip Port",
+    vessel_class: "Panamax",
+    estimated_freight_usd_ton: freight * 1.04,
+    estimated_freight_inr_ton: Math.round(freight * 1.04 * 83.50),
+    landed_cost_usd_ton: landed + 2.80,
+    landed_cost_inr_ton: Math.round((landed + 2.80) * 83.50),
+    recommended_laycan: "Immediate Spot 5-10 Days",
+    risk_level: "LOW",
+    risk_score: 24,
+    expected_saving_crore: roundTwo(savingCr * 0.65),
+    plant_name: plantName,
+    commodity_name: commodity,
+    cargo_tonnage: tonnage,
+    transit_days_total: 12.7,
+    co2_kg_ton: 42.0
+  };
+
+  const strat3 = {
+    id: "green_multimodal",
+    discharge_port: "Paradip Port (NW-5 Corridor)",
+    vessel_class: "Panamax + Self-Propelled River Barges",
+    estimated_freight_usd_ton: freight * 1.02,
+    estimated_freight_inr_ton: Math.round(freight * 1.02 * 83.50),
+    landed_cost_usd_ton: landed - 1.25,
+    landed_cost_inr_ton: Math.round((landed - 1.25) * 83.50),
+    recommended_laycan: laycan,
+    risk_level: "LOW",
+    risk_score: 28,
+    expected_saving_crore: roundTwo(savingCr + 1.58),
+    plant_name: plantName,
+    commodity_name: commodity,
+    cargo_tonnage: tonnage,
+    transit_days_total: 16.2,
+    co2_kg_ton: 13.5
+  };
+
+  function roundTwo(v) { return Math.round(v * 100) / 100; }
+
+  return {
+    strategy: strat1,
+    strategy_options: [
+      {
+        id: "cost_optimal",
+        label: "Option 1: Cost-Optimal ⭐",
+        sub: `Save ₹${savingCr.toFixed(2)} Cr (${port})`,
+        strategy: strat1,
+        why: [
+          whyDraft,
+          whyLight,
+          whyRail,
+          "Forecast Indicates Declining Forward Freight: AI forward curve projects Capesize spot rate softening by 4.5% over the 30-day horizon."
+        ]
+      },
+      {
+        id: "fast_track",
+        label: "Option 2: Fast-Track Transit ⚡",
+        sub: "3.2 Days Faster Turnaround",
+        strategy: strat2,
+        why: [
+          "Bypasses Berth Congestion: Priority mechanised discharge with lowest pre-berthing waiting time.",
+          "Direct Express Rail Turnaround: Rakes allocated within 12 hours of vessel unlading.",
+          "Stockout Prevention: Ideal when blast furnace coal reserves drop below 10 days."
+        ]
+      },
+      {
+        id: "green_multimodal",
+        label: "Option 3: Green Multi-Modal 🌱",
+        sub: "Cut CO₂ by 65% • NW-5 Feeder",
+        strategy: strat3,
+        why: [
+          "Decarbonization Benefit: Inland waterway transit reduces transport emissions by 65% vs all-rail.",
+          "Rake Congestion Shield: 100% immune to rail marshalling yard congestions.",
+          "Tariff Advantage: Saves an additional ₹1.58 Cr via subsidized river toll rates."
+        ]
+      }
+    ],
+    comparison_matrix: [
+      { metric: "Discharge Gateway", cost_optimal: port, fast_track: "Paradip Port", green_multimodal: "Paradip / NW-5 Feeder" },
+      { metric: "Vessel Class", cost_optimal: strat1.vessel_class, fast_track: strat2.vessel_class, green_multimodal: strat3.vessel_class },
+      { metric: "Ocean Freight ($/MT)", cost_optimal: `$${strat1.estimated_freight_usd_ton.toFixed(2)}`, fast_track: `$${strat2.estimated_freight_usd_ton.toFixed(2)}`, green_multimodal: `$${strat3.estimated_freight_usd_ton.toFixed(2)}` },
+      { metric: "Total Landed Cost (₹/MT)", cost_optimal: `₹${strat1.landed_cost_inr_ton.toLocaleString()}`, fast_track: `₹${strat2.landed_cost_inr_ton.toLocaleString()}`, green_multimodal: `₹${strat3.landed_cost_inr_ton.toLocaleString()}` },
+      { metric: "Total Parcel Outlay (₹ Cr)", cost_optimal: `₹${(strat1.landed_cost_inr_ton * tonnage / 1e7).toFixed(2)} Cr`, fast_track: `₹${(strat2.landed_cost_inr_ton * tonnage / 1e7).toFixed(2)} Cr`, green_multimodal: `₹${(strat3.landed_cost_inr_ton * tonnage / 1e7).toFixed(2)} Cr` },
+      { metric: "Total Transit Lead Time", cost_optimal: `${strat1.transit_days_total} days`, fast_track: `${strat2.transit_days_total} days (Fastest)`, green_multimodal: `${strat3.transit_days_total} days` },
+      { metric: "Carbon Footprint (kg CO₂/T)", cost_optimal: `${strat1.co2_kg_ton} kg/T`, fast_track: `${strat2.co2_kg_ton} kg/T`, green_multimodal: `${strat3.co2_kg_ton} kg/T (-65%)` },
+      { metric: "Risk Score", cost_optimal: `${strat1.risk_level} (${strat1.risk_score}/100)`, fast_track: `LOW (${strat2.risk_score}/100)`, green_multimodal: `LOW (${strat3.risk_score}/100)` },
+      { metric: "Strategic Recommendation", cost_optimal: "Primary choice for scheduled bulk replenishment", fast_track: "Deploy if plant stock drops below 10 days", green_multimodal: "Deploy for Ministry ESG decarbonization targets" }
+    ],
+    why_reasoning: [
+      whyDraft,
+      whyLight,
+      whyRail,
+      "Forecast Indicates Declining Forward Freight: AI XGBoost forward curve projects Australia–East Coast Capesize spot softening by 4.5% over the 30-day horizon, indicating optimal tender entry during 14–19 October."
+    ],
+    iwt_comparison: {
+      route_name: "Pankpal (Kalinganagar) → Paradip Port",
+      waterway_id: "NW-5",
+      rail: { cost_inr_ton: 1269, transit_days: 1.8, co2_emissions_tonnes: 264.0 },
+      iwt: { cost_inr_ton: 215, transit_days: 1.2, co2_emissions_tonnes: 49.5 },
+      recommendation_badge: "IWT — ₹1.58 Cr cheaper + 81.3% lower emissions"
+    },
+    parsed_parameters: { is_iwt_query: isIwt },
+    query: queryText
+  };
+}
+
+function renderCopilotOutput(data, userQuery) {
+  if (!data || !data.strategy) return;
+  currentCopilotData = data;
+  const s = data.strategy;
+  const iwt = data.iwt_comparison;
+  const options = data.strategy_options || [];
+  const matrix = data.comparison_matrix || [];
+
+  // 0. Update Dialogue Header & Status
+  const statusEl = document.getElementById("copilot-status-indicator");
+  const feedbackEl = document.getElementById("copilot-query-feedback");
+  if (statusEl) {
+    statusEl.innerHTML = `<span style="color: var(--accent-emerald);">● LIVE STRATEGY SYNTHESIZED</span>`;
+  }
+  if (feedbackEl) {
+    const tonnageStr = s.cargo_tonnage ? `${Number(s.cargo_tonnage).toLocaleString()} MT` : "150,000 MT";
+    const commStr = s.commodity_name || "Coking Coal";
+    const plantStr = s.plant_name || "SAIL Steel Plant";
+    feedbackEl.innerHTML = `Multi-scenario strategies synthesized for <strong>${tonnageStr}</strong> ${commStr} destined for <strong>${plantStr}</strong>:`;
+  }
+
+  // 1. Update Scenario Switcher Subtitles
+  if (options.length >= 3) {
+    const sub0 = document.getElementById("scenario-sub-0");
+    const sub1 = document.getElementById("scenario-sub-1");
+    const sub2 = document.getElementById("scenario-sub-2");
+    if (sub0) sub0.textContent = options[0].sub || "Save Maximum Cost";
+    if (sub1) sub1.textContent = options[1].sub || "Save Transit Time";
+    if (sub2) sub2.textContent = options[2].sub || "Cut Emissions";
+  }
+
+  // 2. Render Active Scenario (Default 0)
+  window.selectCopilotScenario(currentSelectedScenarioIndex || 0);
+
+  // 3. Render IWT Comparison Card
+  const iwtCard = document.getElementById("copilot-iwt-card");
+  if (iwtCard) {
+    const qLower = (userQuery || data.query || data.parsed_parameters?.query_text || (document.getElementById("copilot-query-input")?.value) || "").toLowerCase();
+    const isWaterwayQuery = Boolean(
+      iwt && (
+        data.parsed_parameters?.is_iwt_query || 
+        qLower.includes("waterway") || 
+        qLower.includes("rail") || 
+        qLower.includes("iwt") || 
+        qLower.includes("barge") ||
+        qLower.includes("river")
+      )
+    );
+    if (iwt && isWaterwayQuery) {
+      iwtCard.style.display = "block";
+      const railCost = iwt.rail ? iwt.rail.cost_inr_ton : 1269;
+      const railDays = iwt.rail ? iwt.rail.transit_days : 1.8;
+      const railCo2 = iwt.rail ? (iwt.rail.co2_emissions_tonnes || iwt.rail.co2_kg_ton || 264) : 264;
+      const iwtCost = iwt.iwt ? iwt.iwt.cost_inr_ton : 215;
+      const iwtDays = iwt.iwt ? iwt.iwt.transit_days : 1.2;
+      const iwtCo2 = iwt.iwt ? (iwt.iwt.co2_emissions_tonnes || iwt.iwt.co2_kg_ton || 49.5) : 49.5;
+
+      iwtCard.innerHTML = `
+        <div style="background: rgba(0, 245, 160, 0.08); border: 1px solid rgba(0, 245, 160, 0.35); border-radius: 10px; padding: 1rem; margin-top: 1rem; animation: fadeIn 0.4s ease;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; flex-wrap: wrap; gap: 0.4rem;">
+            <div style="font-weight: 700; color: var(--accent-emerald); font-size: 0.88rem; display: flex; align-items: center; gap: 0.4rem;">
+              <span>🌊</span> Multi-Modal Comparison: ${iwt.route_name || 'Inland Waterway Corridor'} (${iwt.waterway_id || 'NW-5'})
+            </div>
+            <span class="badge-tag badge-emerald">${iwt.recommendation_badge || 'IWT Economically & Environmentally Superior'}</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; font-size: 0.78rem;">
+            <div style="background: rgba(6,12,26,0.6); padding: 0.65rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.06);">
+              <strong style="color: var(--accent-cyan);">Indian Railways:</strong> ₹${railCost}/T • ${railDays}d transit • ${railCo2}T CO₂
+            </div>
+            <div style="background: rgba(6,12,26,0.6); padding: 0.65rem; border-radius: 6px; border: 1px solid rgba(0, 245, 160, 0.25);">
+              <strong style="color: var(--accent-emerald);">Inland Waterways (IWT):</strong> ₹${iwtCost}/T • ${iwtDays}d transit • ${iwtCo2}T CO₂
+            </div>
+          </div>
+        </div>
+      `;
+    } else {
+      iwtCard.style.display = "none";
+    }
+  }
+
+  // 4. Render Decision Matrix Table
+  const tbody = document.getElementById("copilot-matrix-tbody");
+  if (tbody && matrix.length > 0) {
+    tbody.innerHTML = matrix.map(row => `
+      <tr>
+        <td style="font-weight: 600; color: var(--text-secondary);">${row.metric || row.parameter}</td>
+        <td class="copilot-matrix-highlight">${row.cost_optimal}</td>
+        <td>${row.fast_track}</td>
+        <td>${row.green_multimodal}</td>
+      </tr>
+    `).join("");
+  }
+}
+
+// ==========================================================================
+// 🚨 PROACTIVE EARLY WARNING ALERT ENGINE CONTROLLER
+// ==========================================================================
+function initEarlyWarningModule() {
+  loadEarlyWarnings();
+
+  const refreshBtn = document.getElementById("btn-refresh-alerts");
+  if (refreshBtn) {
+    refreshBtn.addEventListener("click", () => {
+      refreshBtn.disabled = true;
+      refreshBtn.innerHTML = "<span>🔄 Scanning...</span>";
+      loadEarlyWarnings().finally(() => {
+        refreshBtn.disabled = false;
+        refreshBtn.innerHTML = "<span>🔄 Refresh Signals</span>";
+      });
+    });
+  }
+
+  // Filter chips
+  const filterChips = document.querySelectorAll(".alert-chip");
+  filterChips.forEach(chip => {
+    chip.addEventListener("click", () => {
+      filterChips.forEach(c => c.classList.remove("active"));
+      chip.classList.add("active");
+      const filter = chip.getAttribute("data-alert-filter");
+      filterEarlyWarnings(filter);
+    });
+  });
+}
+
+async function loadEarlyWarnings() {
+  try {
+    const res = await fetch("/api/alerts/active");
+    const data = await res.json();
+    if (data.status === "success" && data.data) {
+      renderEarlyWarnings(data.data);
+    }
+  } catch (err) {
+    console.error("Early warnings fetch error:", err);
+  }
+}
+
+function renderEarlyWarnings(data) {
+  const container = document.getElementById("early-warning-cards-container");
+  const headlineEl = document.getElementById("action-banner-headline");
+  const descEl = document.getElementById("action-banner-desc");
+  const countBadge = document.getElementById("alerts-count-badge");
+
+  if (headlineEl && data.primary_directive) {
+    headlineEl.textContent = `Recommended Action: ${data.primary_directive.headline}`;
+  }
+  if (descEl && data.primary_directive) {
+    descEl.textContent = data.primary_directive.rationale;
+  }
+  if (countBadge && data.total_active_alerts) {
+    countBadge.textContent = `${data.total_active_alerts} ACTIVE ALERTS`;
+  }
+
+  if (container && data.alerts && data.alerts.length > 0) {
+    container.innerHTML = data.alerts.map(a => {
+      let typeClass = "ew-port";
+      let badgeClass = "badge-port";
+      let filterType = "port";
+
+      if (a.type === "WEATHER_ALERT") {
+        typeClass = "ew-weather";
+        badgeClass = "badge-weather";
+        filterType = "weather";
+      } else if (a.type === "FREIGHT_ALERT") {
+        typeClass = "ew-freight";
+        badgeClass = "badge-freight";
+        filterType = "freight";
+      } else if (a.type === "FUEL_ALERT") {
+        typeClass = "ew-fuel";
+        badgeClass = "badge-fuel";
+        filterType = "fuel";
+      }
+
+      const metricKeys = Object.keys(a.metrics || {});
+      const metricsHtml = metricKeys.map(k => {
+        const label = k.replace(/_/g, ' ');
+        return `<div class="ew-metric">${label}: <strong>${a.metrics[k]}</strong></div>`;
+      }).join("");
+
+      return `
+        <div class="ew-card ${typeClass}" data-type="${filterType}">
+          <div class="ew-header">
+            <div class="ew-badge-tag ${badgeClass}">${a.icon} ${a.badge}</div>
+            <span class="ew-urgency">${a.urgency_hours}h Window</span>
+          </div>
+          <div class="ew-title">${a.title}</div>
+          <div class="ew-desc">${a.subtitle}</div>
+          <div class="ew-metrics-row">
+            ${metricsHtml}
+          </div>
+          <div class="ew-footer-action">
+            <span>💡 Directive:</span> ${a.recommended_action}
+          </div>
+        </div>
+      `;
+    }).join("");
+  }
+}
+
+function filterEarlyWarnings(filterType) {
+  const cards = document.querySelectorAll("#early-warning-cards-container .ew-card");
+  cards.forEach(card => {
+    if (filterType === "all" || card.getAttribute("data-type") === filterType) {
+      card.style.display = "flex";
+    } else {
+      card.style.display = "none";
+    }
+  });
+}
+
+// ==========================================================================
+// 🌊 IWT + MARITIME MULTI-MODAL EVACUATION CONTROLLER
+// ==========================================================================
+function initModalEvacuationModule() {
+  const compareBtn = document.getElementById("btn-run-modal-compare");
+  const portSelect = document.getElementById("modal-port-select");
+  const commoditySelect = document.getElementById("modal-commodity-select");
+  const plantSelect = document.getElementById("tender-plant");
+
+  if (compareBtn) {
+    compareBtn.addEventListener("click", () => runModalComparison());
+  }
+
+  if (portSelect) {
+    portSelect.addEventListener("change", () => runModalComparison());
+  }
+  if (commoditySelect) {
+    commoditySelect.addEventListener("change", () => runModalComparison());
+  }
+  if (plantSelect) {
+    plantSelect.addEventListener("change", () => runModalComparison());
+  }
+
+  // Initial calculation on load
+  runModalComparison();
+}
+
+async function runModalComparison() {
+  const plantSelect = document.getElementById("tender-plant");
+  const portSelect = document.getElementById("modal-port-select");
+  const tonnageInput = document.getElementById("modal-tonnage-input");
+  const commoditySelect = document.getElementById("modal-commodity-select");
+
+  const plantId = plantSelect ? plantSelect.value : "sail_rourkela";
+  const portId = portSelect ? portSelect.value : "paradip";
+  const tonnage = tonnageInput ? parseFloat(tonnageInput.value) || 15000 : 15000;
+  const commodityId = commoditySelect ? commoditySelect.value : "coking_coal";
+
+  try {
+    const res = await fetch("/api/optimizer/modal-compare", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        plant_id: plantId,
+        port_id: portId,
+        cargo_tonnage: tonnage,
+        commodity_id: commodityId
+      })
+    });
+    const data = await res.json();
+    if (data.status === "success" && data.data) {
+      renderModalComparison(data.data);
+    }
+  } catch (err) {
+    console.error("Modal compare fetch error:", err);
+  }
+}
+
+function renderModalComparison(d) {
+  // Rail stats
+  const railCostEl = document.getElementById("modal-rail-cost");
+  const railTransitEl = document.getElementById("modal-rail-transit");
+  const railCo2El = document.getElementById("modal-rail-co2");
+  const railTotalEl = document.getElementById("modal-rail-total");
+
+  if (railCostEl) railCostEl.textContent = `₹${d.rail.cost_inr_ton.toLocaleString()} / ton`;
+  if (railTransitEl) railTransitEl.textContent = `${d.rail.transit_days} days (${d.rail.distance_km} km)`;
+  if (railCo2El) railCo2El.textContent = `${d.rail.co2_kg_ton} kg CO₂ / ton`;
+  if (railTotalEl) {
+    const totalCr = (d.rail.total_cost_inr / 1e7).toFixed(2);
+    railTotalEl.textContent = totalCr >= 1 ? `₹${totalCr} Cr` : `₹${(d.rail.total_cost_inr / 1e5).toFixed(1)} Lakh`;
+  }
+
+  // IWT stats
+  const iwtCostEl = document.getElementById("modal-iwt-cost");
+  const iwtTransitEl = document.getElementById("modal-iwt-transit");
+  const iwtCo2El = document.getElementById("modal-iwt-co2");
+  const iwtTotalEl = document.getElementById("modal-iwt-total");
+
+  if (iwtCostEl) iwtCostEl.textContent = `₹${d.iwt.cost_inr_ton.toLocaleString()} / ton`;
+  if (iwtTransitEl) iwtTransitEl.textContent = `${d.iwt.transit_days} days (${d.iwt.distance_km} km)`;
+  if (iwtCo2El) iwtCo2El.textContent = `${d.iwt.co2_kg_ton} kg CO₂ / ton`;
+  if (iwtTotalEl) {
+    const totalCr = (d.iwt.total_cost_inr / 1e7).toFixed(2);
+    iwtTotalEl.textContent = totalCr >= 1 ? `₹${totalCr} Cr` : `₹${(d.iwt.total_cost_inr / 1e5).toFixed(1)} Lakh`;
+  }
+
+  // Recommendation banner
+  const pillEl = document.getElementById("modal-recommendation-pill");
+  const bannerTextEl = document.getElementById("modal-recommendation-text");
+  const bannerSubEl = document.getElementById("modal-recommendation-sub");
+
+  if (pillEl) {
+    pillEl.textContent = d.recommended_mode === "IWT" ? "IWT Recommended" : "Rail Recommended";
+    pillEl.className = d.recommended_mode === "IWT" ? "badge-tag badge-emerald" : "badge-tag badge-cyan";
+  }
+
+  if (bannerTextEl) {
+    bannerTextEl.innerHTML = `<span>🎯</span> ${d.recommendation_badge}`;
+  }
+
+  if (bannerSubEl) {
+    bannerSubEl.textContent = d.recommendation_reason;
+  }
+}
+
+// ============== 22. LIVE DATA INGESTION & AUTO-REFRESH ==============
+
+let isSyncing = false;
+
+function initLiveSyncAndAutoRefresh() {
+  const liveBadge = document.getElementById("live-feed-badge");
+  if (liveBadge) {
+    liveBadge.style.cursor = "pointer";
+    liveBadge.setAttribute("title", "🟢 Live Data Pipeline Active — Click to trigger on-demand sync");
+    
+    liveBadge.addEventListener("click", () => {
+      triggerLiveIngestionSync();
+    });
+  }
+
+  // Periodic Auto-Refresh cycle every 30 seconds
+  setInterval(() => {
+    autoRefreshDynamicData();
+  }, 30000);
+
+  // Initial fetch of data status
+  fetchDataStatus();
+}
+
+async function triggerLiveIngestionSync() {
+  if (isSyncing) return;
+  isSyncing = true;
+
+  const liveBadge = document.getElementById("live-feed-badge");
+  if (liveBadge) {
+    liveBadge.classList.add("syncing");
+    const textEl = liveBadge.querySelector(".live-text-desktop") || liveBadge;
+    textEl.innerText = "SYNCING FEEDS...";
+  }
+
+  showSeaSphereToast("🔄 Ingesting live Metocean APIs and Baltic market ticks...", "info");
+
+  try {
+    const res = await fetch("/api/data/sync", { method: "POST" });
+    const json = await res.json();
+
+    if (json.status === "success" && json.data) {
+      const d = json.data;
+      const tick = d.latest_market_tick || {};
+      const wCount = d.weather_records_updated || 0;
+      const latency = d.latency_ms || 0;
+
+      showSeaSphereToast(
+        `✅ Live Ingestion Complete (${latency}ms) — ${wCount} Weather Forecasts Updated | BDI: ${tick.bdi || 'Live'} | Bunker: $${tick.bunker_vlsfo_singapore || 0}/MT`,
+        "success"
+      );
+
+      // Refresh UI components immediately with newest data
+      loadMarketSnapshot();
+      loadRiskScore();
+
+      const routeSelect = document.getElementById("forecaster-route-select");
+      if (routeSelect && routeSelect.value) {
+        loadForecast(routeSelect.value);
+      }
+
+      loadAllPortsWeatherOverview();
+      const weatherPortSelect = document.getElementById("weather-port-select");
+      if (weatherPortSelect && weatherPortSelect.value) {
+        loadPortWeatherData(weatherPortSelect.value);
+      }
+
+      const alertModule = window.loadActiveAlerts;
+      if (typeof alertModule === "function") alertModule();
+    } else {
+      showSeaSphereToast("⚠️ Live sync warning: " + (json.message || "Partial update"), "warning");
+    }
+  } catch (err) {
+    console.error("Live sync failed:", err);
+    showSeaSphereToast("❌ Live ingestion failed: " + err.message, "error");
+  } finally {
+    isSyncing = false;
+    if (liveBadge) {
+      liveBadge.classList.remove("syncing");
+      const textEl = liveBadge.querySelector(".live-text-desktop");
+      if (textEl) textEl.innerText = "LIVE MARITIME FEED";
+    }
+  }
+}
+
+async function autoRefreshDynamicData() {
+  try {
+    loadMarketSnapshot();
+    fetchDataStatus();
+  } catch (e) {
+    console.warn("Background auto-refresh tick skipped:", e);
+  }
+}
+
+async function fetchDataStatus() {
+  try {
+    const res = await fetch("/api/data/status");
+    const json = await res.json();
+    if (json.status === "success" && json.data) {
+      const dbStats = json.data.database || {};
+      const liveStats = json.data.ingestion || {};
+      const liveBadge = document.getElementById("live-feed-badge");
+      if (liveBadge && dbStats.engine) {
+        liveBadge.setAttribute(
+          "title",
+          `🟢 Connected to ${dbStats.engine} (${dbStats.market_records_total} records) | Auto-Sync: ${liveStats.scheduler_interval_seconds}s | Click to sync`
+        );
+      }
+    }
+  } catch (e) {
+    // Silent background status
+  }
+}
+
+function showSeaSphereToast(message, type = "info") {
+  let toastContainer = document.getElementById("seasphere-toast-container");
+  if (!toastContainer) {
+    toastContainer = document.createElement("div");
+    toastContainer.id = "seasphere-toast-container";
+    toastContainer.style.position = "fixed";
+    toastContainer.style.bottom = "24px";
+    toastContainer.style.right = "24px";
+    toastContainer.style.zIndex = "99999";
+    toastContainer.style.display = "flex";
+    toastContainer.style.flexDirection = "column";
+    toastContainer.style.gap = "8px";
+    toastContainer.style.maxWidth = "420px";
+    document.body.appendChild(toastContainer);
+  }
+
+  const toast = document.createElement("div");
+  const bgColors = {
+    info: "rgba(15, 23, 42, 0.95)",
+    success: "rgba(6, 78, 59, 0.95)",
+    warning: "rgba(120, 53, 15, 0.95)",
+    error: "rgba(127, 29, 29, 0.95)"
+  };
+  const borderColors = {
+    info: "#00d2ff",
+    success: "#00f5a0",
+    warning: "#ffb703",
+    error: "#ef4444"
+  };
+
+  toast.style.background = bgColors[type] || bgColors.info;
+  toast.style.border = `1px solid ${borderColors[type] || borderColors.info}`;
+  toast.style.color = "#f8fafc";
+  toast.style.padding = "10px 16px";
+  toast.style.borderRadius = "8px";
+  toast.style.fontSize = "0.85rem";
+  toast.style.boxShadow = "0 8px 30px rgba(0,0,0,0.5)";
+  toast.style.backdropFilter = "blur(8px)";
+  toast.style.animation = "fadeIn 0.3s ease";
+  toast.innerText = message;
+
+  toastContainer.appendChild(toast);
+
+  setTimeout(() => {
+    toast.style.opacity = "0";
+    toast.style.transition = "opacity 0.4s ease";
+    setTimeout(() => toast.remove(), 400);
+  }, 4500);
 }

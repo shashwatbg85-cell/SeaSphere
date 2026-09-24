@@ -3,9 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NAVI-STEEL | Intelligent Freight Forecasting & Vessel Chartering Optimizer</title>
+  <title>SeaSphere | Intelligent Freight Forecasting & Vessel Chartering Optimizer</title>
   <meta name="description" content="AI-driven maritime freight rate forecasting, optimal vessel chartering, and bulk cargo landed cost optimization for East Coast of India imports.">
-  <meta name="keywords" content="NAVI-STEEL, SIH 2026, maritime freight, vessel chartering, bulk cargo, East Coast India, coking coal, steel procurement, AI forecasting">
+  <meta name="keywords" content="SeaSphere, SIH 2026, maritime freight, vessel chartering, bulk cargo, East Coast India, coking coal, steel procurement, AI forecasting">
+
+  <!-- Favicon matching SeaSphere brand logo -->
+  <link rel="icon" type="image/svg+xml" href="./static/favicon.svg">
+  <link rel="alternate icon" href="./static/favicon.svg">
 
   <!-- Google Fonts: Inter & Outfit -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,7 +32,7 @@
     <div class="brand-container">
       <div class="brand-logo" id="brand-logo-icon">⚓</div>
       <div class="brand-text">
-        <h1>NAVI-STEEL <span class="brand-tag">SIH 2026</span></h1>
+        <h1>SeaSphere <span class="brand-tag">SIH 2026</span></h1>
         <div class="brand-sub">Ministry of Steel • Bulk Cargo Maritime Intelligence</div>
       </div>
     </div>
@@ -38,22 +42,24 @@
     </button>
 
     <div class="nav-links" id="nav-links-menu">
+      <a href="#section-copilot" class="nav-link highlight-nav" id="nav-copilot">🤖 AI Copilot</a>
       <a href="#section-kpi" class="nav-link active" id="nav-overview">Overview</a>
-      <a href="#section-risk" class="nav-link" id="nav-risk">Risk Index</a>
-      <a href="#section-weather" class="nav-link" id="nav-weather">Port Weather</a>
-      <a href="#section-port-traffic" class="nav-link" id="nav-port-traffic">Port Traffic AI</a>
-      <a href="#section-inland-waterways" class="nav-link" id="nav-iwt">Inland Waterways</a>
-      <a href="#section-map" class="nav-link" id="nav-routes">Trade Corridors</a>
+      <a href="#section-risk" class="nav-link" id="nav-risk">🚨 Alerts</a>
+      <a href="#section-weather" class="nav-link" id="nav-weather">Weather</a>
+      <a href="#section-port-traffic" class="nav-link" id="nav-port-traffic">Traffic AI</a>
+      <a href="#section-inland-waterways" class="nav-link" id="nav-iwt">IWT</a>
+      <a href="#section-map" class="nav-link" id="nav-routes">Routes</a>
       <a href="#section-forecaster" class="nav-link" id="nav-forecast">Freight AI</a>
-      <a href="#section-optimizer" class="nav-link" id="nav-charter">Charter Optimizer</a>
+      <a href="#section-optimizer" class="nav-link" id="nav-charter">Charter</a>
       <a href="#section-landed-cost" class="nav-link" id="nav-landed">Landed Cost</a>
-      <a href="#section-simulator" class="nav-link" id="nav-crisis">Crisis Simulator</a>
+      <a href="#section-simulator" class="nav-link" id="nav-crisis">Crisis Sim</a>
     </div>
 
     <div class="nav-actions">
-      <div class="status-badge" id="live-feed-badge">
+      <div class="status-badge" id="live-feed-badge" title="Live AIS & Market Freight Feed Active">
         <span class="pulse-dot"></span>
-        <span>LIVE MARITIME FEED</span>
+        <span class="live-text-desktop">LIVE MARITIME FEED</span>
+        <span class="live-text-mobile">LIVE</span>
       </div>
       <button class="btn btn-primary" id="btn-export-report">
         <span>📄 Export Tender Brief</span>
@@ -92,9 +98,11 @@
 
       <!-- Procurement Decision Flow -->
       <div class="procurement-flow" id="procurement-flow">
+        <div class="flow-step highlight-step" data-section="section-copilot">🤖 AI Copilot</div>
+        <span class="flow-arrow">→</span>
         <div class="flow-step active" data-section="section-kpi">📊 Market</div>
         <span class="flow-arrow">→</span>
-        <div class="flow-step" data-section="section-risk">🛡️ Risk</div>
+        <div class="flow-step" data-section="section-risk">🚨 Early Warnings</div>
         <span class="flow-arrow">→</span>
         <div class="flow-step" data-section="section-weather">🌦️ Weather</div>
         <span class="flow-arrow">→</span>
@@ -111,6 +119,403 @@
         <div class="flow-step" data-section="section-simulator">⚡ Stress Test</div>
       </div>
     </section>
+
+    <!-- ==================== 🤖 AI PROCUREMENT COPILOT ==================== -->
+    <section id="section-copilot" class="glass-card reveal copilot-showcase">
+      <div class="card-header">
+        <div>
+          <div class="card-title" style="display: flex; align-items: center; gap: 0.65rem; flex-wrap: wrap;">
+            <span>🤖</span> AI Procurement Copilot
+            <span class="badge-tag badge-cyan">DECISION SUPPORT SYSTEM</span>
+            <span class="badge-tag badge-emerald">HIGH PRIORITY</span>
+          </div>
+          <div class="card-subtitle">
+            Executive Decision Assistant: Enter complex multi-modal procurement targets in natural language (English / Hinglish). The AI evaluates vessel draft constraints, port queues, forward freight curves, and inland rail logistics to recommend the optimal procurement strategy.
+          </div>
+        </div>
+        <div class="copilot-ai-badge">
+          <span class="pulse-dot"></span>
+          <span>AUTONOMOUS DECISION ENGINE</span>
+        </div>
+      </div>
+
+      <!-- Copilot Mode Switcher Tabs -->
+      <div class="copilot-mode-tabs" id="copilot-mode-tabs">
+        <button class="copilot-mode-btn active" id="btn-mode-quick" onclick="switchCopilotMode('quick')">
+          <span>💬</span> Quick Prompt (Natural Language)
+        </button>
+        <button class="copilot-mode-btn" id="btn-mode-builder" onclick="switchCopilotMode('builder')">
+          <span>🛠️</span> Parameter Collector (Guided Data Input)
+        </button>
+      </div>
+
+      <!-- Mode 1: Natural Language Query & Quick Chips -->
+      <div class="copilot-query-box" id="copilot-quick-container">
+        <div class="copilot-input-wrapper">
+          <span class="copilot-search-icon">💬</span>
+          <input type="text" class="copilot-input" id="copilot-query-input" 
+                 placeholder="e.g. '150,000 MT Australian coking coal Rourkela ke liye next month procure karna hai' or 'Can I use Inland Waterways instead of Rail?'">
+          <button class="btn btn-primary copilot-submit-btn" id="btn-copilot-submit" onclick="if(window.askCopilotPrompt){window.askCopilotPrompt(document.getElementById('copilot-query-input').value);}">
+            <span>⚡ Ask AI Copilot</span>
+          </button>
+        </div>
+
+        <!-- Quick Prompt Chips -->
+        <div class="copilot-chips-container">
+          <span class="copilot-chips-label">Quick Prompts:</span>
+          <button class="copilot-chip active-chip" data-query="150,000 MT Australian coking coal Rourkela ke liye next month procure karna hai" onclick="if(window.askCopilotPrompt){window.askCopilotPrompt(this.getAttribute('data-query'));}">
+            <span>⛏️ 150k MT Aus Coal → Rourkela</span>
+          </button>
+          <button class="copilot-chip" data-query="Can I use Inland Waterways instead of Rail?" onclick="if(window.askCopilotPrompt){window.askCopilotPrompt(this.getAttribute('data-query'));}">
+            <span>🌊 Can I use Inland Waterways instead of Rail?</span>
+          </button>
+          <button class="copilot-chip" data-query="Compare Haldia vs Dhamra for SAIL Bokaro coking coal" onclick="if(window.askCopilotPrompt){window.askCopilotPrompt(this.getAttribute('data-query'));}">
+            <span>⚖️ Compare Haldia vs Dhamra for Bokaro</span>
+          </button>
+          <button class="copilot-chip" data-query="75,000 MT Indonesian thermal coal for Durgapur next month" onclick="if(window.askCopilotPrompt){window.askCopilotPrompt(this.getAttribute('data-query'));}">
+            <span>🚢 75k MT Indo Coal → Durgapur</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mode 2: Guided Procurement Parameter Collector Form -->
+      <div class="copilot-builder-box" id="copilot-builder-container" style="display: none;">
+        <div style="font-size: 0.86rem; font-weight: 700; color: #ffffff; margin-bottom: 0.85rem; display: flex; align-items: center; gap: 0.45rem;">
+          <span>📋</span> Customized Procurement Data Collection Form
+        </div>
+        
+        <div class="copilot-form-grid">
+          <!-- Commodity -->
+          <div class="copilot-field-group">
+            <label class="copilot-field-label"><span>⛏️</span> Commodity Type</label>
+            <select class="copilot-select" id="builder-commodity">
+              <option value="coking_coal" selected>Prime Hard Coking Coal (PHCC)</option>
+              <option value="thermal_coal">Thermal Coal (GAR 5000)</option>
+              <option value="pci_coal">PCI Coal (Pulverized Injection)</option>
+              <option value="limestone">SMS Grade Limestone (UAE/Oman)</option>
+              <option value="manganese_ore">High-Grade Manganese Ore</option>
+            </select>
+          </div>
+
+          <!-- Tonnage -->
+          <div class="copilot-field-group">
+            <label class="copilot-field-label"><span>⚖️</span> Parcel Tonnage (Metric Tons)</label>
+            <input type="number" class="copilot-number-input" id="builder-tonnage" value="150000" min="10000" max="300000" step="5000">
+            <div class="copilot-tonnage-chips">
+              <span class="copilot-tonnage-chip" onclick="setBuilderTonnage(50000)">50k MT</span>
+              <span class="copilot-tonnage-chip" onclick="setBuilderTonnage(75000)">75k MT</span>
+              <span class="copilot-tonnage-chip" onclick="setBuilderTonnage(120000)">120k MT</span>
+              <span class="copilot-tonnage-chip active" onclick="setBuilderTonnage(150000)">150k MT</span>
+              <span class="copilot-tonnage-chip" onclick="setBuilderTonnage(180000)">180k MT</span>
+            </div>
+          </div>
+
+          <!-- Destination Plant -->
+          <div class="copilot-field-group">
+            <label class="copilot-field-label"><span>🏭</span> Destination Steel Plant</label>
+            <select class="copilot-select" id="builder-plant">
+              <option value="sail_rourkela" selected>SAIL Rourkela Steel Plant (RSP - Odisha)</option>
+              <option value="sail_bokaro">SAIL Bokaro Steel Plant (BSL - Jharkhand)</option>
+              <option value="sail_durgapur">SAIL Durgapur Steel Plant (DSP - West Bengal)</option>
+              <option value="sail_bhilai">SAIL Bhilai Steel Plant (BSP - Chhattisgarh)</option>
+              <option value="rinl_vizag">RINL Visakhapatnam (VSP - AP)</option>
+              <option value="sail_iisco">SAIL Burnpur / IISCO (ISP - West Bengal)</option>
+            </select>
+          </div>
+
+          <!-- Origin Port -->
+          <div class="copilot-field-group">
+            <label class="copilot-field-label"><span>🌏</span> Loading Origin Port</label>
+            <select class="copilot-select" id="builder-origin">
+              <option value="hay_point" selected>Hay Point / DBCT (Australia)</option>
+              <option value="taboneo">Taboneo / Samarinda (Indonesia)</option>
+              <option value="richards_bay">Richards Bay (South Africa)</option>
+              <option value="hampton_roads">Hampton Roads / Norfolk (USA)</option>
+              <option value="fujairah">Port of Fujairah (UAE)</option>
+            </select>
+          </div>
+
+          <!-- Vessel Preference -->
+          <div class="copilot-field-group">
+            <label class="copilot-field-label"><span>🚢</span> Vessel Class Preference</label>
+            <select class="copilot-select" id="builder-vessel">
+              <option value="Capesize" selected>Auto AI Optimal (Recommend based on draft/tonnage)</option>
+              <option value="Capesize">Capesize (175,000 DWT Direct Berthing)</option>
+              <option value="Panamax">Panamax (75,000 DWT Flexible Draft)</option>
+              <option value="Supramax">Supramax (58,000 DWT Geared)</option>
+              <option value="Handymax">Handymax (40,000 DWT Shallow Draft)</option>
+            </select>
+          </div>
+
+          <!-- Optimization Goal -->
+          <div class="copilot-field-group">
+            <label class="copilot-field-label"><span>🎯</span> Strategic Optimization Goal</label>
+            <select class="copilot-select" id="builder-priority">
+              <option value="lowest_cost" selected>💰 Maximum Cost Savings (Lowest Landed Cost)</option>
+              <option value="fast_transit">⚡ Fastest Evacuation & Delivery (Min Lead Time)</option>
+              <option value="green_esg">🌱 Green Logistics & Lowest CO₂ Emissions</option>
+              <option value="min_risk">🛡️ Minimum Congestion & Demurrage Risk</option>
+            </select>
+          </div>
+
+          <!-- Laycan Timeframe -->
+          <div class="copilot-field-group">
+            <label class="copilot-field-label"><span>📅</span> Target Laycan Timeframe</label>
+            <select class="copilot-select" id="builder-horizon">
+              <option value="35" selected>Next Month (Standard 30–45 Days Window)</option>
+              <option value="10">Immediate Spot Fixture (5–10 Days)</option>
+              <option value="60">Forward Strategic Curve (60 Days)</option>
+            </select>
+          </div>
+
+          <!-- Multi-Modal Evacuation Preference -->
+          <div class="copilot-field-group" style="justify-content: center;">
+            <label class="copilot-field-label"><span>🌊</span> Inland Waterways Feasibility</label>
+            <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; color: #ffffff; cursor: pointer; padding-top: 0.4rem;">
+              <input type="checkbox" id="builder-include-iwt" checked style="accent-color: var(--accent-emerald); width: 16px; height: 16px;">
+              <span>Include NW-1 / NW-5 barge corridor comparison</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="copilot-builder-actions">
+          <div style="font-size: 0.74rem; color: var(--text-muted);">
+            ⚡ Parameters are cross-referenced with live port drafts, AI forward curves, and railway tariffs.
+          </div>
+          <div style="display: flex; gap: 0.6rem;">
+            <button class="btn btn-secondary" style="padding: 0.55rem 1rem; font-size: 0.8rem;" onclick="resetBuilderForm()">
+              <span>🔄 Reset</span>
+            </button>
+            <button class="btn btn-primary" id="btn-builder-submit" style="padding: 0.55rem 1.3rem; font-size: 0.82rem;" onclick="submitCopilotBuilderForm()">
+              <span>⚡ Synthesize Multi-Scenario Strategies</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Copilot Output Display -->
+      <div class="copilot-output-container" id="copilot-output-container">
+        <!-- Live AI Dialogue Status Bar -->
+        <div class="copilot-dialogue-box" id="copilot-dialogue-box" style="margin-bottom: 1rem; background: rgba(0, 210, 255, 0.08); border: 1px solid rgba(0, 210, 255, 0.3); border-radius: 10px; padding: 0.85rem 1.1rem; display: flex; align-items: flex-start; gap: 0.75rem;">
+          <div style="font-size: 1.4rem; line-height: 1;">🤖</div>
+          <div style="flex: 1;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
+              <span style="font-size: 0.78rem; font-weight: 700; color: var(--accent-cyan); text-transform: uppercase; letter-spacing: 0.04em;">AI Decision Assistant Response</span>
+              <span style="font-size: 0.72rem; color: var(--accent-emerald);" id="copilot-status-indicator">● LIVE STRATEGY SYNTHESIZED</span>
+            </div>
+            <div style="font-size: 0.85rem; color: #ffffff; line-height: 1.45; font-weight: 500;" id="copilot-query-feedback">
+              Strategy evaluated for <strong>150,000 MT</strong> Australian Coking Coal to <strong>SAIL Rourkela Steel Plant (RSP)</strong>:
+            </div>
+          </div>
+        </div>
+
+        <!-- Multi-Strategy Scenario Selector Tabs -->
+        <div class="copilot-scenario-tabs" id="copilot-scenario-tabs">
+          <button class="copilot-scenario-btn active" id="tab-scenario-0" onclick="selectCopilotScenario(0)">
+            <div class="copilot-scenario-title">
+              <span>⭐</span> Option 1: Cost-Optimal
+            </div>
+            <div class="copilot-scenario-sub" id="scenario-sub-0">Save ₹14.72 Cr (Dhamra Capesize)</div>
+          </button>
+          <button class="copilot-scenario-btn" id="tab-scenario-1" onclick="selectCopilotScenario(1)">
+            <div class="copilot-scenario-title">
+              <span>⚡</span> Option 2: Fast-Track Transit
+            </div>
+            <div class="copilot-scenario-sub" id="scenario-sub-1">3.2 Days Faster Turnaround</div>
+          </button>
+          <button class="copilot-scenario-btn" id="tab-scenario-2" onclick="selectCopilotScenario(2)">
+            <div class="copilot-scenario-title">
+              <span>🌱</span> Option 3: Green Multi-Modal (IWT)
+            </div>
+            <div class="copilot-scenario-sub" id="scenario-sub-2">Cut CO₂ by 65% • Demurrage Shield</div>
+          </button>
+        </div>
+
+        <!-- Selected Strategy Detail Banner -->
+        <div class="copilot-strategy-card" id="copilot-strategy-card">
+          <div class="copilot-card-header">
+            <div style="display: flex; align-items: center; gap: 0.6rem;">
+              <span class="copilot-star-icon" id="copilot-strategy-icon">🎯</span>
+              <span class="copilot-card-title" id="copilot-strategy-title">RECOMMENDED STRATEGY</span>
+            </div>
+            <div class="copilot-savings-badge" id="copilot-savings-badge">
+              Expected Saving: ₹14.72 Crore
+            </div>
+          </div>
+
+          <div class="copilot-kpi-grid">
+            <div class="copilot-kpi-cell">
+              <div class="copilot-kpi-label">Discharge Port</div>
+              <div class="copilot-kpi-val" id="copilot-val-port" style="color: var(--accent-cyan);">Dhamra Port</div>
+              <div class="copilot-kpi-sub" id="copilot-sub-port">All-Weather Deep Draft (18.0m)</div>
+            </div>
+
+            <div class="copilot-kpi-cell">
+              <div class="copilot-kpi-label">Optimal Vessel</div>
+              <div class="copilot-kpi-val" id="copilot-val-vessel" style="color: #ffffff;">Capesize</div>
+              <div class="copilot-kpi-sub" id="copilot-sub-vessel">175,000 DWT Bulk Carrier</div>
+            </div>
+
+            <div class="copilot-kpi-cell">
+              <div class="copilot-kpi-label">Estimated Ocean Freight</div>
+              <div class="copilot-kpi-val" id="copilot-val-freight" style="color: var(--accent-emerald);">$16.50 / MT</div>
+              <div class="copilot-kpi-sub" id="copilot-val-freight-inr">₹1,378 / MT</div>
+            </div>
+
+            <div class="copilot-kpi-cell">
+              <div class="copilot-kpi-label">Total Landed Cost (TLC)</div>
+              <div class="copilot-kpi-val" id="copilot-val-landed" style="color: var(--accent-amber);">$312.45 / MT</div>
+              <div class="copilot-kpi-sub" id="copilot-val-landed-inr">₹26,089 / MT to Rourkela</div>
+            </div>
+
+            <div class="copilot-kpi-cell">
+              <div class="copilot-kpi-label">Recommended Laycan</div>
+              <div class="copilot-kpi-val" id="copilot-val-laycan" style="color: var(--accent-cyan);">14–19 October</div>
+              <div class="copilot-kpi-sub" id="copilot-sub-laycan">Softening freight window</div>
+            </div>
+
+            <div class="copilot-kpi-cell">
+              <div class="copilot-kpi-label">Operational Risk</div>
+              <div class="copilot-kpi-val" id="copilot-val-risk" style="color: var(--accent-amber);">Moderate (38/100)</div>
+              <div class="copilot-kpi-sub" id="copilot-sub-risk">Post-monsoon window safe</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- "Why?" Justification Grid -->
+        <div class="copilot-why-section" id="copilot-why-section">
+          <div class="copilot-why-title">
+            <span>💡</span> Why this strategy is recommended?
+          </div>
+          <div class="copilot-why-grid" id="copilot-why-grid">
+            <div class="copilot-why-card">
+              <div class="copilot-why-icon">⚓</div>
+              <div class="copilot-why-text">
+                <strong>Haldia Draft Restriction Avoidance</strong>
+                <p>Haldia draft (~8.5m) requires expensive offshore lightering at Sandheads ($6.80/MT penalty). Dhamra (18.0m draft) supports direct Capesize berthing with zero transhipment delay.</p>
+              </div>
+            </div>
+
+            <div class="copilot-why-card">
+              <div class="copilot-why-icon">💰</div>
+              <div class="copilot-why-text">
+                <strong>Lower Lightering & Transhipment Cost</strong>
+                <p>Eliminating lightering surcharges at Dhamra saves over ₹8.50 Cr directly on this 150,000 MT parcel compared to Kolkata/Haldia gateway discharge.</p>
+              </div>
+            </div>
+
+            <div class="copilot-why-card">
+              <div class="copilot-why-icon">🚆</div>
+              <div class="copilot-why-text">
+                <strong>Better Rail Economics & Turnaround</strong>
+                <p>Dedicated Merry-Go-Round rapid rake loading at Dhamra connects to Rourkela (420 km, 1.8 days transit) at $15.20/MT, bypassing congested Visakhapatnam bottlenecks.</p>
+              </div>
+            </div>
+
+            <div class="copilot-why-card">
+              <div class="copilot-why-icon">📉</div>
+              <div class="copilot-why-text">
+                <strong>Forecast Indicates Declining Forward Freight</strong>
+                <p>AI XGBoost forward curve projects Australia–East Coast Capesize spot softening by 4.5% over the 30-day horizon, indicating optimal tender entry during 14–19 October.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dynamic IWT Modal Comparison Card (Visible when IWT is queried or relevant) -->
+        <div class="copilot-iwt-result-card" id="copilot-iwt-card" style="display: none;">
+          <!-- Dynamically populated if IWT is queried -->
+        </div>
+
+        <!-- Side-by-Side Comprehensive Decision Matrix Table -->
+        <div class="copilot-matrix-section" id="copilot-comparison-matrix-section">
+          <div class="copilot-matrix-header">
+            <div class="copilot-matrix-title">
+              <span>📊</span> Multi-Scenario Procurement Decision Matrix
+            </div>
+            <span class="badge-tag badge-cyan">EXECUTIVE COMPARISON</span>
+          </div>
+
+          <table class="copilot-matrix-table" id="copilot-matrix-table">
+            <thead>
+              <tr>
+                <th style="width: 25%;">Evaluation Metric</th>
+                <th style="width: 25%; color: var(--accent-emerald);">Option 1: Cost-Optimal ⭐</th>
+                <th style="width: 25%; color: var(--accent-cyan);">Option 2: Fast-Track ⚡</th>
+                <th style="width: 25%; color: var(--accent-indigo);">Option 3: Green IWT 🌱</th>
+              </tr>
+            </thead>
+            <tbody id="copilot-matrix-tbody">
+              <tr>
+                <td>Discharge Gateway</td>
+                <td class="copilot-matrix-highlight">Dhamra Port (18.0m)</td>
+                <td>Paradip Port (14.5m)</td>
+                <td>Paradip / NW-5 Feeder</td>
+              </tr>
+              <tr>
+                <td>Vessel Class</td>
+                <td>Capesize (175,000 DWT)</td>
+                <td>Panamax (75,000 DWT)</td>
+                <td>Panamax + River Flotilla</td>
+              </tr>
+              <tr>
+                <td>Ocean Freight ($/MT)</td>
+                <td class="copilot-matrix-highlight">$16.50 / MT</td>
+                <td>$17.16 / MT</td>
+                <td>$16.83 / MT</td>
+              </tr>
+              <tr>
+                <td>Total Landed Cost (₹/MT)</td>
+                <td class="copilot-matrix-highlight">₹23,686 / MT</td>
+                <td>₹24,152 / MT</td>
+                <td>₹23,581 / MT</td>
+              </tr>
+              <tr>
+                <td>Total Outlay (₹ Crores)</td>
+                <td class="copilot-matrix-highlight">₹355.29 Cr</td>
+                <td>₹362.28 Cr</td>
+                <td>₹353.71 Cr</td>
+              </tr>
+              <tr>
+                <td>Total Transit Lead Time</td>
+                <td>17.6 days</td>
+                <td class="copilot-matrix-highlight">12.7 days (Fastest)</td>
+                <td>16.2 days</td>
+              </tr>
+              <tr>
+                <td>Carbon Footprint (kg CO₂/T)</td>
+                <td>38.5 kg/T</td>
+                <td>42.0 kg/T</td>
+                <td class="copilot-matrix-highlight">13.5 kg/T (-65%)</td>
+              </tr>
+              <tr>
+                <td>Risk Rating</td>
+                <td>Moderate (40/100)</td>
+                <td class="copilot-matrix-highlight">Low (26/100)</td>
+                <td class="copilot-matrix-highlight">Low (30/100)</td>
+              </tr>
+              <tr>
+                <td>Strategic Recommendation</td>
+                <td>Primary choice for scheduled bulk parcels</td>
+                <td>Deploy if blast furnace stock is critical</td>
+                <td>Deploy for Ministry decarbonization quota</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="copilot-actions-bar">
+            <button class="btn btn-secondary" style="padding: 0.45rem 0.9rem; font-size: 0.78rem;" onclick="copyCopilotBrief()">
+              <span>📋 Copy Decision Brief</span>
+            </button>
+            <button class="btn btn-primary" style="padding: 0.45rem 1.1rem; font-size: 0.78rem;" onclick="generateProcurementReport(); document.getElementById('report-modal')?.classList.add('open');">
+              <span>📄 Export Tender Specification Sheet</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
 
     <!-- 1. KPI Overview Command Center -->
     <section id="section-kpi" class="reveal">
@@ -153,18 +558,140 @@
 
     <div class="section-divider"></div>
 
-    <!-- 2. Composite Maritime Risk Score -->
+    <!-- 2. Proactive Early Warning Alert Engine & Maritime Risk Center -->
     <section id="section-risk" class="glass-card reveal">
       <div class="card-header">
         <div>
-          <div class="card-title">
-            <i>🛡️</i> Maritime Procurement Risk Index
+          <div class="card-title" style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
+            <span>🚨</span> Early Warning System & Proactive Alert Engine
+            <span class="badge-tag badge-coral" id="alerts-count-badge">4 ACTIVE ALERTS</span>
+            <span class="badge-tag badge-amber" id="risk-level-badge">CALCULATING...</span>
           </div>
           <div class="card-subtitle">
-            Composite weighted risk assessment across freight volatility, monsoon weather, port congestion, geopolitical disruption, and bunker fuel exposure.
+            Autonomous alert engine converting multi-source intelligence into proactive operational directives: port congestion shifts, cyclonic sea states, Capesize rate surges, and fuel volatility.
           </div>
         </div>
-        <div class="badge-tag badge-amber" id="risk-level-badge">CALCULATING...</div>
+        <div style="display: flex; gap: 0.5rem; align-items: center;">
+          <button class="btn btn-outline" style="font-size: 0.74rem; padding: 0.3rem 0.65rem;" id="btn-refresh-alerts">
+            <span>🔄 Refresh Signals</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 🚨 Urgent Recommended Action Directive Banner -->
+      <div class="alert-action-banner" id="early-warning-action-banner">
+        <div class="action-banner-icon">🚨</div>
+        <div class="action-banner-content">
+          <div class="action-banner-top">
+            <span class="action-badge-critical">CRITICAL ACTION DIRECTIVE</span>
+            <span class="action-timer-badge">⏳ Execute within 72 Hours</span>
+          </div>
+          <div class="action-banner-title" id="action-banner-headline">
+            Recommended Action: Fix freight within 72 hours.
+          </div>
+          <div class="action-banner-desc" id="action-banner-desc">
+            Capesize forward curve will increase 8.2% (+$1.35/MT) while Paradip berth queues increase +2.4 days. Fixing freight promptly secures low spot rate ($16.50/MT) and protects ₹1.69 Cr procurement savings.
+          </div>
+        </div>
+        <div class="action-banner-btn-group">
+          <a href="#section-optimizer" class="btn btn-primary" style="font-size: 0.8rem; padding: 0.5rem 0.9rem; white-space: nowrap;">
+            <span>⚡ Lock Laycan Window</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- 4 Active Proactive Alerts Grid -->
+      <div style="margin-top: 1.25rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
+          <div style="font-size: 0.88rem; font-weight: 600; color: #ffffff;">
+            Live Maritime Supply Chain Alerts
+          </div>
+          <div class="alert-filter-chips">
+            <button class="alert-chip active" data-alert-filter="all">All Alerts (4)</button>
+            <button class="alert-chip" data-alert-filter="port">⚠️ Port Alerts</button>
+            <button class="alert-chip" data-alert-filter="weather">🌧️ Weather Alerts</button>
+            <button class="alert-chip" data-alert-filter="freight">📈 Freight Alerts</button>
+            <button class="alert-chip" data-alert-filter="fuel">⛽ Fuel Alerts</button>
+          </div>
+        </div>
+
+        <div class="early-warning-grid" id="early-warning-cards-container">
+          <!-- Populated dynamically via /api/alerts/active with fallback cards -->
+          <div class="ew-card ew-port" data-type="port">
+            <div class="ew-header">
+              <div class="ew-badge-tag badge-port">⚠️ PORT ALERT</div>
+              <span class="ew-urgency">48h Window</span>
+            </div>
+            <div class="ew-title">Paradip congestion expected to increase by 2.4 days in next 10 days.</div>
+            <div class="ew-desc">Berth waiting queue projected to expand from 2.1d to 4.5d due to pre-monsoon vessel bunching at East Coast bulk berths.</div>
+            <div class="ew-metrics-row">
+              <div class="ew-metric">Current: <strong>2.1 days</strong></div>
+              <div class="ew-metric">Projected: <strong style="color: var(--accent-coral);">4.5 days (+2.4d)</strong></div>
+              <div class="ew-metric">Demurrage: <strong>$48,000/day</strong></div>
+            </div>
+            <div class="ew-footer-action">
+              <span>💡 Directive:</span> Divert 1 incoming Capesize parcel to Dhamra Port (1.9d wait).
+            </div>
+          </div>
+
+          <div class="ew-card ew-weather" data-type="weather">
+            <div class="ew-header">
+              <div class="ew-badge-tag badge-weather">🌧️ WEATHER ALERT</div>
+              <span class="ew-urgency">96h Window</span>
+            </div>
+            <div class="ew-title">Cyclonic weather probability may affect vessel operations & offshore lightering.</div>
+            <div class="ew-desc">Bay of Bengal monsoon depression forecast over Days 8–14. Ocean swell >2.5m will restrict Sandheads/Dhamra lightering and trigger hatch moisture closures.</div>
+            <div class="ew-metrics-row">
+              <div class="ew-metric">Swell Index: <strong>2.85 (High)</strong></div>
+              <div class="ew-metric">Peak Wind: <strong>32 km/h</strong></div>
+              <div class="ew-metric">Lightering: <strong style="color: var(--accent-amber);">Restricted</strong></div>
+            </div>
+            <div class="ew-footer-action">
+              <span>💡 Directive:</span> Avoid scheduled laycans between Days 9–13 at shallow berths.
+            </div>
+          </div>
+
+          <div class="ew-card ew-freight" data-type="freight">
+            <div class="ew-header">
+              <div class="ew-badge-tag badge-freight">📈 FREIGHT ALERT</div>
+              <span class="ew-urgency">72h Window</span>
+            </div>
+            <div class="ew-title">Australia–Paradip Capesize freight expected to increase 8.2%.</div>
+            <div class="ew-desc">XGBoost forward rate model predicts benchmark Capesize spot moving from $16.50/MT to $17.85/MT within 30 days due to tight Pacific dry tonnage.</div>
+            <div class="ew-metrics-row">
+              <div class="ew-metric">Spot: <strong>$16.50/MT</strong></div>
+              <div class="ew-metric">30d Projection: <strong style="color: var(--accent-coral);">$17.85/MT (+8.2%)</strong></div>
+              <div class="ew-metric">Impact: <strong>+₹1.69 Cr</strong></div>
+            </div>
+            <div class="ew-footer-action">
+              <span>💡 Directive:</span> Fix freight within 72 hours to lock in favorable rate.
+            </div>
+          </div>
+
+          <div class="ew-card ew-fuel" data-type="fuel">
+            <div class="ew-header">
+              <div class="ew-badge-tag badge-fuel">⛽ FUEL ALERT</div>
+              <span class="ew-urgency">120h Window</span>
+            </div>
+            <div class="ew-title">VLSFO volatility increasing: Singapore bunker deviation above baseline.</div>
+            <div class="ew-desc">Singapore 0.5% VLSFO trading at $645/MT. 14-day price variance is increasing BAF exposure by +$0.34/MT on long-haul routes.</div>
+            <div class="ew-metrics-row">
+              <div class="ew-metric">VLSFO: <strong>$645/MT</strong></div>
+              <div class="ew-metric">Budget Baseline: <strong>$600/MT</strong></div>
+              <div class="ew-metric">BAF Exposure: <strong>+$0.34/MT</strong></div>
+            </div>
+            <div class="ew-footer-action">
+              <span>💡 Directive:</span> Mandate bunker adjustment cap in upcoming freight tender contracts.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-divider" style="margin: 1.5rem 0 1rem 0;"></div>
+
+      <!-- Detailed Composite Diagnostic Gauge -->
+      <div style="font-size: 0.82rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 0.75rem;">
+        📊 Underlying Composite Risk Index Diagnostics (Weighted 5-Factor Score)
       </div>
 
       <div class="risk-gauge-container">
@@ -646,6 +1173,116 @@
             <!-- Dynamically populated -->
           </tbody>
         </table>
+      </div>
+
+      <!-- ==================== 🌊 IWT + MARITIME INTEGRATION: MODAL EVACUATION ==================== -->
+      <div class="modal-evacuation-container" style="margin-top: 1.5rem; padding: 1.25rem; background: rgba(7, 13, 30, 0.6); border-radius: 12px; border: 1px solid rgba(0, 210, 255, 0.2);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
+          <div>
+            <div style="font-size: 1rem; font-weight: 600; color: #ffffff; display: flex; align-items: center; gap: 0.5rem;">
+              <span>🌊</span> Multi-Modal Evacuation: Can I use Inland Waterways instead of Rail?
+              <span class="badge-tag badge-cyan">IWT + MARITIME INTEGRATION</span>
+            </div>
+            <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.2rem;">
+              Directly connects National Waterways (NW-1 / NW-5) with ocean discharge berths to compare freight tariffs, delivery transit times, and carbon footprints.
+            </div>
+          </div>
+          <span class="badge-tag badge-emerald" id="modal-recommendation-pill">IWT Recommended</span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.85rem; margin-bottom: 1.25rem; align-items: flex-end;">
+          <div>
+            <label class="form-label" style="font-size: 0.74rem;">Discharge Port & Waterway</label>
+            <select class="form-select" id="modal-port-select" style="font-size: 0.78rem;">
+              <option value="dhamra">Dhamra Port (NW-5 Corridor)</option>
+              <option value="paradip" selected>Paradip Port (NW-5 Kalinganagar Link)</option>
+              <option value="haldia">Haldia Port (NW-1 Ganga-Hooghly)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="form-label" style="font-size: 0.74rem;">Evacuation Parcel (MT)</label>
+            <input type="number" class="form-input" id="modal-tonnage-input" value="15000" step="1000" min="500" style="font-size: 0.78rem;">
+          </div>
+
+          <div>
+            <label class="form-label" style="font-size: 0.74rem;">Cargo Commodity</label>
+            <select class="form-select" id="modal-commodity-select" style="font-size: 0.78rem;">
+              <option value="coking_coal">Premium Coking Coal</option>
+              <option value="thermal_coal">Thermal Coal</option>
+              <option value="steel">Finished Steel Coils</option>
+            </select>
+          </div>
+
+          <div>
+            <button class="btn btn-primary" id="btn-run-modal-compare" style="width: 100%; font-size: 0.78rem; padding: 0.55rem 0.85rem;">
+              <span>⚡ Compare Rail vs IWT</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Side-by-Side Comparison Cards Grid -->
+        <div class="grid-2col" style="gap: 1.25rem;">
+          <!-- Left: Indian Railways -->
+          <div class="modal-card modal-rail-card">
+            <div class="modal-card-header">
+              <span class="modal-card-icon">🚆</span>
+              <span class="modal-card-title">Indian Railways (Rakes)</span>
+              <span class="badge-tag badge-cyan" id="modal-rail-badge">Standard Mode</span>
+            </div>
+            <div class="modal-stat-row">
+              <span class="modal-stat-label">Freight Tariff:</span>
+              <span class="modal-stat-val" id="modal-rail-cost">₹1,269 / ton</span>
+            </div>
+            <div class="modal-stat-row">
+              <span class="modal-stat-label">Transit Duration:</span>
+              <span class="modal-stat-val" id="modal-rail-transit">1.8 days</span>
+            </div>
+            <div class="modal-stat-row">
+              <span class="modal-stat-label">Carbon Intensity:</span>
+              <span class="modal-stat-val" id="modal-rail-co2">17.6 kg CO₂ / ton</span>
+            </div>
+            <div class="modal-stat-row total-row">
+              <span class="modal-stat-label">Total Inland Freight:</span>
+              <span class="modal-stat-val" id="modal-rail-total" style="color: #ffffff;">₹1.90 Cr</span>
+            </div>
+          </div>
+
+          <!-- Right: Inland Waterways (IWT) -->
+          <div class="modal-card modal-iwt-card">
+            <div class="modal-card-header">
+              <span class="modal-card-icon">🌊</span>
+              <span class="modal-card-title">Inland Waterways (Barge Flotilla)</span>
+              <span class="badge-tag badge-emerald" id="modal-iwt-badge">Eco & Cost Leader</span>
+            </div>
+            <div class="modal-stat-row">
+              <span class="modal-stat-label">Freight Tariff:</span>
+              <span class="modal-stat-val" id="modal-iwt-cost" style="color: var(--accent-emerald);">₹215 / ton</span>
+            </div>
+            <div class="modal-stat-row">
+              <span class="modal-stat-label">Transit Duration:</span>
+              <span class="modal-stat-val" id="modal-iwt-transit">1.2 days</span>
+            </div>
+            <div class="modal-stat-row">
+              <span class="modal-stat-label">Carbon Intensity:</span>
+              <span class="modal-stat-val" id="modal-iwt-co2" style="color: var(--accent-cyan);">3.3 kg CO₂ / ton</span>
+            </div>
+            <div class="modal-stat-row total-row">
+              <span class="modal-stat-label">Total Inland Freight:</span>
+              <span class="modal-stat-val" id="modal-iwt-total" style="color: var(--accent-emerald);">₹32.25 Lakh</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recommendation Banner -->
+        <div class="modal-recommendation-banner" id="modal-recommendation-banner">
+          <div style="font-size: 0.95rem; font-weight: 700; color: var(--accent-emerald); display: flex; align-items: center; gap: 0.5rem;" id="modal-recommendation-text">
+            <span>🎯</span> Recommended: IWT — ₹1.58 Cr cheaper + 81.3% lower emissions
+          </div>
+          <div style="font-size: 0.78rem; color: var(--text-secondary); margin-top: 0.35rem;" id="modal-recommendation-sub">
+            Inland Waterways via NW-5 provides an optimal balance: ₹1,054/ton freight discount saving ₹158.1 Lakhs, with an 81.3% reduction in transport carbon.
+          </div>
+        </div>
       </div>
     </section>
 
@@ -1333,7 +1970,7 @@
   <footer class="app-footer">
     <div class="footer-content">
       <div class="footer-brand">
-        ⚓ <span>NAVI-STEEL</span> — Ministry of Steel, Government of India
+        ⚓ <span>SeaSphere</span> — Ministry of Steel, Government of India
       </div>
       <div class="footer-attr">
         Smart India Hackathon 2026 | Problem ID: SIH26006 | Theme: Transportation & Logistics

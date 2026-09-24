@@ -1,5 +1,5 @@
 """
-End-to-End Automated Test Suite for NAVI-STEEL
+End-to-End Automated Test Suite for SeaSphere
 Validates domain data, ML models, optimization engines, and REST API endpoints.
 """
 
@@ -20,7 +20,7 @@ from simulation.scenario_simulator import ScenarioSimulator
 from models.inland_waterways_engine import InlandWaterwaysEngine
 import app as flask_app_module
 
-class TestNaviSteel(unittest.TestCase):
+class TestSeaSphere(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.forecaster = FreightForecaster()
@@ -195,7 +195,7 @@ class TestNaviSteel(unittest.TestCase):
         # 8. Web Page View
         res = self.client.get("/")
         self.assertEqual(res.status_code, 200)
-        self.assertIn(b"NAVI-STEEL", res.data)
+        self.assertIn(b"SeaSphere", res.data)
 
     def test_09_major_ports_data_integrity(self):
         """Verify Indian Major Ports data integrity and consistency."""
@@ -478,5 +478,190 @@ class TestNaviSteel(unittest.TestCase):
         self.assertEqual(res_h.status_code, 200)
         self.assertEqual(res_h.get_json()["engines"]["inland_waterways_engine"], "active")
 
+    def test_16_ai_procurement_copilot(self):
+        """Verify AI Procurement Copilot natural query parsing and executive decision output."""
+        from optimizer.copilot_engine import ProcurementCopilot
+        copilot = ProcurementCopilot(
+            self.forecaster, self.vessel_selector, self.charter_recommender,
+            self.landed_calculator, flask_app_module.risk_scorer, self.iwt_engine
+        )
+        
+        # Test query parsing
+        parsed = copilot.parse_query("150,000 MT Australian coking coal Rourkela ke liye next month procure karna hai")
+        self.assertEqual(parsed["commodity_id"], "coking_coal")
+        self.assertEqual(parsed["cargo_tonnage"], 150000.0)
+        self.assertEqual(parsed["origin_id"], "hay_point")
+        self.assertEqual(parsed["plant_id"], "sail_rourkela")
+        self.assertEqual(parsed["vessel_class"], "Capesize")
+
+        # Test decision generation
+        result = copilot.generate_recommendation("150,000 MT Australian coking coal Rourkela ke liye next month procure karna hai")
+        self.assertEqual(result["status"], "success")
+        strategy = result["strategy"]
+        self.assertEqual(strategy["discharge_port"], "Dhamra Port")
+        self.assertEqual(strategy["vessel_class"], "Capesize")
+        self.assertGreater(strategy["estimated_freight_usd_ton"], 10.0)
+        self.assertGreater(strategy["expected_saving_crore"], 1.0)
+        self.assertTrue(len(strategy["recommended_laycan"]) > 5)
+
+        # Test Why reasoning
+        why = result["why_reasoning"]
+        self.assertGreaterEqual(len(why), 3)
+        self.assertTrue(any("draft" in w.lower() for w in why))
+        self.assertTrue(any("rail" in w.lower() for w in why))
+
+    def test_17_early_warning_alert_engine(self):
+        """Verify proactive early warning alert engine generation across 4 risk vectors."""
+        from optimizer.alert_engine import EarlyWarningEngine
+        alert_engine = EarlyWarningEngine(
+            self.forecaster, self.weather_forecaster, self.port_forecaster, flask_app_module.risk_scorer
+        )
+        alerts_data = alert_engine.get_active_alerts()
+        self.assertEqual(alerts_data["status"], "success")
+        self.assertGreaterEqual(alerts_data["total_active_alerts"], 4)
+
+        # Verify 4 alert types exist
+        types = [a["type"] for a in alerts_data["alerts"]]
+        self.assertIn("PORT_ALERT", types)
+        self.assertIn("WEATHER_ALERT", types)
+        self.assertIn("FREIGHT_ALERT", types)
+        self.assertIn("FUEL_ALERT", types)
+
+        # Verify Primary Directive
+        directive = alerts_data["primary_directive"]
+        self.assertIn("72 hours", directive["headline"])
+        self.assertEqual(directive["urgency_hours"], 72)
+
+    def test_18_modal_evacuation_comparison(self):
+        """Verify side-by-side Rail vs IWT multi-modal evacuation calculations."""
+        res = self.landed_calculator.compare_rail_vs_iwt(
+            plant_id="sail_rourkela",
+            port_id="paradip",
+            cargo_tonnage=15000,
+            commodity_id="coking_coal"
+        )
+        self.assertEqual(res["status"], "success")
+        self.assertIn("rail", res)
+        self.assertIn("iwt", res)
+        self.assertGreater(res["rail"]["cost_inr_ton"], res["iwt"]["cost_inr_ton"])
+        self.assertGreater(res["savings"]["savings_lakhs"], 0)
+        self.assertGreater(res["savings"]["co2_reduction_pct"], 50.0)
+        self.assertIn("IWT", res["recommendation_badge"])
+
+    def test_19_new_rest_endpoints(self):
+        """Verify REST APIs for Copilot, Early Warnings, and Modal Comparison."""
+        # 1. Copilot Query Endpoint
+        res_cp = self.client.post("/api/copilot/query", json={
+            "query": "150,000 MT Australian coking coal Rourkela ke liye next month procure karna hai"
+        })
+        self.assertEqual(res_cp.status_code, 200)
+        cp_data = res_cp.get_json()["data"]
+        self.assertEqual(cp_data["strategy"]["discharge_port"], "Dhamra Port")
+        self.assertGreater(cp_data["strategy"]["expected_saving_crore"], 0)
+
+        # 2. Early Warnings Endpoint
+        res_ew = self.client.get("/api/alerts/active")
+        self.assertEqual(res_ew.status_code, 200)
+        ew_data = res_ew.get_json()["data"]
+        self.assertGreaterEqual(len(ew_data["alerts"]), 4)
+        self.assertIn("72 hours", ew_data["primary_directive"]["headline"])
+
+        # 3. Modal Compare Endpoint
+        res_mc = self.client.post("/api/optimizer/modal-compare", json={
+            "plant_id": "sail_rourkela",
+            "port_id": "dhamra",
+            "cargo_tonnage": 20000
+        })
+        self.assertEqual(res_mc.status_code, 200)
+        mc_data = res_mc.get_json()["data"]
+        self.assertIn("recommendation_badge", mc_data)
+
+        # 4. Health check includes new engines
+        res_h = self.client.get("/api/health")
+        self.assertEqual(res_h.status_code, 200)
+        engines = res_h.get_json()["engines"]
+        self.assertEqual(engines["copilot_engine"], "active")
+        self.assertEqual(engines["early_warning_engine"], "active")
+
+    def test_20_copilot_user_data_collection_and_multi_strategy(self):
+        """Verify Copilot accepts custom user parameters and returns 3 diverse strategic options and comparison matrix."""
+        res = self.client.post("/api/copilot/query", json={
+            "query": "Custom data collection query",
+            "parameters": {
+                "commodity_id": "thermal_coal",
+                "cargo_tonnage": 75000,
+                "plant_id": "sail_durgapur",
+                "origin_id": "taboneo",
+                "vessel_class": "Panamax",
+                "lead_days": 35,
+                "is_iwt_query": True
+            }
+        })
+        self.assertEqual(res.status_code, 200)
+        data = res.get_json()["data"]
+        
+        # Verify custom user parameters honored
+        self.assertEqual(data["strategy"]["cargo_tonnage"], 75000)
+        self.assertIn("Durgapur", data["strategy"]["plant_name"])
+        self.assertEqual(data["strategy"]["vessel_class"], "Panamax")
+
+        # Verify 3 diverse strategy options returned
+        self.assertIn("strategy_options", data)
+        self.assertEqual(len(data["strategy_options"]), 3)
+        option_ids = [opt["id"] for opt in data["strategy_options"]]
+        self.assertIn("cost_optimal", option_ids)
+        self.assertIn("fast_track", option_ids)
+        self.assertIn("green_multimodal", option_ids)
+
+        # Verify Decision Matrix Table returned
+        self.assertIn("comparison_matrix", data)
+        self.assertGreaterEqual(len(data["comparison_matrix"]), 7)
+
+    def test_21_database_persistence_and_live_ingestion(self):
+        """Verify SQLAlchemy database persistence and live market tick insertion."""
+        from data.db_engine import db_manager
+        from data.data_ingestion import live_ingestion_engine
+
+        # Verify DB connection & stats
+        stats = db_manager.get_database_stats()
+        self.assertIn("engine", stats)
+        self.assertGreaterEqual(stats["market_records_total"], 2000)
+        self.assertGreaterEqual(stats["weather_records_total"], 100)
+
+        # Ingest a live market tick
+        tick = live_ingestion_engine.ingest_live_market_tick()
+        self.assertIsNotNone(tick)
+        self.assertTrue(tick["is_live"])
+        self.assertIn("freight_aus_paradip_cape", tick)
+
+        # Verify Forecaster reflects dynamic database
+        fc = self.forecaster.forecast_route("freight_aus_paradip_cape")
+        self.assertIsNotNone(fc)
+        self.assertGreater(fc["current_spot_rate"], 0)
+
+    def test_22_data_sync_and_status_apis(self):
+        """Verify /api/data/status and /api/data/sync REST endpoints."""
+        # 1. Test status API
+        res_status = self.client.get("/api/data/status")
+        self.assertEqual(res_status.status_code, 200)
+        data_s = res_status.get_json()["data"]
+        self.assertIn("database", data_s)
+        self.assertIn("ingestion", data_s)
+
+        # 2. Test manual sync API
+        res_sync = self.client.post("/api/data/sync")
+        self.assertEqual(res_sync.status_code, 200)
+        data_sync = res_sync.get_json()["data"]
+        self.assertIn("weather_records_updated", data_sync)
+        self.assertGreater(data_sync["weather_records_updated"], 0)
+        self.assertIsNotNone(data_sync["latest_market_tick"])
+
+        # 3. Test logs API
+        res_logs = self.client.get("/api/data/logs")
+        self.assertEqual(res_logs.status_code, 200)
+        logs = res_logs.get_json()["data"]
+        self.assertGreaterEqual(len(logs), 1)
+
 if __name__ == "__main__":
     unittest.main()
+

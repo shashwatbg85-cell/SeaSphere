@@ -132,3 +132,121 @@ class LandedCostCalculator:
             "savings_vs_alternative_usd": total_savings_vs_suboptimal,
             "route_comparisons": port_evaluations
         }
+
+    def compare_rail_vs_iwt(self, plant_id="sail_rourkela", port_id="paradip", cargo_tonnage=15000, commodity_id="coking_coal"):
+        """
+        Directly integrates Inland Waterways (IWT) with Maritime bulk procurement:
+        Calculates side-by-side:
+        - Rail: Cost ₹/ton, Transit days, CO2 kg/ton
+        - IWT:  Cost ₹/ton, Transit days, CO2 kg/ton
+        Returns recommendation badge, net financial savings (₹ Lakhs) and emission reductions (%).
+        """
+        plant = self.plants.get(plant_id, self.plants["sail_rourkela"])
+        port = self.ports.get(port_id, self.ports["paradip"])
+        tonnage = max(500.0, float(cargo_tonnage))
+        usd_to_inr = 83.50
+
+        # Rail metrics from plant preferred ports or benchmark
+        rail_info = plant.get("preferred_ports", {}).get(port_id)
+        if rail_info:
+            rail_dist_km = rail_info["distance_km"]
+            rail_cost_usd = rail_info["rail_freight_usd_ton"]
+            rail_cost_inr = round(rail_cost_usd * usd_to_inr)
+            rail_transit_days = rail_info["transit_days"]
+        else:
+            rail_dist_km = 450
+            rail_cost_inr = 1420
+            rail_transit_days = 2.0
+
+        # Rail carbon factor: 0.042 kg CO2 / ton-km
+        rail_co2_kg_ton = round(rail_dist_km * 0.042, 1)
+
+        # IWT route determination based on port and geography
+        if port_id in ["haldia", "kolkata"]:
+            waterway_id = "NW-1 (Ganga-Hooghly)"
+            corridor_name = "Haldia MMT → Durgapur / Barh / Varanasi Gateway"
+            iwt_dist_km = 680
+            # IWT tariff ~₹1.06/ton-km vs Rail ₹1.41/ton-km
+            iwt_cost_inr = round(iwt_dist_km * 1.06 * 0.85)  # ₹612/ton
+            iwt_transit_days = round(iwt_dist_km / (14.0 * 18.0 / 24.0 * 1.2), 1)  # ~4.2 days
+            iwt_co2_kg_ton = round(iwt_dist_km * 0.018, 1)
+        elif port_id in ["paradip", "dhamra"]:
+            waterway_id = "NW-5 (Mahanadi-Brahmani)"
+            corridor_name = f"{port['name']} → Pankpal / Kalinganagar / Talcher Corridor"
+            iwt_dist_km = 185
+            iwt_cost_inr = 215  # Benchmark from NW-5
+            # Rapid delta barge: 1.2 days
+            iwt_transit_days = 1.2
+            iwt_co2_kg_ton = 3.3
+        else:
+            waterway_id = "Coastal & Inland Feeder"
+            corridor_name = f"{port['name']} Coastal Barging to Inland Hub"
+            iwt_dist_km = 320
+            iwt_cost_inr = 420
+            iwt_transit_days = 2.5
+            iwt_co2_kg_ton = round(iwt_dist_km * 0.018, 1)
+
+        # Savings calculations
+        total_rail_cost_inr = round(rail_cost_inr * tonnage)
+        total_iwt_cost_inr = round(iwt_cost_inr * tonnage)
+        
+        diff_inr = total_rail_cost_inr - total_iwt_cost_inr
+        is_iwt_cheaper = diff_inr > 0
+        savings_inr = abs(diff_inr)
+        savings_lakhs = round(savings_inr / 100000.0, 1)
+        savings_pct = round((savings_inr / total_rail_cost_inr) * 100.0, 1) if total_rail_cost_inr > 0 else 0.0
+
+        total_rail_co2_tonnes = round((rail_co2_kg_ton * tonnage) / 1000.0, 1)
+        total_iwt_co2_tonnes = round((iwt_co2_kg_ton * tonnage) / 1000.0, 1)
+        co2_cut_pct = round(((rail_co2_kg_ton - iwt_co2_kg_ton) / rail_co2_kg_ton) * 100.0, 1) if rail_co2_kg_ton > 0 else 0.0
+
+        # Recommendation badge & reason
+        if is_iwt_cheaper and iwt_transit_days <= 5.0:
+            recommended_mode = "IWT"
+            badge = f"IWT — ₹{savings_lakhs} Lakh cheaper + {co2_cut_pct}% lower emissions"
+            reason = (f"Inland Waterways ({waterway_id}) provides an optimal balance: ₹{rail_cost_inr - iwt_cost_inr}/ton "
+                      f"freight discount saving ₹{savings_lakhs} Lakhs, with a {co2_cut_pct}% reduction in transport carbon.")
+        else:
+            recommended_mode = "Rail"
+            badge = f"Rail Recommended — {rail_transit_days}d transit for time-critical blast furnace stock"
+            reason = (f"Indian Railways rake dispatch recommended for urgent feed: saves {round(iwt_transit_days - rail_transit_days, 1)} days "
+                      f"transit time to prevent blast furnace stock depletion.")
+
+        return {
+            "status": "success",
+            "plant_id": plant_id,
+            "plant_name": plant["name"],
+            "port_id": port_id,
+            "port_name": port["name"],
+            "commodity_id": commodity_id,
+            "cargo_tonnage": tonnage,
+            "corridor_name": corridor_name,
+            "waterway_id": waterway_id,
+            "rail": {
+                "distance_km": rail_dist_km,
+                "cost_inr_ton": rail_cost_inr,
+                "transit_days": rail_transit_days,
+                "co2_kg_ton": rail_co2_kg_ton,
+                "total_cost_inr": total_rail_cost_inr,
+                "total_co2_tonnes": total_rail_co2_tonnes
+            },
+            "iwt": {
+                "distance_km": iwt_dist_km,
+                "cost_inr_ton": iwt_cost_inr,
+                "transit_days": iwt_transit_days,
+                "co2_kg_ton": iwt_co2_kg_ton,
+                "total_cost_inr": total_iwt_cost_inr,
+                "total_co2_tonnes": total_iwt_co2_tonnes
+            },
+            "savings": {
+                "savings_inr": savings_inr,
+                "savings_lakhs": savings_lakhs,
+                "savings_pct": savings_pct,
+                "co2_reduction_kg_ton": round(rail_co2_kg_ton - iwt_co2_kg_ton, 1),
+                "co2_reduction_pct": co2_cut_pct
+            },
+            "recommended_mode": recommended_mode,
+            "recommendation_badge": badge,
+            "recommendation_reason": reason
+        }
+
